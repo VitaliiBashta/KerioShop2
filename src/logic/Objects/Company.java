@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Company {
     public int id;
-    public String name;
+    private String name;
     public String role;
     public String rating;
     public String regNumber;
     public String taxNumber;
-    public PrimaryAddress primaryAddress;
+    private PrimaryAddress primaryAddress;
     public Person owner;
     public String notice;
     public List<Person> employees ;

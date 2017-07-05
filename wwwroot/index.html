@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="/js/logic.js"></script>
+    <script src="js/logic.js"></script>
     <title>Cows and Bulls</title>
     <style type="text/css">
         td {
@@ -32,29 +32,8 @@
             display: none;
         }
 
-        #guessTable {
-            margin-bottom: 30px;
-        }
-
-        #bullTable {
-            width: 720px;
-            border: 1px silver solid;
-        }
-
         #containerTable {
             width: 1000px;
-        }
-
-        #filterLabel {
-            width: 180px;
-        }
-
-        #unmatchedLabel {
-            display: block;
-        }
-
-        #save, #load {
-            border-radius: 26px;
         }
 
         table {
@@ -115,53 +94,13 @@
             inset 0 0 0 rgba(255, 255, 255, 0.7);
         }
 
-        #login {
-            display: none;
-            font-size: 6em;
-            width: 1000px;
-        }
-
-        caption, button.matchResultBull {
-            color: white;
-            background: #333333;
-        }
-
-        button.undefined, input + label:before, input + label:after {
-            background: -webkit-gradient(
-                    linear, left top, left bottom,
-                    from(#ffffff),
-                    color-stop(0.50, #ffffff),
-                    to(#a5a5a5));
-        }
-
         button.select {
             font-size: 2em;
             width: 1000px;
             height: 120px;
             border-radius: 26px;
-            text-shadow: 0 -1px 0px rgba(000, 000, 000, 0.2),
-            0 1px 0px rgba(255, 255, 255, 1);
-        }
-
-        button.unmatched, #unmatchedLabel, #unmatchedCowLabel {
-            background: #eeeeee;
-            color: silver;
-        }
-
-        button.resultCow, button.resultBull {
-            color: #242424;
-            background: #eeeeee;
-        }
-
-        button.guessed {
-            border: 6px dashed white;
-            color: white;
-            background: -webkit-gradient(
-                    linear, left top, left bottom,
-                    from(#a3a3a3),
-                    color-stop(0.50, #3b3b3b),
-                    color-stop(0.70, #242424),
-                    to(#000000));
+            text-shadow: 0 -1px 0 rgba(000, 000, 000, 0.2),
+            0 1px 0 rgba(255, 255, 255, 1);
         }
 
     </style>
@@ -170,11 +109,11 @@
 <body>
 
 <div id="FieldDiv">
-    <select id="companies">
+    <label for="companies">Companies</label><select id="companies">
 
     </select>
     <button id="getCompanies" class="select" onclick="getCompanies()">Get companies</button>
-    <select id="persons">
+    <label for="persons">Persons</label><select id="persons">
 
     </select>
     <button id="getPersons" class="select" onclick="getPersons()">Get companies</button>

@@ -5,19 +5,19 @@ import java.util.List;
 
 
 public class BusinessCase {
-    public final int id;
+    private final int id;
     public String code;
-    public String name;  //required
-    public int currency;  //required
-    public Company company; //required
-    public Person person;
-    public Person owner;
+    private String name;  //required
+    private int currency;  //required
+    private Company company; //required
+    private Person person;
+    private Person owner;
     public Date validFrom;
     public Date validTill;
     public Date scheduledEnd;
     public String description;
     public int status;
-    public int businessCasePhase;
+    private int businessCasePhase;
     public List<Product> items;
 
     public BusinessCase(int id, String name, int currency, Company company, Person person, Person owner, int businessCasePhase) {
