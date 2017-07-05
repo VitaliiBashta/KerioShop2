@@ -13,15 +13,14 @@ class StaticHandler implements HttpHandler {
     public void handle(HttpExchange he) throws IOException {
         String fileId = he.getRequestURI().getPath();
         File file = new File(new File("wwwRoot"), fileId);
-        OutputStream output = he.getResponseBody();
         he.sendResponseHeaders(200, file.length());
-
+        OutputStream output = he.getResponseBody();
         FileInputStream fs = new FileInputStream(file);
         final byte[] buffer = new byte[1024];
         int count;
-        while ((count = fs.read(buffer)) >= 0)
-            output.write(buffer, 0, count);
-        fs.close();
+        while ((count = fs.read(buffer)) >= 0) output.write(buffer, 0, count);
+        output.flush();
         output.close();
+        fs.close();
     }
 }

@@ -6,10 +6,9 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
 import java.net.URI;
 
-
-
 class DynamicHandler implements HttpHandler {
     private final byte[] buf = new byte[16 * 1024];
+
 
     @Override
     public void handle(HttpExchange he) throws IOException {
@@ -17,11 +16,11 @@ class DynamicHandler implements HttpHandler {
 
         OutputStream os = he.getResponseBody();
 
-        System.out.println("uri>" + requestedUri);
         if (he.getRequestMethod().equals("GET")) {
-
+            System.out.println("uri>" + requestedUri);
+            System.out.println("query=" + he.getRequestURI().getQuery());
             if (requestedUri.getPath().equals("/"))
-                sendFile("kerioLogin.html", he);
+                sendFile("index.html", he);
             else
                 sendFile(requestedUri.getRawPath(), he);
         }
@@ -29,37 +28,30 @@ class DynamicHandler implements HttpHandler {
         if (he.getRequestMethod().equals("POST")) {
             BufferedReader br = new BufferedReader(new InputStreamReader(he.getRequestBody(), "utf-8"));
             String query = br.readLine();
-            System.out.println("query: " +  query);
-            String params[] = query.split("[,]");
-            if (params[0].equalsIgnoreCase("off")) System.exit(0);
 
-
-
-            String response = "";
+            String response= " ";
+            if (query.equals("getCompanies"))
+                response = Raynet.getCompanies();
+            if (query.equals("getPersons"))
+                response = Raynet.getPersons();
             if (!response.equals("")) {
-                he.sendResponseHeaders(200, response.length());
+                he.sendResponseHeaders(200, response.getBytes().length);
                 os.write(response.getBytes());
             }
             os.flush();
         }
         os.close();
-
     }
 
-    private void sendFile(String target, HttpExchange he) {
+    private void sendFile(String target, HttpExchange he) throws IOException {
         File file = new File(new File("wwwRoot"), target);
-
         if (file.exists()) {
-            try {
-                OutputStream os = he.getResponseBody();
-                he.sendResponseHeaders(200, file.length());
-                int n;
-                try (InputStream is = new FileInputStream(file.getAbsolutePath())) {
-                    while ((n = is.read(buf)) > 0)
-                        os.write(buf, 0, n);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            OutputStream os = he.getResponseBody();
+            he.sendResponseHeaders(200, file.length());
+            int n;
+            try (InputStream is = new FileInputStream(file.getAbsolutePath())) {
+                while ((n = is.read(buf)) > 0)
+                    os.write(buf, 0, n);
             }
         }
     }

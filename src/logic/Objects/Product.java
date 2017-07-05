@@ -6,7 +6,4 @@ public class Product {
     public String code;
     public String name;
     public float price;
-
-
-
 }

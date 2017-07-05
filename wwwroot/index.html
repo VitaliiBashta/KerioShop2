@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/js/logic.js"></script>
+    <title>Cows and Bulls</title>
+    <style type="text/css">
+        td {
+            border: 1px solid purple;
+        }
+
+        td {
+            vertical-align: top;
+        }
+
+        body, html {
+            margin: auto;
+            background: #eeeeee;
+        }
+
+        div {
+            position: relative;
+            width: 94%;
+            left: 5%;
+        }
+
+        input {
+            position: absolute;
+            visibility: hidden;
+        }
+
+        input.unmatched + label {
+            display: none;
+        }
+
+        #guessTable {
+            margin-bottom: 30px;
+        }
+
+        #bullTable {
+            width: 720px;
+            border: 1px silver solid;
+        }
+
+        #containerTable {
+            width: 1000px;
+        }
+
+        #filterLabel {
+            width: 180px;
+        }
+
+        #unmatchedLabel {
+            display: block;
+        }
+
+        #save, #load {
+            border-radius: 26px;
+        }
+
+        table {
+            vertical-align: top;
+            font-size: 40px;
+            border-spacing: 0;
+        }
+
+        button {
+            font-size: 1em;
+            margin: 10px 0;
+            width: 180px;
+            height: 60px;
+            display: inline;
+            border-radius: 2px;
+            border: 5px solid white;
+            background: -webkit-gradient(
+                    linear, left top, left bottom,
+                    from(#ffffff),
+                    color-stop(0.50, #ebebeb),
+                    color-stop(0.50, #dbdbdb),
+                    to(#524c52));
+        }
+
+        button[name="cow"], button[name="bull"] {
+            width: 98px;
+        }
+
+        button[name="cow"] {
+            border-radius: 50px;
+        }
+
+        input + label {
+            position: relative;
+            display: block;
+            text-align: center;
+            width: 160px;
+            height: 60px;
+            margin: 10px 0 5px 5px;
+        }
+
+        input + label:before, input + label:after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            content: attr(data-on);
+            transition: transform 0.5s;
+            border: 1px solid silver;
+            border-radius: 26px;
+        }
+
+        input:checked + label:after {
+            border: 3px solid green;
+            transform: scale(1.2);
+            box-shadow: 0 2px 30px rgba(000, 000, 000, 1),
+            inset 0 0 0 rgba(255, 255, 255, 0.7);
+        }
+
+        #login {
+            display: none;
+            font-size: 6em;
+            width: 1000px;
+        }
+
+        caption, button.matchResultBull {
+            color: white;
+            background: #333333;
+        }
+
+        button.undefined, input + label:before, input + label:after {
+            background: -webkit-gradient(
+                    linear, left top, left bottom,
+                    from(#ffffff),
+                    color-stop(0.50, #ffffff),
+                    to(#a5a5a5));
+        }
+
+        button.select {
+            font-size: 2em;
+            width: 1000px;
+            height: 120px;
+            border-radius: 26px;
+            text-shadow: 0 -1px 0px rgba(000, 000, 000, 0.2),
+            0 1px 0px rgba(255, 255, 255, 1);
+        }
+
+        button.unmatched, #unmatchedLabel, #unmatchedCowLabel {
+            background: #eeeeee;
+            color: silver;
+        }
+
+        button.resultCow, button.resultBull {
+            color: #242424;
+            background: #eeeeee;
+        }
+
+        button.guessed {
+            border: 6px dashed white;
+            color: white;
+            background: -webkit-gradient(
+                    linear, left top, left bottom,
+                    from(#a3a3a3),
+                    color-stop(0.50, #3b3b3b),
+                    color-stop(0.70, #242424),
+                    to(#000000));
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="FieldDiv">
+    <select id="companies">
+
+    </select>
+    <button id="getCompanies" class="select" onclick="getCompanies()">Get companies</button>
+    <select id="persons">
+
+    </select>
+    <button id="getPersons" class="select" onclick="getPersons()">Get companies</button>
+    <table id="containerTable">
+
+    </table>
+</div>
+</body>
+</html>

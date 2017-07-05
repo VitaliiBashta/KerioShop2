@@ -14,7 +14,7 @@ import static logic.Raynet.RAYNET_URL;
 
 public class Methods {
 
-    public static String sendGet(String url)  {
+    public static String sendGet(String url) {
 
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(RAYNET_URL + url);
@@ -23,22 +23,15 @@ public class Methods {
         request.addHeader("X-Instance-Name", "zebra");
         request.addHeader("Authorization", "Basic dml0YWxpaS5iYXNodGFAemVicmEuY3o6VjE1OTZpdGFsaWk=");
 
-        HttpResponse response = null;
-        try {
-            response = client.execute(request);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-//        System.out.println("\nSending 'GET' request to URL : " + url);
-//        System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-        BufferedReader rd = null;
+        HttpResponse response;
         StringBuilder result = new StringBuilder();
         try {
+            response = client.execute(request);
+            BufferedReader rd;
+
             rd = new BufferedReader(
                     new InputStreamReader(response.getEntity().getContent()));
-            String line = "";
+            String line;
             while ((line = rd.readLine()) != null) {
                 result.append(line);
             }
@@ -46,7 +39,8 @@ public class Methods {
             e.printStackTrace();
         }
 
-
+//        System.out.println("\nSending 'GET' request to URL : " + url);
+//        System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
 
         return result.toString();

@@ -19,6 +19,10 @@ public class Company {
         employees = new LinkedList<>();
     }
 
+    public String asHTML(){
+
+        return "<option value=\""+name+"\">"+name+"</option>";
+    }
     @Override
     public String toString() {
         return name+ "{id=" + id + '}' + primaryAddress;

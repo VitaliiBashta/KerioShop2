@@ -1,15 +1,15 @@
 package logic.Objects;
 
 
-public class Address {
+class Address {
     int id;
-    String city;
-    String country;
+    private String city;
+    private String country;
     String countyCode;
     String name;
     String province;
-    String street;
-    String zipCode;
+    private String street;
+    private String zipCode;
 
     @Override
     public String toString() {

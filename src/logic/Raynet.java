@@ -16,11 +16,11 @@ import java.util.Map;
 
 public class Raynet {
     public static final String RAYNET_URL = "https://app.raynet.cz";
-    private static final int BULK_COUNT = 800;
-    final Map<Integer, Company> companies;
-    final Map<Integer, Person> persons;
-    final Map<Integer, BusinessCase> businessCases;
-    final Map<Integer, Offer> offers;
+    private static final int BULK_COUNT = 500;
+    static Map<Integer, Company> companies = new HashMap<>();
+    static Map<Integer, Person> persons = new HashMap<>();
+    static Map<Integer, BusinessCase> businessCases = new HashMap<>();
+    static Map<Integer, Offer> offers = new HashMap<>();
 
 
     public Raynet() {
@@ -44,10 +44,10 @@ public class Raynet {
     }
 
     private void initEmployees() {
-        for (Person person:persons.values()) {
-            if (person.primaryRelationship !=null) {
+        for (Person person : persons.values()) {
+            if (person.primaryRelationship != null) {
                 Company company = companies.get(person.primaryRelationship.company.id);
-                if (company !=null) {
+                if (company != null) {
                     company.employees.add(person);
                     person.primaryRelationship.company = company;
                 } else {
@@ -63,9 +63,9 @@ public class Raynet {
         response = Methods.sendGet("/api/v2/person/?limit=1");
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonPerson json = gson.fromJson(response, JsonPerson.class);
-        int i=0;
+        int i = 0;
         while (persons.size() < json.totalCount) {
-            response = Methods.sendGet("/api/v2/person/?limit="+BULK_COUNT+"&offset=" + i*(BULK_COUNT-1));
+            response = Methods.sendGet("/api/v2/person/?limit=" + BULK_COUNT + "&offset=" + i * (BULK_COUNT - 1));
 
 
             JsonPerson jsonPerson = gson.fromJson(response, JsonPerson.class);
@@ -90,8 +90,8 @@ public class Raynet {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonCompany json = gson.fromJson(response, JsonCompany.class);
 
-        for (int i = 0; i < json.totalCount/BULK_COUNT +1; i++) {
-            response = Methods.sendGet("/api/v2/company/?limit="+BULK_COUNT+"&offset=" + i*BULK_COUNT);
+        for (int i = 0; i < json.totalCount / BULK_COUNT + 1; i++) {
+            response = Methods.sendGet("/api/v2/company/?limit=" + BULK_COUNT + "&offset=" + i * BULK_COUNT);
             JsonCompany jsonCompany = gson.fromJson(response, JsonCompany.class);
             for (int j = 0; j < jsonCompany.data.size(); j++) {
                 companies.put(jsonCompany.data.get(j).id, jsonCompany.data.get(j));
@@ -102,5 +102,22 @@ public class Raynet {
 //        for (Company company:companies.values()) {
 //            System.out.println(company);
 //        }
+    }
+
+
+    public static String getCompanies() {
+        StringBuilder result = new StringBuilder();
+        for (Company company : companies.values()) {
+            result.append(company.asHTML());
+        }
+        return result.toString();
+    }
+
+    public static String getPersons() {
+        StringBuilder result = new StringBuilder();
+        for (Person person : persons.values()) {
+            result.append(person.asHTML());
+        }
+        return result.toString();
     }
 }
