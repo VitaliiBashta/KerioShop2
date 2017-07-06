@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Company {
     public int id;
-    private String name;
+    public String name;
     public String role;
     public String rating;
     public String regNumber;
@@ -21,7 +21,7 @@ public class Company {
 
     public String asHTML(){
 
-        return "<option value=\""+name+"\">"+name+"</option>";
+        return "<option value=\""+id+"\">"+name+"</option>";
     }
     @Override
     public String toString() {

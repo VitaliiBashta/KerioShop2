@@ -2,15 +2,14 @@ package logic;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import logic.Objects.BusinessCase;
-import logic.Objects.Company;
-import logic.Objects.Offer;
-import logic.Objects.Person;
+import logic.Objects.*;
 import logic.jsonObjects.JsonCompany;
 import logic.jsonObjects.JsonPerson;
 import webAccess.Methods;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -107,6 +106,7 @@ public class Raynet {
 
     public static String getCompanies() {
         StringBuilder result = new StringBuilder();
+        result.append("<option value=\"\"></option>");
         for (Company company : companies.values()) {
             result.append(company.asHTML());
         }
@@ -119,5 +119,27 @@ public class Raynet {
             result.append(person.asHTML());
         }
         return result.toString();
+    }
+
+    public static String getPersons(int id) {
+        StringBuilder result = new StringBuilder();
+        Company company = companies.get(id);
+        for (Person person : company.employees) {
+            result.append(person.asHTML());
+        }
+        return result.toString();
+    }
+
+    public static String getCompanyList() {
+        Gson gson = new Gson();
+
+        System.out.println("companies total:" + companies.size());
+        List<CompanySimple> companiesSimple = new ArrayList<>();
+        for (Company company : companies.values()) {
+            companiesSimple.add(new CompanySimple(company.id, company.name));
+        }
+        String result = gson.toJson(companiesSimple);
+        System.out.println("{\" companies\": "+ result+ "}");
+        return result;
     }
 }

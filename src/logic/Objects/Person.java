@@ -33,6 +33,6 @@ public class Person {
     }
 
     public String asHTML() {
-        return "<option value=\"" + fullName() + "\">" + fullName() + "</option>";
+        return "<option value=\"" + id + "\">" + fullName() + "</option>";
     }
 }

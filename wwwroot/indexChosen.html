@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="js/logic.js"></script>
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+<body>
+
+<div id="container">
+    <div id="content">
+        <div class="side-by-side clearfix">
+            <div>
+
+                <button id="getCompanies" class="select" onclick="getCompanies()">Get companies</button>
+                <button id="getCompaniesList" class="select" onclick="getCompanyList()">Get All companies</button>
+                <label for="companies">Companies</label>
+                <select id="companies">
+
+                </select>
+                <label for="persons">Persons</label>
+                <select id="persons">
+
+                </select>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div style="position: relative; height: 80px;">
+        <input type="text" name="country" id="autocomplete-dynamic" style="position: absolute;" onautocomplete="setCompany(this.value)"/>
+    </div>
+
+
+
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.mockjax.js"></script>
+    <script type="text/javascript" src="js/jquery.autocomplete.js"></script>
+
+</div>
+
+<script>
+    $("#autocomplete-dynamic111").change(function () {
+        var variableX = $(this).val();
+        setCompany(variableX);
+    });
+
+    $("#autocomplete-dynamic").keyup(function(event){
+        if(event.keyCode == 13){
+            setCompany(this.value);
+        }
+    });
+</script>
+
+
+</body>
+</html>

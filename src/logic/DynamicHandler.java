@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
 import java.net.URI;
+import java.nio.file.Files;
 
 class DynamicHandler implements HttpHandler {
     private final byte[] buf = new byte[16 * 1024];
@@ -18,9 +19,8 @@ class DynamicHandler implements HttpHandler {
 
         if (he.getRequestMethod().equals("GET")) {
             System.out.println("uri>" + requestedUri);
-            System.out.println("query=" + he.getRequestURI().getQuery());
             if (requestedUri.getPath().equals("/"))
-                sendFile("index.html", he);
+                sendFile("indexChosen.html", he);
             else
                 sendFile(requestedUri.getRawPath(), he);
         }
@@ -28,12 +28,20 @@ class DynamicHandler implements HttpHandler {
         if (he.getRequestMethod().equals("POST")) {
             BufferedReader br = new BufferedReader(new InputStreamReader(he.getRequestBody(), "utf-8"));
             String query = br.readLine();
-
+            System.out.println("query: " + query);
             String response= " ";
             if (query.equals("getCompanies"))
                 response = Raynet.getCompanies();
             if (query.equals("getPersons"))
                 response = Raynet.getPersons();
+            if (query.equals("getCompanyList"))
+                response = Raynet.getCompanyList();
+            if (query.startsWith("setCompany")) {
+                String company = query.substring(query.indexOf('?')+1);
+                int id = Raynet.companies.;
+                response = Raynet.getPersons(id);
+            }
+
             if (!response.equals("")) {
                 he.sendResponseHeaders(200, response.getBytes().length);
                 os.write(response.getBytes());
@@ -48,6 +56,10 @@ class DynamicHandler implements HttpHandler {
         if (file.exists()) {
             OutputStream os = he.getResponseBody();
             he.sendResponseHeaders(200, file.length());
+            System.out.println("Request file: " + file + " mime type: " + Files.probeContentType(file.toPath()));
+//            if (Files.probeContentType(file.toPath()).equals("css")) {
+//                System.out.println();
+//            }
             int n;
             try (InputStream is = new FileInputStream(file.getAbsolutePath())) {
                 while ((n = is.read(buf)) > 0)
