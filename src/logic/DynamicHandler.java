@@ -51,6 +51,26 @@ class DynamicHandler implements HttpHandler {
             }
             os.flush();
         }
+
+        if (he.getRequestMethod().equals("PUT")) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(he.getRequestBody(), "utf-8"));
+            String query = "";
+            String line;
+            while ((line = br.readLine()) !=null){
+                query +=line;
+            }
+
+
+            System.out.println("PUT query: " + query + " for URI " + requestedUri);
+
+            String response= " hello  after put ";
+
+            if (!response.equals("")) {
+                he.sendResponseHeaders(200, response.getBytes().length);
+                os.write(response.getBytes());
+            }
+            os.flush();
+        }
         os.close();
     }
 

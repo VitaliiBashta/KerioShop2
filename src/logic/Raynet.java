@@ -7,12 +7,19 @@ import logic.jsonObjects.JsonCompany;
 import logic.jsonObjects.JsonOffer;
 import logic.jsonObjects.JsonPerson;
 import logic.objects.*;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.entity.BasicHttpEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicNameValuePair;
 import webAccess.Methods;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
+import java.util.Base64.Encoder;
+
+import static java.lang.String.*;
 
 
 public class Raynet {
@@ -24,18 +31,17 @@ public class Raynet {
     Map<Integer, Offer> offers = new HashMap<>();
 
 
-
     public void init() {
 
 //        initDials("/api/v2/companyCategory/", CompanyCategory.class);
-        initCompanies();
-        initPersons();
-        initBusinessCases();
-        initOffers();
-
-        linkCompanyAndPerson();
-        linkBusinessCaseAndOwnerAndPerson();
-        LinkBusinessCaseAndOffer();
+//        initCompanies();
+//        initPersons();
+//        initBusinessCases();
+//        initOffers();
+//
+//        linkCompanyAndPerson();
+//        linkBusinessCaseAndOwnerAndPerson();
+//        LinkBusinessCaseAndOffer();
         System.out.println("------------ Raynet initiated -----------");
     }
 
@@ -198,7 +204,31 @@ public class Raynet {
             companiesSimple.add(new CompanySimple(company.id, company.name));
         }
         String result = gson.toJson(companiesSimple);
-        System.out.println("{\" companies\": "+ result+ "}");
+        System.out.println("{\" companies\": " + result + "}");
         return result;
+    }
+
+    public static void main(String[] args) throws UnsupportedEncodingException {
+
+//        List<NameValuePair> urlParameters = new ArrayList<>();
+//        urlParameters.add(new BasicNameValuePair("name", "testtest"));
+//        urlParameters.add(new BasicNameValuePair("company", "1"));
+//        urlParameters.add(new BasicNameValuePair("owner", "3"));
+//        urlParameters.add(new BasicNameValuePair("currency", "16"));
+
+//        String jsonString = "{" +
+//                "  \"name\": \"testtest\"," +
+//                "  \"company\": 1," +
+//                "  \"owner\": 3," +
+//                "  \"currency\": 15"
+//                + "}";
+//        HttpEntity entity = new StringEntity(jsonString, ContentType.APPLICATION_JSON);
+//
+//        String response = Methods.sendPut("/api/v2/businessCase/", entity);
+//        System.out.println(response);
+
+        String asB64 = Base64.getEncoder().encodeToString("vitalii.bashta@zebra.cz:V1596italii".getBytes("utf-8"));
+
+        System.out.println(asB64);
     }
 }
