@@ -37,9 +37,8 @@ class DynamicHandler implements HttpHandler {
             if (query.equals("getCompanyList"))
                 response = Raynet.getCompanyList();
             if (query.startsWith("setCompany")) {
-                String company = query.substring(query.indexOf('?')+1);
-                int id = Raynet.companies.;
-                response = Raynet.getPersons(id);
+                String companyName = query.substring(query.indexOf('?')+1);
+                response = Raynet.getPersons(companyName);
             }
 
             if (!response.equals("")) {

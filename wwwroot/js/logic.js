@@ -4,6 +4,7 @@ function getCompanies(){
 }
 
 function setCompany(company) {
+    document.getElementById("persons").innerHTML ="";
     sendPost("setCompany?"+company,"persons");
 }
 function getPersons(){
@@ -16,7 +17,7 @@ function getCompanyList(){
     XmlHTTP.onreadystatechange = function() {
         if (XmlHTTP.readyState===4 && XmlHTTP.status===200) {
             companiesList = JSON.parse(XmlHTTP.responseText);
-            $('#autocomplete-dynamic').autocomplete({
+            $('#company').autocomplete({
                 lookup: companiesList
             });
         }

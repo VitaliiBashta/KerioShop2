@@ -16,7 +16,7 @@ import java.util.Map;
 public class Raynet {
     public static final String RAYNET_URL = "https://app.raynet.cz";
     private static final int BULK_COUNT = 500;
-    static Map<Integer, Company> companies = new HashMap<>();
+    static Map<String, Company> companies = new HashMap<>();
     static Map<Integer, Person> persons = new HashMap<>();
     static Map<Integer, BusinessCase> businessCases = new HashMap<>();
     static Map<Integer, Offer> offers = new HashMap<>();
@@ -45,7 +45,7 @@ public class Raynet {
     private void initEmployees() {
         for (Person person : persons.values()) {
             if (person.primaryRelationship != null) {
-                Company company = companies.get(person.primaryRelationship.company.id);
+                Company company = companies.get(person.primaryRelationship.company.name);
                 if (company != null) {
                     company.employees.add(person);
                     person.primaryRelationship.company = company;
@@ -93,7 +93,7 @@ public class Raynet {
             response = Methods.sendGet("/api/v2/company/?limit=" + BULK_COUNT + "&offset=" + i * BULK_COUNT);
             JsonCompany jsonCompany = gson.fromJson(response, JsonCompany.class);
             for (int j = 0; j < jsonCompany.data.size(); j++) {
-                companies.put(jsonCompany.data.get(j).id, jsonCompany.data.get(j));
+                companies.put(jsonCompany.data.get(j).name, jsonCompany.data.get(j));
             }
             System.out.println("Loading companies. Loaded:" + companies.size() + ":" + json.totalCount);
         }
@@ -121,9 +121,9 @@ public class Raynet {
         return result.toString();
     }
 
-    public static String getPersons(int id) {
+    public static String getPersons(String companyName) {
         StringBuilder result = new StringBuilder();
-        Company company = companies.get(id);
+        Company company = companies.get(companyName);
         for (Person person : company.employees) {
             result.append(person.asHTML());
         }
