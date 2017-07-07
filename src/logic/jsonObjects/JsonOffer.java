@@ -1,12 +1,12 @@
 package logic.jsonObjects;
 
-import logic.objects.Company;
+import logic.objects.Offer;
 
 import java.util.List;
 
 
-public class JsonCompany {
+public class JsonOffer {
     public boolean success;
     public int totalCount;
-    public List<Company> data;
+    public List<Offer> data;
 }

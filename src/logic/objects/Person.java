@@ -1,5 +1,8 @@
-package logic.Objects;
+package logic.objects;
 
+
+import logic.components.ContactInfo;
+import logic.components.PrimaryRelationship;
 
 public class Person {
     public final int id;

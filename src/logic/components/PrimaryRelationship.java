@@ -1,9 +1,11 @@
-package logic.Objects;
+package logic.components;
 
+
+import logic.objects.Company;
 
 public class PrimaryRelationship {
-    int id;
     public Company company;
+    int id;
 
     @Override
     public String toString() {

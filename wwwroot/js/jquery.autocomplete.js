@@ -200,7 +200,7 @@
 
             container.on('click.autocomplete', function () {
                 clearTimeout(that.blurTimeoutId);
-            })
+            });
 
             that.fixPositionCapture = function () {
                 if (that.visible) {

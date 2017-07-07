@@ -1,14 +1,13 @@
-package logic.Objects;
+package logic.components;
 
 
 public class ContactInfo {
-    boolean primary;
-    public String email;
     public String email2;
-    public String tel1;
     public String tel2;
     public String www;
-
+    boolean primary;
+    private String email;
+    private String tel1;
 
     @Override
     public String toString() {

@@ -1,4 +1,4 @@
-package logic.Objects;
+package logic.objects;
 
 
 public class Product {

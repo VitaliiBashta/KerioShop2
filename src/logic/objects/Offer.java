@@ -1,5 +1,8 @@
-package logic.Objects;
+package logic.objects;
 
+
+import logic.dials.BusinessCaseStatus;
+import logic.dials.Currency;
 
 import java.util.Date;
 
@@ -18,8 +21,8 @@ public class Offer {
     public Date validTill;
     public Date scheduledEnd;
     public String description;
-    public int currency;
-    public int status;
+    public Currency currency;
+    public BusinessCaseStatus status;
 
 
 

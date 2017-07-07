@@ -1,13 +1,13 @@
-package logic.Objects;
+package logic.components;
 
 
 class Address {
     int id;
-    private String city;
-    private String country;
     String countyCode;
     String name;
     String province;
+    private String city;
+    private String country;
     private String street;
     private String zipCode;
 

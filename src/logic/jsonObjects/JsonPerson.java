@@ -1,6 +1,6 @@
 package logic.jsonObjects;
 
-import logic.Objects.Person;
+import logic.objects.Person;
 
 import java.util.List;
 

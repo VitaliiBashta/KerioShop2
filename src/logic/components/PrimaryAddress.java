@@ -1,4 +1,6 @@
-package logic.Objects;
+package logic.components;
+
+import logic.dials.Territory;
 
 public class PrimaryAddress {
     int id;

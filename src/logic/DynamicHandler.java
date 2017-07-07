@@ -9,7 +9,11 @@ import java.nio.file.Files;
 
 class DynamicHandler implements HttpHandler {
     private final byte[] buf = new byte[16 * 1024];
+    private Raynet raynet;
 
+    public DynamicHandler(Raynet raynet) {
+        this.raynet = raynet;
+    }
 
     @Override
     public void handle(HttpExchange he) throws IOException {
@@ -20,7 +24,7 @@ class DynamicHandler implements HttpHandler {
         if (he.getRequestMethod().equals("GET")) {
             System.out.println("uri>" + requestedUri);
             if (requestedUri.getPath().equals("/"))
-                sendFile("indexChosen.html", he);
+                sendFile("index.html", he);
             else
                 sendFile(requestedUri.getRawPath(), he);
         }
@@ -31,14 +35,14 @@ class DynamicHandler implements HttpHandler {
             System.out.println("query: " + query);
             String response= " ";
             if (query.equals("getCompanies"))
-                response = Raynet.getCompanies();
+                response = raynet.getCompanies();
             if (query.equals("getPersons"))
-                response = Raynet.getPersons();
+                response = raynet.getPersons();
             if (query.equals("getCompanyList"))
-                response = Raynet.getCompanyList();
+                response = raynet.getCompanyList();
             if (query.startsWith("setCompany")) {
                 String companyName = query.substring(query.indexOf('?')+1);
-                response = Raynet.getPersons(companyName);
+                response = raynet.getPersons(companyName);
             }
 
             if (!response.equals("")) {
