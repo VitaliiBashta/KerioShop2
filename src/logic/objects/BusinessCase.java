@@ -19,12 +19,12 @@ public class BusinessCase {
     public String description;
     public Currency currency;  //required
     public double exchangeRate;
-    public BusinessCaseCategory category;
-    public ContactSource source;
+    public Dial category;
+    public Dial source;
     public Date validTill;
     public Date scheduledEnd;
     public BusinessCaseStatus status;
-    public BusinessCasePhase businessCasePhase;
+    public Dial businessCasePhase;
     public List<Product> items;
     public transient Offer offer;
     SecurityLevel securityLevel;

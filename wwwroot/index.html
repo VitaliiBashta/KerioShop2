@@ -1,34 +1,155 @@
-<!doctype html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <script src="js/logic.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title id="page-title">RAYNET by Vitalii Bashta</title>
     <link href="css/styles.css" rel="stylesheet"/>
+    <script src="js/logic.js"></script>
 </head>
 <body>
-
-
-<div id="container">
-    <div id="content">
-        <div class="side-by-side clearfix">
-            <div>
-
-                <label for="company">Klient</label><input type="text" id="company" onblur="setCompany(this.value)"/>
-                <label for="persons">Persons</label>
-                <select id="persons">
-
+<form>
+    <div style="width: 1730px; height: 994px;">
+        <div style="width: 600px;border: 4px double black;padding: 1em;color: #9ad7f2;font-weight: 700;margin-bottom: 2em">
+            <label style="margin-left: 1em">
+                Klient
+                <input type="text" id="company" style="width:400px;margin: 0 1em 1em 5em"
+                       onblur="setCompany(this.value)"/>
+            </label>
+            <br>
+            <label style="margin-left: 1em">Kontaktní osoba
+                <select id="persons" style="width:400px;">
                 </select>
+            </label>
+        </div>
+        <div style="width: 600px;float: left;padding: 1em">
+            <div style="background: #f0f1f3;padding: 1em">
+                <label>
+                    Předmět:
+                    <input type="text" id="BusinessCaseName" style="width: 400px;margin: 1em">
+                </label>
+                <br>
+                <label>
+                    Vlastník:
+                    <input type="text" size="24" id="input-2909" style="width: 400px;margin: 1em">
+                </label>
+                <br>
+                <label>
+                    Otevřeno od:
+                    <input type="date" id="input-2910" style="width: 173px;margin: 1em">
+                </label>
+
+                <label>
+                    Odhad uzavření:
+                    <input type="date" id="input-2911" style="width: 100px;margin: 1em">
+                </label>
+                <br/>
+                <label>Stav:
+                    <select id="businessCasePhase" style="margin: 1em 0em 1em 5em;width: 400px"></select>
+                </label><br/>
+                <label style="">
+                    Pravděpodobnost:
+                    <input type="range" id="input-2918" value="50" style="margin: 1em">
+                </label>
+                <br/>
+                <label style="width:85px;">
+                    Zdroj:
+                    <select id="businessCasePhase" style="margin: 1em 0em 1em 5em;width: 400px"></select>
+                </label>
+                <br/>
+                <label>
+                    Kategorie:
+                    <select id="businessCaseCategory"></select>
+                </label>
+
+                <fieldset style="width: 414px;">
+                    <legend style="color: #00a3d6"> Hodnota obchodního případu</legend>
+                    <div style="width: 302px;">
+                        <label> Konečná cena:</label>
+                        <label>Kč</label>
+                        <br>
+                        <label>Předpokládané náklady:</label>
+                        <label>Kč</label>
+                        <br>
+                        <label>Předpokládaný zisk:</label>
+                        <label>Kč</label>
+                    </div>
+                </fieldset>
+            </div>
+            <div style="position: relative;padding: 12px; background: #ffefc0;">
+                <label style="color: #e1791c;font-weight: 700;font-size: 14px;">
+                    Popis
+                    <textarea style="height: 100px; width: 100%;max-width: 100%"></textarea>
+                </label>
             </div>
         </div>
+        <table border="0" cellspacing="0" cellpadding="0" style="width: 1000px;">
+            <tr style="background:#38addc;color:white;font-weight:700; ">
+                <td style="width: 28px;">
+                </td>
+                <td style="width: 48px;">
+                    Kód
+                </td>
+                <td style="width:278px;">
+                    Název
+                </td>
+                <td style="width:123px;text-align: right;">
+                    Standardní cena
+                </td>
+                <td style="width:108px;text-align: right;">
+                    Prodejní cena
+                </td>
+                <td style="width:73px;text-align: right;">
+                    Množství
+                </td>
+                <td style="width:88px;text-align: right;">
+                    Mezisoučet
+                </td>
+                <td style="width:88px;text-align: right;">
+                    Sleva %
+                </td>
+                <td style="width:98px;text-align: right;">
+                    Cena celkem
+                </td>
+                <td style="width: 23px;">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td> &nbsp;</td>
+                <td style="width: 278px;">
+                    Upgrade to Kerio Connect, Kerio Antivirus, ActiveSync, 75 users, +1 Year SWM
+                </td>
+                <td style="width: 123px;text-align: right;">
+                    &nbsp;
+                </td>
+                <td style="width: 108px;text-align: right;">
+                    966,00
+                </td>
+                <td style="width: 73px;text-align: right;">
+                    1
+                </td>
+                <td style="width: 88px;text-align: right;">
+                    966,00
+                </td>
+                <td style="width: 88px;text-align: right;">
+                    25,00%
+                </td>
+                <td style="width: 98px;text-align: right;">
+                    724,50
+                </td>
+                <td style="width: 23px;">
+                </td>
+                <td style="width: 23px;">
+                </td>
+            </tr>
+        </table>
+
     </div>
-
-
-</div>
+</form>
 <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="js/jquery.mockjax.js"></script>
 <script type="text/javascript" src="js/jquery.autocomplete.js"></script>
 <script>
-    getCompanyList();
+    initForm();
 
 </script>
 

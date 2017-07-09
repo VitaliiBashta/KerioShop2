@@ -34,12 +34,17 @@ class DynamicHandler implements HttpHandler {
             String query = br.readLine();
             System.out.println("query: " + query);
             String response= " ";
-            if (query.equals("getCompanies"))
-                response = raynet.getCompanies();
-            if (query.equals("getPersons"))
-                response = raynet.getPersons();
             if (query.equals("getCompanyList"))
-                response = raynet.getCompanyList();
+                response = raynet.listToJson(raynet.companies.values());
+            if (query.equals("getBusinessCaseCategoryList")) {
+                response = raynet.getBusinessCaseCategory();
+            }
+            if (query.equals("getBusinessCasePhaseList")) {
+                response = raynet.getBusinessCasePhase();
+            }
+            if (query.equals("getContactSourceList")) {
+                response = raynet.getContactSource();
+            }
             if (query.startsWith("setCompany")) {
                 String companyName = query.substring(query.indexOf('?')+1);
                 response = raynet.getPersons(companyName);
@@ -54,17 +59,13 @@ class DynamicHandler implements HttpHandler {
 
         if (he.getRequestMethod().equals("PUT")) {
             BufferedReader br = new BufferedReader(new InputStreamReader(he.getRequestBody(), "utf-8"));
-            String query = "";
+            StringBuilder query = new StringBuilder();
             String line;
             while ((line = br.readLine()) !=null){
-                query +=line;
+                query.append(line);
             }
-
-
             System.out.println("PUT query: " + query + " for URI " + requestedUri);
-
             String response= " hello  after put ";
-
             if (!response.equals("")) {
                 he.sendResponseHeaders(200, response.getBytes().length);
                 os.write(response.getBytes());
@@ -80,9 +81,7 @@ class DynamicHandler implements HttpHandler {
             OutputStream os = he.getResponseBody();
             he.sendResponseHeaders(200, file.length());
             System.out.println("Request file: " + file + " mime type: " + Files.probeContentType(file.toPath()));
-//            if (Files.probeContentType(file.toPath()).equals("css")) {
-//                System.out.println();
-//            }
+
             int n;
             try (InputStream is = new FileInputStream(file.getAbsolutePath())) {
                 while ((n = is.read(buf)) > 0)

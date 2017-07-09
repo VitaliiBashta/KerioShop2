@@ -2,47 +2,104 @@ package logic;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import logic.dials.Dial;
+import logic.jsonDials.JsonDial;
 import logic.jsonObjects.JsonBusinessCase;
 import logic.jsonObjects.JsonCompany;
 import logic.jsonObjects.JsonOffer;
 import logic.jsonObjects.JsonPerson;
 import logic.objects.*;
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.entity.BasicHttpEntity;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.message.BasicNameValuePair;
 import webAccess.Methods;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
-import java.util.Base64.Encoder;
-
-import static java.lang.String.*;
 
 
 public class Raynet {
     public static final String RAYNET_URL = "https://app.raynet.cz";
     private static final int BULK_COUNT = 500;
-    Map<String, Company> companies = new HashMap<>();
-    Map<Integer, Person> persons = new HashMap<>();
-    Map<Integer, BusinessCase> businessCases = new HashMap<>();
-    Map<Integer, Offer> offers = new HashMap<>();
+
+    Map<String, Company> companies = new TreeMap<>();
+    private Map<String, Dial> businessCaseCategories = new TreeMap<>();
+    private Map<String, Dial> businessCasePhases = new HashMap<>();
+    private Map<String, Dial> contactSources = new HashMap<>();
+    private Map<Integer, Person> persons = new HashMap<>();
+    private Map<Integer, BusinessCase> businessCases = new HashMap<>();
+    private Map<Integer, Offer> offers = new HashMap<>();
 
 
     public void init() {
-
-//        initDials("/api/v2/companyCategory/", CompanyCategory.class);
-//        initCompanies();
-//        initPersons();
+        initBusinessCaseCategory();
+        initBusinessCasePhase();
+        initContactSource();
+        initCompanies();
+        initPersons();
 //        initBusinessCases();
 //        initOffers();
-//
-//        linkCompanyAndPerson();
+
+        linkCompanyAndPerson();
 //        linkBusinessCaseAndOwnerAndPerson();
 //        LinkBusinessCaseAndOffer();
         System.out.println("------------ Raynet initiated -----------");
+    }
+
+
+    private void initBusinessCaseCategory() {
+        String response;
+        response = Methods.sendGet("/api/v2/businessCaseCategory/");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonDial json = gson.fromJson(response, JsonDial.class);
+        for (int j = 0; j < json.data.size(); j++) {
+            businessCaseCategories.put(json.data.get(j).code01, json.data.get(j));
+        }
+        System.out.println("Loading business categories. Loaded:" + businessCaseCategories.size() + ":" + json.totalCount);
+    }
+
+    private void initBusinessCasePhase() {
+        String response;
+        response = Methods.sendGet("/api/v2/businessCasePhase/");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonDial json = gson.fromJson(response, JsonDial.class);
+        for (int j = 0; j < json.data.size(); j++) {
+            businessCasePhases.put(json.data.get(j).code01, json.data.get(j));
+        }
+        System.out.println("Loading business phases. Loaded:" + businessCasePhases.size() + ":" + json.totalCount);
+    }
+
+    private void initContactSource() {
+        String response;
+        response = Methods.sendGet("/api/v2/contactSource/");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonDial json = gson.fromJson(response, JsonDial.class);
+        for (int j = 0; j < json.data.size(); j++) {
+            contactSources.put(json.data.get(j).code01, json.data.get(j));
+        }
+        System.out.println("Loading contact sources. Loaded:" + contactSources.size() + ":" + json.totalCount);
+    }
+
+
+    public String getBusinessCaseCategory() {
+        StringBuilder result = new StringBuilder();
+        result.append("<option value=\"\"></option>");
+        for (Dial item : businessCaseCategories.values()) {
+            result.append(item.asHtmlOption());
+        }
+        return result.toString();
+    }
+
+    public String getBusinessCasePhase() {
+        StringBuilder result = new StringBuilder();
+        result.append("<option value=\"\"></option>");
+        for (Dial item : businessCasePhases.values()) {
+            result.append(item.asHtmlOption());
+        }
+        return result.toString();
+    }
+
+    public String getContactSource() {
+        StringBuilder result = new StringBuilder();
+        return result.toString();
+
     }
 
     private void LinkBusinessCaseAndOffer() {
@@ -98,19 +155,6 @@ public class Raynet {
         }
     }
 
-//    private <T> void initDials(String url, T clazz){
-//        String response;
-//        response = Methods.sendGet(url);
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//        JsonResponse json = gson.fromJson(response, JsonResponse.class);
-//        for (int i = 0; i < json.totalCount; i++) {
-//            if (clazz instanceof CompanyCategory) {
-//                companyCategories.put((CompanyCategory) json.data.get(i)).id,(CompanyCategory)json.data.get(i));
-//
-//            }
-//        }
-//    }
-
     private void linkCompanyAndPerson() {
         for (Person person : persons.values()) {
             if (person.primaryRelationship != null) {
@@ -121,7 +165,7 @@ public class Raynet {
                 } else {
                     System.out.println("===error in person : " + person);
                 }
-                System.out.println(person + " works in " + companies.get(person.primaryRelationship.company.name));
+//                System.out.println(person + " works in " + companies.get(person.primaryRelationship.company.name));
             }
         }
     }
@@ -151,7 +195,6 @@ public class Raynet {
 
     }
 
-
     private void initCompanies() {
         String response;
         response = Methods.sendGet("/api/v2/company/?limit=1");
@@ -178,14 +221,6 @@ public class Raynet {
         return result.toString();
     }
 
-    public String getPersons() {
-        StringBuilder result = new StringBuilder();
-        for (Person person : persons.values()) {
-            result.append(person.asHTML());
-        }
-        return result.toString();
-    }
-
     public String getPersons(String companyName) {
         StringBuilder result = new StringBuilder();
         Company company = companies.get(companyName);
@@ -196,16 +231,7 @@ public class Raynet {
     }
 
     public String getCompanyList() {
-        Gson gson = new Gson();
-
-        System.out.println("companies total:" + companies.size());
-        List<CompanySimple> companiesSimple = new ArrayList<>();
-        for (Company company : companies.values()) {
-            companiesSimple.add(new CompanySimple(company.id, company.name));
-        }
-        String result = gson.toJson(companiesSimple);
-        System.out.println("{\" companies\": " + result + "}");
-        return result;
+        return listToJson(companies.values());
     }
 
     public static void main(String[] args) throws UnsupportedEncodingException {
@@ -231,4 +257,19 @@ public class Raynet {
 
         System.out.println(asB64);
     }
+
+    public <T> String listToJson(Collection<T> list) {
+
+        StringBuilder result = new StringBuilder();
+        for (T item : list) {
+            result.append(item.toString()).append(",");
+        }
+        result.insert(0, "[");
+        result.deleteCharAt(result.lastIndexOf(","));
+        result.append("]");
+        return result.toString();
+    }
+
+
+
 }
