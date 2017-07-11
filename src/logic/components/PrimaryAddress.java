@@ -5,9 +5,9 @@ import logic.dials.Territory;
 public class PrimaryAddress {
     int id;
     boolean primary;
-    Address address;
-    ContactInfo contactInfo;
-    Territory territory;
+    public Address address;
+    public ContactInfo contactInfo;
+    public Territory territory;
 
     @Override
     public String toString() {

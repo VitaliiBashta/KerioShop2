@@ -4,14 +4,17 @@ package logic.objects;
 import logic.components.ContactInfo;
 import logic.components.PrimaryRelationship;
 
+import java.util.List;
+
 public class Person {
     public final int id;
     public String titleBefore;
     public String firstName;
     public String lastName;
     public String titleAfter;
-    public Person owner;
+//    public Person owner; //not needed
     public PrimaryRelationship primaryRelationship;
+    public List<String> tags;
     public ContactInfo contactInfo;
 
     public Person(int id) {

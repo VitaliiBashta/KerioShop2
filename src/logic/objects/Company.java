@@ -9,35 +9,23 @@ import java.util.List;
 public class Company {
     public int id;
     public String name;   //required
-    public Person owner;
-    public String notice;
-    public String regNumber;
-    public String taxNumber;
-    public transient List<Person> employees = new LinkedList<>();
-    boolean person;
-    String lastName;
-    String firtName;
-    String titleBefore;
-    String titleAfter;
-    String salutation;
+//    public Person owner;  //not needed
+//    public String notice; //not needed
+//    public String regNumber; //not needed
+//    public String taxNumber; //not needed
+    public final transient List<Person> employees = new LinkedList<>();
+    public final transient List<BusinessCase> businessCases = new LinkedList<>();
     Rating rating;
     State state;
     Role role;
     Dial category;
     Dial contactSource;
-    Dial employeesNumber;
-    Dial legalForm;
-    PaymentTerm paymentTerm;
-    Dial turnover;
-    Dial economyActivity;
-    TaxPayer taxPayer;
-    String bankAccount;
-    SecurityLevel securityLevel;
-    private PrimaryAddress primaryAddress;
+    List<String> tags;
+//    public PaymentTerm paymentTerm; //not needed
+//    public Dial economyActivity;  // present
+//    SecurityLevel securityLevel; //not needed
+    public PrimaryAddress primaryAddress;
 
-    public String asHTML(){
-        return "<option value=\""+id+"\">"+name+"</option>";
-    }
     @Override
     public String toString(){
         String name = this.name.replace("&","\\u0026");

@@ -1,15 +1,15 @@
 package logic.components;
 
 
-class Address {
+public class Address {
     int id;
-    String countyCode;
-    String name;
-    String province;
-    private String city;
-    private String country;
-    private String street;
-    private String zipCode;
+    public String countryCode;   // cz,sk
+//    public String name;  //"Sídlo klienta"
+    public String province;  //has
+    public String city;
+    public String country;
+    public String street;
+    public String zipCode;
 
     @Override
     public String toString() {

@@ -3,153 +3,200 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title id="page-title">RAYNET by Vitalii Bashta</title>
     <link href="css/styles.css" rel="stylesheet"/>
+    <link href="css/elements.css" rel="stylesheet"/>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
     <script src="js/logic.js"></script>
 </head>
 <body>
-<form>
-    <div style="width: 1730px; height: 994px;">
-        <div style="width: 600px;border: 4px double black;padding: 1em;color: #9ad7f2;font-weight: 700;margin-bottom: 2em">
-            <label style="margin-left: 1em">
-                Klient
-                <input type="text" id="company" style="width:400px;margin: 0 1em 1em 5em"
-                       onblur="setCompany(this.value)"/>
-            </label>
-            <br>
-            <label style="margin-left: 1em">Kontaktní osoba
-                <select id="persons" style="width:400px;">
-                </select>
-            </label>
-        </div>
-        <div style="width: 600px;float: left;padding: 1em">
-            <div style="background: #f0f1f3;padding: 1em">
-                <label>
-                    Předmět:
-                    <input type="text" id="BusinessCaseName" style="width: 400px;margin: 1em">
-                </label>
-                <br>
-                <label>
-                    Vlastník:
-                    <input type="text" size="24" id="input-2909" style="width: 400px;margin: 1em">
-                </label>
-                <br>
-                <label>
-                    Otevřeno od:
-                    <input type="date" id="input-2910" style="width: 173px;margin: 1em">
-                </label>
 
-                <label>
-                    Odhad uzavření:
-                    <input type="date" id="input-2911" style="width: 100px;margin: 1em">
-                </label>
-                <br/>
-                <label>Stav:
-                    <select id="businessCasePhase" style="margin: 1em 0em 1em 5em;width: 400px"></select>
-                </label><br/>
-                <label style="">
-                    Pravděpodobnost:
-                    <input type="range" id="input-2918" value="50" style="margin: 1em">
-                </label>
-                <br/>
-                <label style="width:85px;">
-                    Zdroj:
-                    <select id="businessCasePhase" style="margin: 1em 0em 1em 5em;width: 400px"></select>
-                </label>
-                <br/>
-                <label>
-                    Kategorie:
-                    <select id="businessCaseCategory"></select>
-                </label>
 
-                <fieldset style="width: 414px;">
-                    <legend style="color: #00a3d6"> Hodnota obchodního případu</legend>
-                    <div style="width: 302px;">
-                        <label> Konečná cena:</label>
-                        <label>Kč</label>
-                        <br>
-                        <label>Předpokládané náklady:</label>
-                        <label>Kč</label>
-                        <br>
-                        <label>Předpokládaný zisk:</label>
-                        <label>Kč</label>
-                    </div>
-                </fieldset>
-            </div>
-            <div style="position: relative;padding: 12px; background: #ffefc0;">
-                <label style="color: #e1791c;font-weight: 700;font-size: 14px;">
-                    Popis
-                    <textarea style="height: 100px; width: 100%;max-width: 100%"></textarea>
-                </label>
-            </div>
-        </div>
-        <table border="0" cellspacing="0" cellpadding="0" style="width: 1000px;">
-            <tr style="background:#38addc;color:white;font-weight:700; ">
-                <td style="width: 28px;">
-                </td>
-                <td style="width: 48px;">
-                    Kód
-                </td>
-                <td style="width:278px;">
-                    Název
-                </td>
-                <td style="width:123px;text-align: right;">
-                    Standardní cena
-                </td>
-                <td style="width:108px;text-align: right;">
-                    Prodejní cena
-                </td>
-                <td style="width:73px;text-align: right;">
-                    Množství
-                </td>
-                <td style="width:88px;text-align: right;">
-                    Mezisoučet
-                </td>
-                <td style="width:88px;text-align: right;">
-                    Sleva %
-                </td>
-                <td style="width:98px;text-align: right;">
-                    Cena celkem
-                </td>
-                <td style="width: 23px;">
-                </td>
-            </tr>
+<div class="mainframe">
+
+    <textarea id="Response"> Response</textarea>
+    <form action="/createBusinessCase" id="openForm" method="POST">
+        <table>
             <tr>
-                <td></td>
-                <td> &nbsp;</td>
-                <td style="width: 278px;">
-                    Upgrade to Kerio Connect, Kerio Antivirus, ActiveSync, 75 users, +1 Year SWM
+                <td>
+                    <div class="clientField">
+                        <textarea style="display: none" id="companyID" name="company"></textarea>
+                        <label for="company">Klient</label>
+
+                        <input type="text" id="company" onfocus="setCompany(this.value)" value="Czechin, s.r.o."/>
+                        <br><label for="persons">Kontaktní osoba</label>
+                        <select id="persons" name="person">
+                        </select>
+                    </div>
+                    <div class="businessCaseFrame">
+                        <label for="businessCase"> Předmět:</label>
+                        <input type="text" id="businessCase" name="name" value="testtest">
+                        <label for="currency"> Měna:</label>
+                        <input type="text" id="currency" name="currency" value="15">
+
+
+                        <br/>
+                        <label for="owner">Vlastník:</label>
+                        <input type="text" size="24" id="owner" name="owner" value="462">
+
+                        <br/>
+                        <label for="openFrom"> Otevřeno od:</label>
+                        <input type="date" class="date" id="openFrom" name="openFrom" value="2017-07-11">
+                        <label for="scheduledEnd">Odhad uzavření:</label>
+                        <input type="date" class="date" id="scheduledEnd" name="scheduledEnd" value="2017-07-30">
+
+                        <br/>
+                        <label for="businessCasePhase">Stav:</label>
+                        <select id="businessCasePhase" name="businessCasePhase">&nbsp;</select>
+                        <br/>
+                        <label for="probability"> Pravděpodobnost:</label>
+                        <input type="range" id="probability" name="probability" value="50">
+                        <br/>
+                        <label for="contactSource"> Zdroj:</label>
+                        <select id="contactSource" name="source">&nbsp;</select>
+                        <br/>
+                        <label for="businessCaseCategory"> Kategorie:</label>
+                        <select id="businessCaseCategory" name="category">&nbsp;</select>
+
+                    </div>
+                    <div id="descriptionArea">
+                        <label for="description" id="descriptionLabel"> Popis</label>
+                        <textarea id="description" name="description"></textarea>
+                    </div>
                 </td>
-                <td style="width: 123px;text-align: right;">
-                    &nbsp;
-                </td>
-                <td style="width: 108px;text-align: right;">
-                    966,00
-                </td>
-                <td style="width: 73px;text-align: right;">
-                    1
-                </td>
-                <td style="width: 88px;text-align: right;">
-                    966,00
-                </td>
-                <td style="width: 88px;text-align: right;">
-                    25,00%
-                </td>
-                <td style="width: 98px;text-align: right;">
-                    724,50
-                </td>
-                <td style="width: 23px;">
-                </td>
-                <td style="width: 23px;">
+                <td>
+                    <table id="orderItems">
+                        <thead>
+                        <tr>
+                            <td> Kód</td>
+                            <td class="productName"> Název</td>
+                            <td> Standardní cena</td>
+                            <td> Prodejní cena</td>
+                            <td> Množství</td>
+                            <td> Mezisoučet</td>
+                            <td> Sleva %</td>
+                            <td> Cena celkem</td>
+                            <td></td>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div id="addProduct">
+                        <a href="#" class="buttonSubmit" onclick="addItem()">Přídat produkt</a>
+                    </div>
+                    <div>
+                        <input onclick="setNewOrExistingLic();" type="radio" class="radio" id="newlic" name="licence"
+                               value="1" checked>
+                        <label for="newlic">Nová licence</label>
+                        <input onclick="setNewOrExistingLic();" type="radio" class="radio" id="existlic" name="licence"
+                               value="2">
+                        <label for="existlic">Existující licence</label>
+                    </div>
+
+                    <div id="licnumdiv">
+                        <label for="licnum">Stavajicí licence:</label>
+                        <input type="text" id="licnum" maxlength="25" value="">
+                        <input type="submit" id="najit" value="Najít">
+                    </div>
+                    <div id="newcalc">
+                        <label for="prod_group_id"> Zvolte produkt</label>
+                        <select id="prod_group_id" onchange="setProduct(this.value)">
+                            <option value="0" selected></option>
+                            <option value="1">Kerio Connect</option>
+                            <option value="2">Kerio Control</option>
+                            <option value="3">Kerio Operator</option>
+                            <option value="15">Kerio Operator V300</option>
+                            <option value="5">Kerio Control Box 1120</option>
+                            <option value="10">Kerio Control NG100</option>
+                            <option value="11">Kerio Control NG300 Unlimited</option>
+                            <option value="12">Kerio Control NG300 25 Users</option>
+                            <option value="13">Kerio Control NG500 Unlimited</option>
+                            <option value="14">Kerio Control NG500 100 Users</option>
+                            <option value="16">Kerio Control NG500 50 Users</option>
+                            <option value="17">Kerio Control NG100W</option>
+                            <option value="18">Kerio Control NG300W 25 Users</option>
+                            <option value="19">Kerio Control NG300W Unlimited</option>
+                            <option value="20">Kerio Rack Mount Kit for 300 Series HW</option>
+                        </select>
+                        <div id="lic_type">
+                            <label for="goods_type">Typ licence</label>
+                            <select id="goods_type">
+                                <option value="0" selected>&nbsp;</option>
+                                <option value="1"> GOV</option>
+                                <option value="2"> EDU</option>
+                            </select>
+                        </div>
+                        <div id="user_num">
+                            <label for="users">Zvolte počet uživatelů</label>
+                            <input type="number" id="users" size="10" min="5" max="10000" step="5" value="5">
+                        </div>
+                        <div id="new_swm">
+                            <label>Zvolte počet let SWM
+                                <select id="swm_select">
+                                    <option value="1" selected>1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </label>
+                        </div>
+                        <fieldset id="availext">
+                            <legend>Dostupná rozšíření</legend>
+                            <ul>
+                                <li id="lblExt0">
+                                    <input type="checkbox" class="checkbox" id="ext_av">
+                                    <label for="ext_av">Kerio Antivirus</label>
+                                </li>
+                                <li id="lblExt1">
+                                    <input type="checkbox" class="checkbox" id="ext_sync">
+                                    <label for="ext_sync">Exchange ActiveSync</label>
+                                </li>
+                                <li id="lblExt2">
+                                    <input type="checkbox" class="checkbox" id="ext_as">
+                                    <label for="ext_as">Kerio Anti-spam</label>
+                                </li>
+                                <li id="lblExt3">
+                                    <input type="checkbox" class="checkbox" id="ext_war">
+                                    <label for="ext_war">Extended Warranty (3 years)</label>
+                                </li>
+                                <li id="lblExt4">
+                                    <input type="checkbox" class="checkbox" id="ext_wf">
+                                    <label for="ext_wf">Kerio WebFilter </label>
+                                </li>
+                            </ul>
+                        </fieldset>
+                    </div>
                 </td>
             </tr>
         </table>
+        <input type="submit" value="Create bussunescase">
+    </form>
+    <a href="#" class="buttonSubmit">Vytvořít obchodní případ</a>
 
-    </div>
-</form>
-<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
-<script type="text/javascript" src="js/jquery.mockjax.js"></script>
+</div>
+
+
 <script type="text/javascript" src="js/jquery.autocomplete.js"></script>
 <script>
     initForm();
+
+    function showValues() {
+        var str = $( "form" ).serialize();
+        $( "#Response" ).text( str );
+    }
+    $( "input[type='checkbox'], input[type='radio']" ).on( "click", showValues );
+    $( "select" ).on( "change", showValues );
+    showValues();
+
+
+//    function objectifyForm(formArray) {//serialize data function
+//
+//        var returnArray = {};
+//        for (var i = 0; i < formArray.length; i++){
+//            returnArray[formArray[i]['name']] = formArray[i]['value'];
+//        }
+//        $( "#Response" ).text( returnArray);
+//    }
+//    $( "input[type='checkbox'], input[type='radio']" ).on( "click", objectifyForm );
+//    $( "select" ).on( "change", objectifyForm );
+//    objectifyForm($("#openForm"));
+
+
 
 </script>
 

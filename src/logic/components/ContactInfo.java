@@ -2,9 +2,9 @@ package logic.components;
 
 
 public class ContactInfo {
-    public String email2;
-    public String tel2;
-    public String www;
+    public String email2;  //some has
+    public String tel2;   //some has
+    public String www; //some has
     boolean primary;
     private String email;
     private String tel1;

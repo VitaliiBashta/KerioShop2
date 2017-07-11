@@ -1,12 +1,15 @@
 package logic.objects;
 
+import logic.Raynet;
 import logic.dials.*;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
-public class BusinessCase {
+public class BusinessCase extends BusinessCaseWrite{
     public int id;
     public String name;  //required
     public String code;
@@ -28,5 +31,19 @@ public class BusinessCase {
     public List<Product> items;
     public transient Offer offer;
     SecurityLevel securityLevel;
+
+
+    public BusinessCase(String query, Raynet raynet, int id) {
+        this.id = id;
+
+    }
+
+    public BusinessCase(String query, Raynet raynet) {
+
+    }
+
+    public String asHTML() {
+        return "<option value=\"" + id + "\">" + name + "</option>";
+    }
 
 }
