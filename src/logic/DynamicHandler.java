@@ -4,23 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import logic.dials.Dial;
-import logic.jsonDials.JsonDial;
 import logic.jsonObjects.JsonResponse;
-import logic.objects.BusinessCase;
-import logic.objects.BusinessCaseWrite;
-import org.apache.http.HttpEntity;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import webAccess.Methods;
 
 import java.io.*;
 import java.net.URI;
-import java.net.URLDecoder;
 import java.nio.file.Files;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 class DynamicHandler implements HttpHandler {
     private final byte[] buf = new byte[16 * 1024];
@@ -75,29 +64,6 @@ class DynamicHandler implements HttpHandler {
             os.flush();
         }
 
-        if (he.getRequestMethod().equals("POST")) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(he.getRequestBody(), "utf-8"));
-            String query = br.readLine();
-
-            String jsonString = "";
-            if (requestedUri.toString().equals("/createBusinessCase")) {
-                BusinessCaseWrite businessCase = new BusinessCaseWrite(Splitter.split(query), raynet);
-            }
-
-            HttpEntity entity = new StringEntity(jsonString, ContentType.APPLICATION_JSON);
-            Integer newBusinessCaseId = getCreatedId(Methods.sendPut("/api/v2/businessCase/", entity));
-
-            jsonString = paramsToJson(query + "&businessCase="+newBusinessCaseId);
-            entity = new StringEntity(jsonString, ContentType.APPLICATION_JSON);
-            Integer newOfferID = getCreatedId(Methods.sendPut("/api/v2/offer/", entity));
-            String response = "Created offer:" + newOfferID;
-            if (!response.equals("")) {
-                he.sendResponseHeaders(200, response.getBytes().length);
-                os.write(response.getBytes());
-            }
-            os.flush();
-        }
-
         if (he.getRequestMethod().equals("PUT")) {
             BufferedReader br = new BufferedReader(new InputStreamReader(he.getRequestBody(), "utf-8"));
             StringBuilder query = new StringBuilder();
@@ -119,9 +85,7 @@ class DynamicHandler implements HttpHandler {
     private String getProductHtml(String query) {
         StringBuilder result = new StringBuilder();
 
-        Map<String, String> query_pairs = Splitter.split(query);
-        result.append("<td></td>");
-        result.append("<td>");
+        Map<String, String> query_pairs = Utils.split(query);
         String product = query_pairs.get("product");
         if (product.equals("Kerio Connect") ||
                 product.equals("Kerio Connect") ||
@@ -150,11 +114,7 @@ class DynamicHandler implements HttpHandler {
         String swm = query_pairs.get("swm");
         if (swm != null && swm.equals("2"))
             result.append(", 2 years SWM");
-        result.append("</td>");
-        result.append("<td></td><td></td><td>1</td><td></td><td></td><td></td>");
-        result.append("<td><button onclick=\"$(item" + query_pairs.get("item") + ").remove()\">X</button</td>");
-        String row = "<tr id=\"item" + query_pairs.get("item") + "\">";
-        return row + result.toString() + "</tr>";
+        return  result.toString() ;
     }
 
     private void sendFile(String target, HttpExchange he) throws IOException {
@@ -172,24 +132,6 @@ class DynamicHandler implements HttpHandler {
         }
     }
 
-    private String paramsToJson(String query) {
-        StringBuilder result = new StringBuilder();
-        Map<String, String> query_pairs = new LinkedHashMap<>();
-        String[] params = query.split("&");
-        for (String param : params) {
-            String[] pairs = param.split("=");
-            query_pairs.put(pairs[0], pairs[1]);
-        }
-        result.append("{");
-        System.out.println("POST before convert: " + query_pairs);
-        for (Map.Entry<String, String> pair : query_pairs.entrySet()) {
-            result.append("\"").append(pair.getKey()).append("\":\"").append(pair.getValue()).append("\",");
-        }
-        result.deleteCharAt(result.lastIndexOf(","));
-        result.append("}");
-        System.out.println("POST after convert: " + result);
-        return result.toString();
-    }
 
     private Integer getCreatedId(String response){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

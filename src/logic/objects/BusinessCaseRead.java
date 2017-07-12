@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class BusinessCase extends BusinessCaseWrite{
+public class BusinessCaseRead {
     public int id;
     public String name;  //required
     public String code;
@@ -33,12 +33,12 @@ public class BusinessCase extends BusinessCaseWrite{
     SecurityLevel securityLevel;
 
 
-    public BusinessCase(String query, Raynet raynet, int id) {
+    public BusinessCaseRead(String query, Raynet raynet, int id) {
+        super();
         this.id = id;
-
     }
 
-    public BusinessCase(String query, Raynet raynet) {
+    public BusinessCaseRead(String query, Raynet raynet) {
 
     }
 

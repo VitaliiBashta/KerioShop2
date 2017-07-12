@@ -13,7 +13,7 @@ public class Offer {
     public Person owner;
     public Person person;
     public Company company;
-    public BusinessCase businessCase;
+    public BusinessCaseRead businessCase;
     public float totalAmount;
     public float estimatedValue;
     public int probability;

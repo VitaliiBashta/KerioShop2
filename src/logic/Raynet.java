@@ -21,7 +21,7 @@ public class Raynet {
     Map<String, Company> companies = new TreeMap<>();
     private Map<String, Map<String, Dial>> dials = new HashMap<>();
     private Map<Integer, Person> persons = new HashMap<>();
-    private Map<Integer, BusinessCase> businessCases = new HashMap<>();
+    private Map<Integer, BusinessCaseRead> businessCases = new HashMap<>();
     private Map<Integer, Offer> offers = new HashMap<>();
 
 
@@ -59,7 +59,7 @@ public class Raynet {
                 dialList.put(json.data.get(j).code01, json.data.get(j));
                 entry.setValue(dialList);
             }
-            System.out.println("Loading " + entry.getKey() + ". Loaded:" + entry.getValue().size() + ":" + json.totalCount);
+            System.out.println("Loading " + entry.getKey() + "... Loaded:" + entry.getValue().size() + ":" + json.totalCount);
         }
     }
 
@@ -70,19 +70,8 @@ public class Raynet {
         for(Company company: r.companies.values()){
             if ( company.primaryAddress.address.countryCode !=null)
                 System.out.println("company  "+company.id+" has :" + company.primaryAddress.address.countryCode);
-
         }
         System.out.println("------------end--------------");
-//        String jsonString = "{" +
-//                "  \"name\": \"testtest\"," +
-//                "  \"company\": 1," +
-//                "  \"owner\": 3," +
-//                "  \"currency\": 15"
-//                + "}";
-//        HttpEntity entity = new StringEntity(jsonString, ContentType.APPLICATION_JSON);
-//
-//        String response = Methods.sendPut("/api/v2/businessCase/", entity);
-//        System.out.println(response);
 
 //        String asB64 = Base64.getEncoder().encodeToString("vitalii.bashta@zebra.cz:V1596italii".getBytes("utf-8"));
 
@@ -91,7 +80,6 @@ public class Raynet {
 
     String getDialHtml(String dial) {
         StringBuilder result = new StringBuilder();
-        result.append("<option value=\"\"></option>");
         Collection<Dial> dialList = dials.get(dial).values();
         for (Dial item : dialList) {
             result.append(item.asHtmlOption());
@@ -102,7 +90,7 @@ public class Raynet {
     private void LinkBusinessCaseAndOffer() {
         for (Offer offer : offers.values()) {
             if (offer.businessCase.id > 0) {
-                BusinessCase businessCase = businessCases.get(offer.businessCase.id);
+                BusinessCaseRead businessCase = businessCases.get(offer.businessCase.id);
                 offer.businessCase = businessCase;
                 businessCase.offer = offer;
             }
@@ -110,7 +98,7 @@ public class Raynet {
     }
 
     private void LinkBusinessCaseAndCompany() {
-        for (BusinessCase businessCase : businessCases.values()) {
+        for (BusinessCaseRead businessCase : businessCases.values()) {
             if (businessCase.company.id > 0) {
                 System.out.println("linking businessCase: " + businessCase.id + ":" + businessCase.name);
                 Company company = companies.get(businessCase.company.name);
@@ -123,7 +111,7 @@ public class Raynet {
     }
 
     private void linkBusinessCaseAndOwnerAndPerson() {
-        for (BusinessCase businessCase : businessCases.values()) {
+        for (BusinessCaseRead businessCase : businessCases.values()) {
             if (businessCase.owner.id > 0) {
                 businessCase.owner = persons.get(businessCase.owner.id);
             }
@@ -251,7 +239,7 @@ public class Raynet {
     public String getBusinessCases(String companyName) {
         StringBuilder result = new StringBuilder();
         Company company = companies.get(companyName);
-        for (BusinessCase businessCase : company.businessCases) {
+        for (BusinessCaseRead businessCase : company.businessCases) {
             result.append(businessCase.asHTML());
         }
         return result.toString();

@@ -11,7 +11,6 @@ class WebServer {
     public static void main(String[] args) {
         WebServer webServer = new WebServer();
         int port = 81;
-
         webServer.raynet.init();
         if (args.length > 0)
             port = Integer.parseInt(args[0]);
@@ -22,6 +21,7 @@ class WebServer {
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             System.out.println("server started at " + port);
+            server.createContext("/businessCase", new BusinessCaseHandler());
             server.createContext("/", new DynamicHandler(raynet));
             server.createContext("/css", new StaticHandler());
             server.createContext("/js", new StaticHandler());

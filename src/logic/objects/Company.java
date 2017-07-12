@@ -14,7 +14,7 @@ public class Company {
 //    public String regNumber; //not needed
 //    public String taxNumber; //not needed
     public final transient List<Person> employees = new LinkedList<>();
-    public final transient List<BusinessCase> businessCases = new LinkedList<>();
+    public final transient List<BusinessCaseRead> businessCases = new LinkedList<>();
     Rating rating;
     State state;
     Role role;

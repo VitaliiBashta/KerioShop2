@@ -1,6 +1,6 @@
 package logic.jsonObjects;
 
-import logic.objects.BusinessCase;
+import logic.objects.BusinessCaseRead;
 
 import java.util.List;
 
@@ -8,5 +8,5 @@ import java.util.List;
 public class JsonBusinessCase {
     public boolean success;
     public int totalCount;
-    public List<BusinessCase> data;
+    public List<BusinessCaseRead> data;
 }

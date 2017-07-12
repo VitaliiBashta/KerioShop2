@@ -64,7 +64,7 @@ public class Methods {
         HttpResponse response;
         StringBuilder result = new StringBuilder();
         try {
-            request.setEntity(new UrlEncodedFormEntity(urlParameters));
+            if (urlParameters != null)request.setEntity(new UrlEncodedFormEntity(urlParameters));
             response = client.execute(request);
             BufferedReader rd = new BufferedReader(
                     new InputStreamReader(response.getEntity().getContent()));

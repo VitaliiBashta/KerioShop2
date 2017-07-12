@@ -7,7 +7,19 @@ function initForm() {
     sendGet("?getList=businessCasePhase", "businessCasePhase");
     sendGet("?getList=contactSource", "contactSource");
     $("#licnumdiv").hide();
-    document.getElementById("businessCaseCategory").value = '225';
+}
+
+function calculatePrice() {
+    var price = $("#price").val();
+    var discount =$("#discountPercent").val();
+    var totalPrice = (price * (100 - discount))/100;
+    $("#totalPrice").html(totalPrice) ;
+}
+
+function setDefaults() {
+    $("#businessCaseCategory").val("225");
+    $("#businessCasePhase").val("42");
+    $("#contactSource").val("61");
 }
 
 
@@ -16,9 +28,14 @@ function setCompany(company) {
 
     sendGet("?getPersonsFor=" + company, "persons");
     sendGet("?getIdFor=" + company, "companyID");
-    // sendGet("?getBusinessCasesFor=" + company, "businessCase");
 }
 
+function submitForm(){
+    var request = $("#requestResponse").val();
+    var url = "/businessCase";
+    var container = "requestResponse";
+    sendPut(request,url,container);
+}
 
 function setProduct(product) {
     var licenseType = $("#lic_type");
@@ -111,18 +128,6 @@ function getCompanyList() {
 }
 
 
-function requestList(object, target) {
-    var XmlHTTP;
-    if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
-    XmlHTTP.onreadystatechange = function () {
-        if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
-            document.getElementById(target).innerHTML = XmlHTTP.responseText;
-        }
-    };
-    XmlHTTP.open("POST", "/", true);
-    XmlHTTP.send("getList=" + object);
-}
-
 function addItem() {
     var request = "?item="+itemCount;
     request += "&product=" + $("#prod_group_id").find("option:selected").text();
@@ -134,15 +139,10 @@ function addItem() {
     if ($("#lblExt2").is(":visible") && $("#ext_as").is(':checked')) request += "&AntiSpam=1";
     if ($("#lblExt3").is(":visible") && $("#ext_war").is(':checked')) request += "&ExtWarranty=1";
     if ($("#lblExt4").is(":visible") && $("#ext_wf").is(':checked')) request += "&WebFilter=1";
-    sendPut(request,"/","orderItems");
+    sendPut(request,"/","productName");
     itemCount++;
-    $("#businessCaseCategory").val("225");
-    $("#businessCasePhase").val("42");
-    $("#contactSource").val("61");
-    $("#description").val(" ");
 
 }
-
 
 function sendPost(request, container) {
     var XmlHTTP;
@@ -161,7 +161,7 @@ function sendPut(request, uri, container) {
     if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
     XmlHTTP.onreadystatechange = function () {
         if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200)
-            document.getElementById(container).innerHTML += XmlHTTP.responseText;
+            document.getElementById(container).innerHTML = XmlHTTP.responseText;
     };
     var params = request;
     XmlHTTP.open("PUT", uri, container);

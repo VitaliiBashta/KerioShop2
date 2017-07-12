@@ -11,9 +11,4 @@ public class Address {
     public String street;
     public String zipCode;
 
-    @Override
-    public String toString() {
-        return " Address{" + street + ", " + zipCode + ' ' + city + ' ' +
-                 country +  '}';
-    }
 }

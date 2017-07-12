@@ -3,18 +3,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title id="page-title">RAYNET by Vitalii Bashta</title>
     <link href="css/styles.css" rel="stylesheet"/>
-    <link href="css/elements.css" rel="stylesheet"/>
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
     <script src="js/logic.js"></script>
 </head>
 <body>
 
-
 <div class="mainframe">
-
-    <textarea id="Response"> Response</textarea>
-    <form action="/createBusinessCase" id="openForm" method="POST">
-        <table>
+    <label for="requestResponse"></label>
+    <textarea id="requestResponse"> Response</textarea>
+    <form action="/" id="openForm">
+        <table id="mainTable">
             <tr>
                 <td>
                     <div class="clientField">
@@ -38,8 +36,8 @@
                         <input type="text" size="24" id="owner" name="owner" value="462">
 
                         <br/>
-                        <label for="openFrom"> Otevřeno od:</label>
-                        <input type="date" class="date" id="openFrom" name="openFrom" value="2017-07-11">
+                        <label for="validFrom">Otevřeno od:</label>
+                        <input type="date" class="date" id="validFrom" name="validFrom" value="2017-07-11">
                         <label for="scheduledEnd">Odhad uzavření:</label>
                         <input type="date" class="date" id="scheduledEnd" name="scheduledEnd" value="2017-07-30">
 
@@ -58,25 +56,28 @@
 
                     </div>
                     <div id="descriptionArea">
-                        <label for="description" id="descriptionLabel"> Popis</label>
-                        <textarea id="description" name="description"></textarea>
+                        <label for="description" id="descriptionLabel">Popis</label>
+                        <textarea id="description" name="description"> </textarea>
                     </div>
                 </td>
                 <td>
                     <table id="orderItems">
                         <thead>
                         <tr>
-                            <td> Kód</td>
                             <td class="productName"> Název</td>
-                            <td> Standardní cena</td>
                             <td> Prodejní cena</td>
-                            <td> Množství</td>
-                            <td> Mezisoučet</td>
-                            <td> Sleva %</td>
+                            <td> Marže part. %</td>
                             <td> Cena celkem</td>
                             <td></td>
                         </tr>
                         </thead>
+                        <tr id="productExample">
+                            <td><textarea name="product" id="productName"></textarea></td>
+                            <td><input type="text" name="price" id="price"></td>
+                            <td><input type="text" name="discountPercent" id="discountPercent" value="15"></td>
+                            <td id="totalPrice"> zero</td>
+                            <td></td>
+                        </tr>
                     </table>
                     <div id="addProduct">
                         <a href="#" class="buttonSubmit" onclick="addItem()">Přídat produkt</a>
@@ -96,7 +97,7 @@
                         <input type="submit" id="najit" value="Najít">
                     </div>
                     <div id="newcalc">
-                        <label for="prod_group_id"> Zvolte produkt</label>
+                        <label for="prod_group_id">Zvolte produkt</label>
                         <select id="prod_group_id" onchange="setProduct(this.value)">
                             <option value="0" selected></option>
                             <option value="1">Kerio Connect</option>
@@ -128,12 +129,11 @@
                             <input type="number" id="users" size="10" min="5" max="10000" step="5" value="5">
                         </div>
                         <div id="new_swm">
-                            <label>Zvolte počet let SWM
-                                <select id="swm_select">
-                                    <option value="1" selected>1</option>
-                                    <option value="2">2</option>
-                                </select>
-                            </label>
+                            <label for="swm_select">Zvolte počet let SWM</label>
+                            <select id="swm_select">
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
+                            </select>
                         </div>
                         <fieldset id="availext">
                             <legend>Dostupná rozšíření</legend>
@@ -164,10 +164,8 @@
                 </td>
             </tr>
         </table>
-        <input type="submit" value="Create bussunescase">
     </form>
-    <a href="#" class="buttonSubmit">Vytvořít obchodní případ</a>
-
+    <a href="#" class="buttonSubmit" onclick="submitForm()">Vytvořít obchodní případ</a>
 </div>
 
 
@@ -176,28 +174,16 @@
     initForm();
 
     function showValues() {
-        var str = $( "form" ).serialize();
-        $( "#Response" ).text( str );
+        var str = $("form").serialize();
+        $("#requestResponse").text(str);
     }
-    $( "input[type='checkbox'], input[type='radio']" ).on( "click", showValues );
-    $( "select" ).on( "change", showValues );
-    showValues();
+    //    $("input[type='checkbox'], input[type='radio']").on("click", showValues);
+    //    $("select").on("change", showValues);
+    $(".buttonSubmit").on("mouseover", showValues);
 
-
-//    function objectifyForm(formArray) {//serialize data function
-//
-//        var returnArray = {};
-//        for (var i = 0; i < formArray.length; i++){
-//            returnArray[formArray[i]['name']] = formArray[i]['value'];
-//        }
-//        $( "#Response" ).text( returnArray);
-//    }
-//    $( "input[type='checkbox'], input[type='radio']" ).on( "click", objectifyForm );
-//    $( "select" ).on( "change", objectifyForm );
-//    objectifyForm($("#openForm"));
-
-
-
+    $("#company").on("click", setDefaults);
+    $("#price").on("change", calculatePrice);
+    $("#discountPercent").on("change", calculatePrice);
 </script>
 
 </body>
