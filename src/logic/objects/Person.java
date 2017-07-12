@@ -8,10 +8,10 @@ import java.util.List;
 
 public class Person {
     public final int id;
-    public String titleBefore;
-    public String firstName;
-    public String lastName;
-    public String titleAfter;
+    private String titleBefore;
+    private String firstName;
+    private String lastName;
+    private String titleAfter;
 //    public Person owner; //not needed
     public PrimaryRelationship primaryRelationship;
     public List<String> tags;
@@ -21,7 +21,7 @@ public class Person {
         this.id = id;
     }
 
-    public String fullName() {
+    private String fullName() {
         return firstName + " " + lastName;
     }
 

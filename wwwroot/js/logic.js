@@ -1,5 +1,5 @@
 var companiesList;
-var itemCount =0;
+var itemCount = 0;
 
 function initForm() {
     getCompanyList();
@@ -11,9 +11,9 @@ function initForm() {
 
 function calculatePrice() {
     var price = $("#price").val();
-    var discount =$("#discountPercent").val();
-    var totalPrice = (price * (100 - discount))/100;
-    $("#totalPrice").html(totalPrice) ;
+    var discount = $("#discountPercent").val();
+    var totalPrice = (price * (100 - discount)) / 100;
+    $("#totalPrice").html(totalPrice);
 }
 
 function setDefaults() {
@@ -22,6 +22,126 @@ function setDefaults() {
     $("#contactSource").val("61");
 }
 
+function createProductName() {
+    var productId = $("#prod_group_id").val();
+    if (productId === "0") return;
+    var groupId = $("#goods_type").val();
+    var productFullName = $("#prod_group_id option:selected").text();
+    var basicPrice = 0;
+    var expPrice = 0;
+    var expCount = 0;
+    var avPrice = 0;
+    var asPrice = 0;
+    var syncPrice = 0;
+    var wfPrice = 0;
+    var exWarPrice = 0;
+    var specPrice = 1;
+    if (groupId === "1")
+        specPrice = 0.9;
+    if (groupId === "2")
+        specPrice = 0.6;
+
+    if (productId === "1") { // Kerio Connect
+        basicPrice = 11010;
+        expPrice = 14260 - 11010;
+    }
+    if (productId === "2") { // Kerio Control
+        basicPrice = 6430;
+        expPrice = 9680 - 6430;
+    }
+    if (productId === "3") { // Kerio Operator
+        basicPrice = 7840;
+        expPrice = 11090 - 7840;
+    }
+    if (productId === "15") { // Kerio Operator V300
+        basicPrice = 21150;
+        expPrice = 24400 - 21150;
+    }
+
+    if (productId === "10") { // Kerio Control NG100
+        basicPrice = 14690;
+        exWarPrice = 0;
+    }
+    if (productId === "11") { // Kerio Control NG300 Unlimited
+        basicPrice = 46880;
+        exWarPrice = 0;
+    }
+    if (productId === "12") { // Kerio Control NG300 25 Users
+        basicPrice = 29860;
+        exWarPrice = 0;
+    }
+    if (productId === "13") { // Kerio Control NG500 Unlimited
+        basicPrice = 92870;
+        exWarPrice = 0;
+    }
+    if (productId === "14") { // Kerio Control NG500 100 Users
+        basicPrice = 76630;
+        exWarPrice = 0;
+    }
+    if (productId === "16") { // Kerio Control NG500 50 Users
+        basicPrice = 62300;
+        exWarPrice = 0;
+    }
+    if (productId === "17") { // Kerio Control NG100W
+        basicPrice = 18323;
+        exWarPrice = 0;
+    }
+    if (productId === "18") { // Kerio Control NG300W 25 Users
+        basicPrice = 34296;
+        exWarPrice = 0;
+    }
+    if (productId === "19") { // Kerio Control NG300W Unlimited
+        basicPrice = 51680;
+        exWarPrice = 0;
+    }
+    if (productId === "20") { // Kerio Rack Mount Kit for 300 Series HW
+        basicPrice = 2960;
+    }
+
+
+    if ($("#lic_type").is(":visible")) productFullName += $("#goods_type").find("option:selected").text();
+
+    if ($("#lblExt0").is(":visible") && $("#ext_av").is(':checked')) {
+        productFullName += ", Kerio Antivirus";
+        avPrice = 235;
+    }
+    if ($("#lblExt1").is(":visible") && $("#ext_sync").is(':checked')) {
+        productFullName += ", ActiveSync";
+        syncPrice = 235;
+    }
+    if ($("#lblExt2").is(":visible") && $("#ext_as").is(':checked')) {
+        productFullName += ", AntiSpam";
+        asPrice = 235;
+    }
+    if ($("#lblExt3").is(":visible") && $("#ext_war").is(':checked')) {
+        productFullName += ", incl. Ex Warr";
+    }
+    if ($("#lblExt4").is(":visible") && $("#ext_wf").is(':checked')) {
+        productFullName += ", Kerio Web Filter";
+        wfPrice = 470;
+    }
+
+    if ($("#new_swm").is(":visible") && $("#swm_select option:selected").val() == "2") {
+        productFullName += ", +1year SWM";
+
+    }
+    if ($("#user_num").is(":visible")) {
+        productFullName += ", " + $("#users").val() + " users";
+        expCount = $("#users").val() / 5;
+    }
+    $("#productName").val(productFullName);
+
+
+    var price = (basicPrice + (expCount - 1) * expPrice
+        + expCount * (avPrice + asPrice + syncPrice + wfPrice)) * specPrice
+        + exWarPrice * expCount;
+    $("#price").val(price);
+
+    var discount = $("#discountPercent").val();
+    var totalPrice = (price * (100 - discount)) / 100;
+    $("#totalPrice").val(totalPrice);
+
+}
 
 function setCompany(company) {
     $("#persons").innerHTML = "";
@@ -30,11 +150,11 @@ function setCompany(company) {
     sendGet("?getIdFor=" + company, "companyID");
 }
 
-function submitForm(){
-    var request = $("#requestResponse").val();
+function submitForm() {
+    var request = $("#request").val();
     var url = "/businessCase";
-    var container = "requestResponse";
-    sendPut(request,url,container);
+    var container = "response";
+    sendPut(request, url, container);
 }
 
 function setProduct(product) {
@@ -129,7 +249,7 @@ function getCompanyList() {
 
 
 function addItem() {
-    var request = "?item="+itemCount;
+    var request = "?item=" + itemCount;
     request += "&product=" + $("#prod_group_id").find("option:selected").text();
     if ($("#lic_type").is(":visible")) request += "&goods_type=" + $("#goods_type").find("option:selected").text();
     if ($("#user_num").is(":visible")) request += "&users=" + $("#users").val();
@@ -139,7 +259,7 @@ function addItem() {
     if ($("#lblExt2").is(":visible") && $("#ext_as").is(':checked')) request += "&AntiSpam=1";
     if ($("#lblExt3").is(":visible") && $("#ext_war").is(':checked')) request += "&ExtWarranty=1";
     if ($("#lblExt4").is(":visible") && $("#ext_wf").is(':checked')) request += "&WebFilter=1";
-    sendPut(request,"/","productName");
+    sendPut(request, "/addItem", "productName");
     itemCount++;
 
 }

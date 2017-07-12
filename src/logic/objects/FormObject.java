@@ -1,7 +1,5 @@
 package logic.objects;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import logic.Raynet;
 import logic.Utils;
 
@@ -19,21 +17,21 @@ public class FormObject {
     public Integer owner;
     public Integer company; //required
     public Integer person;
-    public Double totalAmount;
-    public Double estimatedValue;
+    private final Double totalAmount;
+    private final Double estimatedValue;
     public Integer probability;
-    public String description;
+    public final String description;
     public Integer currency;  //required
-    public Double exchangeRate;
-    public Integer category;
-    public Integer source;
+    public final Double exchangeRate;
+    public final Integer category;
+    public final Integer source;
     public Date validFrom;
     public Date scheduledEnd;
-    public Integer businessCasePhase; //
+    public final Integer businessCasePhase; //
 
     public String product;
     public Double price;
-    public Number discountPercent;
+    public String discountPercent;
     public Integer count;
     public Number cost;
     public Number taxRate;
@@ -41,13 +39,14 @@ public class FormObject {
     private transient BusinessCaseWrite businessCase;
     private transient OfferWrite offer;
 
-
-
-    public String getJsonOffer(Integer businessCaseId) {
-        this.offer = new OfferWrite(this);
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        return gson.toJson(offer);
+    public ProductWrite getProduct() {
+        if (productWrite == null)
+            this.productWrite = new ProductWrite(this);
+        return productWrite;
     }
+
+    private transient ProductWrite productWrite;
+
 
     public BusinessCaseWrite getBusinessCase() {
         if (businessCase == null)
@@ -104,6 +103,13 @@ public class FormObject {
             }
         }
         if (params.get("probability") != null) this.probability = Integer.parseInt(params.get("probability"));
+        if (params.get("product") != null) this.product = params.get("product");
+        if (params.get("price") != null) this.price = Double.valueOf(params.get("price"));
+        if (params.get("discountPercent") != null) this.discountPercent = params.get("discountPercent");
+        this.count = 1;
+        this.cost = this.price * (1 - Raynet.DISTRIBUTOR_MARGIN);
+        if (this.currency == 15) this.taxRate = 21;
+
 
     }
 }

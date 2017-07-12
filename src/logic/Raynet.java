@@ -8,21 +8,28 @@ import logic.jsonObjects.JsonBusinessCase;
 import logic.jsonObjects.JsonCompany;
 import logic.jsonObjects.JsonOffer;
 import logic.jsonObjects.JsonPerson;
-import logic.objects.*;
+import logic.objects.BusinessCaseRead;
+import logic.objects.Company;
+import logic.objects.Offer;
+import logic.objects.Person;
 import webAccess.Methods;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 public class Raynet {
     public static final String RAYNET_URL = "https://app.raynet.cz";
+    public static final Double DISTRIBUTOR_MARGIN = 0.45;
     private static final int HOPS = 5;
 
-    Map<String, Company> companies = new TreeMap<>();
-    private Map<String, Map<String, Dial>> dials = new HashMap<>();
-    private Map<Integer, Person> persons = new HashMap<>();
-    private Map<Integer, BusinessCaseRead> businessCases = new HashMap<>();
-    private Map<Integer, Offer> offers = new HashMap<>();
+    final Map<String, Company> companies = new TreeMap<>();
+    private final Map<String, Map<String, Dial>> dials = new HashMap<>();
+    private final Map<Integer, Person> persons = new HashMap<>();
+    private final Map<Integer, BusinessCaseRead> businessCases = new HashMap<>();
+    private final Map<Integer, Offer> offers = new HashMap<>();
 
 
     Raynet() {

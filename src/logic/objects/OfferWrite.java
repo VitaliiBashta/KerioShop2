@@ -3,25 +3,27 @@ package logic.objects;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import logic.Utils;
+import logic.jsonObjects.JsonOfferPdfExport;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import webAccess.Methods;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 public class OfferWrite {
-    public int id;
-    public String name;
+    private int id;
+    private final String name;
     public String code;
-    public Integer owner;
-    public Integer person;
-    public Integer company;
-    public Integer businessCase;
-    public Date validFrom;
-    public Date expirationDate;
-    public String description;
-    public Integer offerStatus;
+    public final Integer owner;
+    private final Integer person;
+    public final Integer company;
+    private final Integer businessCase;
+    private final Date validFrom;
+    private final Date expirationDate;
+    private final String description;
+    public final Integer offerStatus;
 
     public OfferWrite(FormObject formObject) {
         this.name = formObject.name;
@@ -46,8 +48,17 @@ public class OfferWrite {
         return this.id;
     }
 
-    public boolean sync() {
+    public void sync() {
         String result = Methods.sendPost("/api/v2/offer/" + this.id + "/sync/", null);
-        return result.equals("{\"success\":\"true\"}");
     }
+
+    public String getPdfUrl() throws UnsupportedEncodingException {
+        String request = "/api/v2/offer/" + this.id + "/pdfExport";
+        String response = Methods.sendGet(request);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonOfferPdfExport json = gson.fromJson(response, JsonOfferPdfExport.class);
+
+        return json.getRequest();
+    }
+
 }

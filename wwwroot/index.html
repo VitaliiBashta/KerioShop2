@@ -9,8 +9,8 @@
 <body>
 
 <div class="mainframe">
-    <label for="requestResponse"></label>
-    <textarea id="requestResponse"> Response</textarea>
+    <label for="request">Request</label> <textarea id="request"> </textarea>
+    <label for="response">Response</label><textarea id="response"> </textarea>
     <form action="/" id="openForm">
         <table id="mainTable">
             <tr>
@@ -72,10 +72,10 @@
                         </tr>
                         </thead>
                         <tr id="productExample">
-                            <td><textarea name="product" id="productName"></textarea></td>
+                            <td><input type="text" name="product" id="productName"></td>
                             <td><input type="text" name="price" id="price"></td>
                             <td><input type="text" name="discountPercent" id="discountPercent" value="15"></td>
-                            <td id="totalPrice"> zero</td>
+                            <td><input type="text" name="totalPrice" id="totalPrice"></td>
                             <td></td>
                         </tr>
                     </table>
@@ -90,7 +90,6 @@
                                value="2">
                         <label for="existlic">Existující licence</label>
                     </div>
-
                     <div id="licnumdiv">
                         <label for="licnum">Stavajicí licence:</label>
                         <input type="text" id="licnum" maxlength="25" value="">
@@ -175,15 +174,15 @@
 
     function showValues() {
         var str = $("form").serialize();
-        $("#requestResponse").text(str);
+        $("#request").text(str);
     }
-    //    $("input[type='checkbox'], input[type='radio']").on("click", showValues);
-    //    $("select").on("change", showValues);
     $(".buttonSubmit").on("mouseover", showValues);
 
     $("#company").on("click", setDefaults);
     $("#price").on("change", calculatePrice);
     $("#discountPercent").on("change", calculatePrice);
+
+    $("#newcalc").on("mouseover", createProductName)
 </script>
 
 </body>

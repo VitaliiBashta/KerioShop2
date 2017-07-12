@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 class WebServer {
-    Raynet raynet = new Raynet();
+    private final Raynet raynet = new Raynet();
 
     public static void main(String[] args) {
         WebServer webServer = new WebServer();
@@ -22,6 +22,7 @@ class WebServer {
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             System.out.println("server started at " + port);
             server.createContext("/businessCase", new BusinessCaseHandler());
+            server.createContext("/addItem", new ProductHandler());
             server.createContext("/", new DynamicHandler(raynet));
             server.createContext("/css", new StaticHandler());
             server.createContext("/js", new StaticHandler());

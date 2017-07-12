@@ -6,7 +6,7 @@ public class PrimaryAddress {
     int id;
     boolean primary;
     public Address address;
-    public ContactInfo contactInfo;
+    private ContactInfo contactInfo;
     public Territory territory;
 
     @Override
