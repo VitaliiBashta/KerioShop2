@@ -12,10 +12,9 @@ public class Person {
     private String firstName;
     private String lastName;
     private String titleAfter;
-    //    public Person owner; //not needed
     public PrimaryRelationship primaryRelationship;
     public List<String> tags;
-    public ContactInfo contactInfo;
+    private ContactInfo contactInfo;
 
     public Person(int id) {
         this.id = id;
@@ -36,6 +35,21 @@ public class Person {
 
         return result.toString() + contactInfo;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Person person = (Person) o;
+
+        return id == person.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 
     public String asHTML() {

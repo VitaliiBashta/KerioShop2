@@ -16,14 +16,14 @@ public class OfferWrite {
     private int id;
     private final String name;
     public String code;
-    public final Integer owner;
+    private final Integer owner;
     private final Integer person;
-    public final Integer company;
+    private final Integer company;
     private final Integer businessCase;
     private final Date validFrom;
     private final Date expirationDate;
     private final String description;
-    public final Integer offerStatus;
+    private final Integer offerStatus;
 
     public OfferWrite(FormObject formObject) {
         this.name = formObject.name;
@@ -50,15 +50,6 @@ public class OfferWrite {
 
     public void sync() {
         String result = Methods.sendPost("/api/v2/offer/" + this.id + "/sync/", null);
-    }
-
-    public String getPdfUrl() throws UnsupportedEncodingException {
-        String request = "/api/v2/offer/" + this.id + "/pdfExport";
-        String response = Methods.sendGet(request);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonOfferPdfExport json = gson.fromJson(response, JsonOfferPdfExport.class);
-
-        return json.getRequest();
     }
 
 }

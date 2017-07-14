@@ -8,23 +8,12 @@ body {
     font: 15px/17px Arial, sans-serif;
 }
 
-footer {
-    background: #9FD468;
-}
-
 a {
     color: #0094D6;
 }
 
 a:hover {
     background: #9FD468
-}
-
-h1 {
-    font-size: 22px;
-    line-height: 1.2;
-    font-weight: normal;
-    text-align: center;
 }
 
 li {
@@ -173,13 +162,12 @@ input[type='reset'] {
 }
 
 div {
-    border: 1px solid black;
+    border: 0px solid black;
     padding: 3px;
 }
 
 table {
     table-layout: fixed;
-    width: 100%;
     padding: 1em;
 }
 
@@ -222,13 +210,6 @@ input {
 
 .autocomplete-selected {
     background: #F0F0F0;
-}
-
-button {
-    width: 100%;
-    height: 100%;
-    background-color: red;
-
 }
 
 .autocomplete-suggestions strong {
@@ -406,5 +387,13 @@ thead {
 #productName {
     width: 100%;
     height: 50px;
-    word-break: break-word;
+}
+#response1 {
+    width: 1000px;
+    margin: auto;
+    font-size: 30px;
+}
+
+#form {
+    width:700px;
 }
