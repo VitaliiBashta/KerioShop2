@@ -2,12 +2,18 @@ package logic;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import logic.objects.Company;
 import logic.objects.FormObject;
 
 import java.io.*;
 import java.net.URLDecoder;
 
 class BusinessCaseHandler implements HttpHandler {
+private Raynet raynet;
+
+    public BusinessCaseHandler(Raynet raynet) {
+        this.raynet = raynet;
+    }
 
     @Override
     public void handle(HttpExchange he) throws IOException {
@@ -24,8 +30,15 @@ class BusinessCaseHandler implements HttpHandler {
             Integer offerId = formObject.getOffer().createOfferInRaynet();
             formObject.getOffer().sync();
 
-            response = formObject.getOffer().getPdfUrl();
-
+            response = businessCaseId+"";
+            raynet.initBusinessCases(formObject.company);
+            raynet.initOffers(formObject.company);
+            Company company = raynet.getCompanyById(formObject.company);
+            if (company != null) {
+                company.businessCases.clear();
+                company.businessCases.add(raynet.businessCases.get(businessCaseId));
+                raynet.businessCases.get(businessCaseId).offer = raynet.offers.get(offerId);
+            }
             he.sendResponseHeaders(200, response.getBytes().length);
             os.write(response.getBytes());
             os.flush();
@@ -33,10 +46,5 @@ class BusinessCaseHandler implements HttpHandler {
         os.close();
     }
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        String query = "company=598&person=695&name=testtest&currency=15&owner=462&validFrom=2017-07-11&scheduledEnd=2017-07-30&businessCasePhase=42&probability=50&source=61&category=225&description=+&product=Kerio+Connect%C2%A0%2C+Kerio+Antivirus%2C+ActiveSync%2C+AntiSpam%2C+%2B1year+SWM%2C+15+users&price=19625&discountPercent=15&totalPrice=16681.25&licence=1";
 
-        System.out.println("before:" + query);
-        System.out.println("after;" + URLDecoder.decode(query, "UTF-8"));
-    }
 }

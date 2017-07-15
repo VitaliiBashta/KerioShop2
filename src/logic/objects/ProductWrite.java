@@ -11,12 +11,12 @@ import webAccess.Methods;
 
 public class ProductWrite {
     private Integer id;
-    public final String name;
-    public final Double price;
+    private final String name;
+    private final Double price;
     private final String discountPercent;
-    public final Integer count;
+    private final Integer count;
     private final Number cost;
-    public final Number taxRate;
+    private final Number taxRate;
     private final Integer businessCaseId;
 
     public ProductWrite(FormObject formObject) {

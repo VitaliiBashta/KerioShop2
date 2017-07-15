@@ -21,7 +21,7 @@ class WebServer {
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             System.out.println("server started at " + port);
-            server.createContext("/businessCase", new BusinessCaseHandler());
+            server.createContext("/businessCase", new BusinessCaseHandler(raynet));
             server.createContext("/addItem", new ProductHandler());
             server.createContext("/", new DynamicHandler(raynet));
             server.createContext("/css", new StaticHandler());

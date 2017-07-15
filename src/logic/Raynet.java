@@ -4,21 +4,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import logic.dials.Dial;
 import logic.jsonDials.JsonDial;
-import logic.jsonObjects.JsonBusinessCase;
-import logic.jsonObjects.JsonCompany;
-import logic.jsonObjects.JsonOffer;
-import logic.jsonObjects.JsonPerson;
+import logic.jsonObjects.*;
 import logic.objects.BusinessCaseRead;
 import logic.objects.Company;
 import logic.objects.Offer;
 import logic.objects.Person;
 import webAccess.Methods;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-
 
 public class Raynet {
     public static final String RAYNET_URL = "https://app.raynet.cz";
@@ -28,8 +25,8 @@ public class Raynet {
     final Map<String, Company> companies = new TreeMap<>();
     private final Map<String, Map<String, Dial>> dials = new HashMap<>();
     private final Map<Integer, Person> persons = new HashMap<>();
-    private final Map<Integer, BusinessCaseRead> businessCases = new HashMap<>();
-    private final Map<Integer, Offer> offers = new HashMap<>();
+    public final Map<Integer, BusinessCaseRead> businessCases = new HashMap<>();
+    public final Map<Integer, Offer> offers = new HashMap<>();
 
 
     Raynet() {
@@ -38,18 +35,37 @@ public class Raynet {
         dials.put("contactSource", new TreeMap<>());
     }
 
+    public Company getCompanyById(int id) {
+        for (Company company: companies.values()             ) {
+            if (company.id == id) return company;
+        }
+        return null;
+    }
     void init() {
         initDials();
         initCompanies();
         initPersons();
-//        initBusinessCases();
-//        initOffers();
+        initAllBusinessCases();
+        initAllOffers();
 
         linkFields();
         System.out.println("------------ Raynet initiated -----------");
     }
 
-    private void linkFields() {
+    public String getPdfUrl(Integer businessCaseId) throws UnsupportedEncodingException {
+        Integer offerId = this.businessCases.get(businessCaseId).offer.id;
+        String request = "/api/v2/offer/" + offerId + "/pdfExport";
+        String response = Methods.sendGet(request);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonOfferPdfExport json = gson.fromJson(response, JsonOfferPdfExport.class);
+
+        String url1 = json.getRequest();
+        System.out.println(url1);
+        return url1;
+
+    }
+
+    public void linkFields() {
         linkCompanyAndPerson();
         linkBusinessCaseAndOwnerAndPerson();
         LinkBusinessCaseAndCompany();
@@ -70,21 +86,6 @@ public class Raynet {
         }
     }
 
-    public static void main(String[] args) {
-        Raynet r = new Raynet();
-        r.initCompanies();
-//        r.initPersons();
-        for (Company company : r.companies.values()) {
-            if (company.primaryAddress.address.countryCode != null)
-                System.out.println("company  " + company.id + " has :" + company.primaryAddress.address.countryCode);
-        }
-        System.out.println("------------end--------------");
-
-//        String asB64 = Base64.getEncoder().encodeToString("vitalii.bashta@zebra.cz:V1596italii".getBytes("utf-8"));
-
-//        System.out.println(asB64);
-    }
-
     String getDialHtml(String dial) {
         StringBuilder result = new StringBuilder();
         Collection<Dial> dialList = dials.get(dial).values();
@@ -94,7 +95,7 @@ public class Raynet {
         return result.toString();
     }
 
-    private void LinkBusinessCaseAndOffer() {
+    public void LinkBusinessCaseAndOffer() {
         for (Offer offer : offers.values()) {
             if (offer.businessCase.id > 0) {
                 BusinessCaseRead businessCase = businessCases.get(offer.businessCase.id);
@@ -104,7 +105,7 @@ public class Raynet {
         }
     }
 
-    private void LinkBusinessCaseAndCompany() {
+    public void LinkBusinessCaseAndCompany() {
         for (BusinessCaseRead businessCase : businessCases.values()) {
             if (businessCase.company.id > 0) {
                 System.out.println("linking businessCase: " + businessCase.id + ":" + businessCase.name);
@@ -128,7 +129,7 @@ public class Raynet {
         }
     }
 
-    private void initOffers() {
+    private void initAllOffers() {
         String response;
         response = Methods.sendGet("/api/v2/offer/?limit=1");
         System.out.print("Loading offers\t");
@@ -136,17 +137,33 @@ public class Raynet {
         JsonOffer json = gson.fromJson(response, JsonOffer.class);
         int bulk = json.totalCount / HOPS;
         for (int i = 0; i < json.totalCount / bulk + 1; i++) {
-            response = Methods.sendGet("/api/v2/offer/?limit=" + bulk + "&offset=" + i * bulk);
-            JsonOffer jsonOffer = gson.fromJson(response, JsonOffer.class);
-            for (int j = 0; j < jsonOffer.data.size(); j++) {
-                offers.put(jsonOffer.data.get(j).id, jsonOffer.data.get(j));
-            }
-
+            initOffers(i * bulk, bulk);
+            System.out.print(".");
         }
         System.out.println(" Loaded:" + offers.size() + ":" + json.totalCount);
     }
 
-    private void initBusinessCases() {
+    private void initOffers(int offset, int limit) {
+        String response;
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        response = Methods.sendGet("/api/v2/offer/?limit=" + limit + "&offset=" + offset);
+        JsonOffer jsonOffer = gson.fromJson(response, JsonOffer.class);
+        for (int j = 0; j < jsonOffer.data.size(); j++) {
+            offers.put(jsonOffer.data.get(j).id, jsonOffer.data.get(j));
+        }
+    }
+
+    public void initOffers(int companyId) {
+        String response;
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        response = Methods.sendGet("/api/v2/offer/?company[EQ]=" + companyId);
+        JsonOffer jsonOffer = gson.fromJson(response, JsonOffer.class);
+        for (int j = 0; j < jsonOffer.data.size(); j++) {
+            offers.put(jsonOffer.data.get(j).id, jsonOffer.data.get(j));
+        }
+    }
+
+    private void initAllBusinessCases() {
         String response;
         response = Methods.sendGet("/api/v2/businessCase/?limit=1");
         System.out.print("Loading business cases\t");
@@ -154,15 +171,32 @@ public class Raynet {
         JsonBusinessCase json = gson.fromJson(response, JsonBusinessCase.class);
         int bulk = json.totalCount / HOPS;
         for (int i = 0; i < json.totalCount / bulk + 1; i++) {
-            response = Methods.sendGet("/api/v2/businessCase/?limit=" + bulk + "&offset=" + i * bulk);
-            JsonBusinessCase jsonBusinessCase = gson.fromJson(response, JsonBusinessCase.class);
-            for (int j = 0; j < jsonBusinessCase.data.size(); j++) {
-                businessCases.put(jsonBusinessCase.data.get(j).id, jsonBusinessCase.data.get(j));
-            }
+            initBusinessCases(i * bulk, bulk);
             System.out.print(".");
         }
         System.out.println("\tLoaded:" + businessCases.size() + ":" + json.totalCount);
     }
+
+    private void initBusinessCases(int offset, int limit) {
+        String response;
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        response = Methods.sendGet("/api/v2/businessCase/?limit=" + limit + "&offset=" + offset);
+        JsonBusinessCase jsonBusinessCase = gson.fromJson(response, JsonBusinessCase.class);
+        for (int j = 0; j < jsonBusinessCase.data.size(); j++) {
+            businessCases.put(jsonBusinessCase.data.get(j).id, jsonBusinessCase.data.get(j));
+        }
+    }
+
+    public void initBusinessCases(int companyID) {
+        String response;
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        response = Methods.sendGet("/api/v2/businessCase/?company[EQ]=" + companyID);
+        JsonBusinessCase jsonBusinessCase = gson.fromJson(response, JsonBusinessCase.class);
+        for (int j = 0; j < jsonBusinessCase.data.size(); j++) {
+            businessCases.put(jsonBusinessCase.data.get(j).id, jsonBusinessCase.data.get(j));
+        }
+    }
+
 
     private void linkCompanyAndPerson() {
         for (Person person : persons.values()) {
@@ -197,11 +231,6 @@ public class Raynet {
             System.out.print(".");
         }
         System.out.println("\tLoaded:" + persons.size() + ":" + json.totalCount);
-
-//        for (Person person : persons.values()) {
-//            System.out.println(person);
-//        }
-
     }
 
     private void initCompanies() {
@@ -246,6 +275,7 @@ public class Raynet {
     public String getBusinessCases(String companyName) {
         StringBuilder result = new StringBuilder();
         Company company = companies.get(companyName);
+        result.append("<option value=\"0\"></option>");
         for (BusinessCaseRead businessCase : company.businessCases) {
             result.append(businessCase.asHTML());
         }

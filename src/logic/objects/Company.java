@@ -6,8 +6,10 @@ import logic.dials.Rating;
 import logic.dials.Role;
 import logic.dials.State;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class Company {
     public int id;
@@ -16,8 +18,8 @@ public class Company {
 //    public String notice; //not needed
 //    public String regNumber; //not needed
 //    public String taxNumber; //not needed
-    public final transient List<Person> employees = new LinkedList<>();
-    public final transient List<BusinessCaseRead> businessCases = new LinkedList<>();
+    public final transient Set<Person> employees = new HashSet<>();
+    public final transient Set<BusinessCaseRead> businessCases = new HashSet<>();
     Rating rating;
     State state;
     Role role;
