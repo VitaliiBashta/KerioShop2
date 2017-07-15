@@ -1,6 +1,8 @@
 package logic.jsonObjects;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 
 public class JsonOfferPdfExport {
@@ -17,9 +19,10 @@ public class JsonOfferPdfExport {
                 uuid + '/' +
                 accessToken + '/' +
                 instanceName + '/' +
-                "?fileName=" + URLDecoder.decode(fileName, "UTF-8") +
-                "&contentType=" + URLDecoder.decode(contentType, "UTF-8");
+                "?fileName=\"" + URLDecoder.decode(fileName, "UTF-8") +
+                "\"&contentType=" + URLDecoder.decode(contentType, "UTF-8");
     }
+
 
 
 }

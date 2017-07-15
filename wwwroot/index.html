@@ -5,16 +5,19 @@
     <link href="css/styles.css" rel="stylesheet"/>
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
     <script src="js/logic.js"></script>
+    <script src="js/prices.js"></script>
 </head>
 <body>
 
 <div class="mainframe">
-    <label for="request">Request</label> <textarea id="request"> </textarea>
-    <label for="response">Response</label><textarea id="response"> </textarea>
+    <div style="visibility: visible"><label for="request">Request</label> <textarea id="request"> </textarea></div>
+    <!--<label for="response">Response</label><textarea id="response"> </textarea>-->
+    <button href="#" onclick="openOutlook()">open email</button>
+    <a href="outlook:">Click here to launch Microsoft Outlook</a>
     <form action="/" id="openForm">
         <table id="mainTable">
             <tr>
-                <td>
+                <td id="form">
                     <div class="clientField">
                         <textarea style="display: none" id="companyID" name="company"></textarea>
                         <label for="company">Klient</label>
@@ -26,10 +29,13 @@
                     </div>
                     <div class="businessCaseFrame">
                         <label for="businessCase"> Předmět:</label>
-                        <input type="text" id="businessCase" name="name" value="testtest">
-                        <label for="currency"> Měna:</label>
-                        <input type="text" id="currency" name="currency" value="15">
+                        <select id="businessCase" name="name" onchange="businessCaseSelect(this.value)"></select>
 
+                        <label for="currency"> Měna:</label>
+                        <select id="currency" name="currency">
+                            <option value="15" selected>CZK</option>
+                            <option value="16">EUR</option>
+                        </select>
 
                         <br/>
                         <label for="owner">Vlastník:</label>
@@ -37,9 +43,9 @@
 
                         <br/>
                         <label for="validFrom">Otevřeno od:</label>
-                        <input type="date" class="date" id="validFrom" name="validFrom" value="2017-07-11">
+                        <input type="date" class="date" id="validFrom" name="validFrom" value="">
                         <label for="scheduledEnd">Odhad uzavření:</label>
-                        <input type="date" class="date" id="scheduledEnd" name="scheduledEnd" value="2017-07-30">
+                        <input type="date" class="date" id="scheduledEnd" name="scheduledEnd" value="">
 
                         <br/>
                         <label for="businessCasePhase">Stav:</label>
@@ -60,7 +66,7 @@
                         <textarea id="description" name="description"> </textarea>
                     </div>
                 </td>
-                <td>
+                <td id="items">
                     <table id="orderItems">
                         <thead>
                         <tr>
@@ -79,9 +85,6 @@
                             <td></td>
                         </tr>
                     </table>
-                    <div id="addProduct">
-                        <a href="#" class="buttonSubmit" onclick="addItem()">Přídat produkt</a>
-                    </div>
                     <div>
                         <input onclick="setNewOrExistingLic();" type="radio" class="radio" id="newlic" name="licence"
                                value="1" checked>
@@ -160,11 +163,14 @@
                             </ul>
                         </fieldset>
                     </div>
+                    <a href="#" class="buttonSubmit" id="createEntityInRaynet" onclick="createEntityInRaynet()">Vytvořít obchodní případ</a>
                 </td>
             </tr>
         </table>
     </form>
-    <a href="#" class="buttonSubmit" onclick="submitForm()">Vytvořít obchodní případ</a>
+
+    <a href="#" class="buttonSubmit" id="updateEntityInRaynet" onclick="updateEntityInRaynet()">Upravit</a>
+    <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a>
 </div>
 
 
@@ -174,13 +180,12 @@
 
     function showValues() {
         var str = $("form").serialize();
+        console.log(str);
         $("#request").text(str);
     }
-    $(".buttonSubmit").on("mouseover", showValues);
+    $("#buttonSubmit").on("mouseover", showValues);
 
     $("#company").on("click", setDefaults);
-    $("#price").on("change", calculatePrice);
-    $("#discountPercent").on("change", calculatePrice);
 
     $("#newcalc").on("mouseover", createProductName)
 </script>

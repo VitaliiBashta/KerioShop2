@@ -9,7 +9,6 @@ import logic.dials.SecurityLevel;
 import java.util.Date;
 import java.util.List;
 
-
 public class BusinessCaseRead {
     public int id;
     public String name;  //required

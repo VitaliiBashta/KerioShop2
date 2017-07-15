@@ -21,15 +21,15 @@ public class BusinessCaseWrite {
     private final long person;
     public double totalAmount;
     public double estimatedValue;
-    public final int probability;
+    private final int probability;
     public String description;
     private final long currency;  //required
-    public final double exchangeRate;
-    public final long category;
+    private final double exchangeRate;
+    private final long category;
     private final long source;
-    public final Date validFrom;
-    public final Date scheduledEnd;
-    public final int businessCasePhase;
+    private final Date validFrom;
+    private final Date scheduledEnd;
+    private final int businessCasePhase;
     public List<Product> items;
     public transient Offer offer;
     SecurityLevel securityLevel;
@@ -55,5 +55,20 @@ public class BusinessCaseWrite {
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
         this.id = Utils.getCreatedId(Methods.sendPut("/api/v2/businessCase/", entity));
         return this.id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BusinessCaseWrite that = (BusinessCaseWrite) o;
+
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 }
