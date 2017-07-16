@@ -1,0 +1,213 @@
+div.cs-skin-elastic {
+    background: transparent;
+    font-weight: 700;
+    color: #5b8583;
+}
+
+@media screen and (max-width: 30em) {
+    div.cs-skin-elastic {
+        font-size: 1em;
+    }
+}
+
+.cs-skin-elastic > span {
+    background-color: #fff;
+}
+
+.cs-skin-elastic .cs-options {
+    overflow: visible;
+    background: transparent;
+    opacity: 1;
+    visibility: visible;
+    padding-bottom: 1em;
+    pointer-events: none;
+}
+
+.cs-skin-elastic.cs-active .cs-options {
+    pointer-events: auto;
+}
+
+.cs-skin-elastic .cs-options > ul::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    transform: scale3d(1, 0, 1);
+    background: #fff;
+    transform-origin: 50% 0%;
+    transition: transform 0.3s;
+}
+
+.cs-skin-elastic.cs-active .cs-options > ul::before {
+    transform: scale3d(1, 1, 1);
+    transition: none;
+    animation: expand 0.6s ease-out;
+}
+
+.cs-skin-elastic .cs-options ul li {
+    opacity: 0;
+    transform: translate3d(0, -25px, 0);
+    transition: opacity 0.15s, transform 0.15s;
+}
+
+.cs-skin-elastic.cs-active .cs-options ul li {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    transition: none;
+    animation: bounce 0.6s ease-out;
+}
+
+.cs-skin-elastic .cs-options span {
+    background: no-repeat 0 50%;
+    background-size: 2em auto;
+    padding: 1em 0em 1em 2.5em;
+}
+
+.cs-skin-elastic .cs-options span:hover,
+.cs-skin-elastic .cs-options li.cs-focus span,
+.cs-skin-elastic .cs-options .cs-selected span {
+    color: #1e4c4a;
+    background-color: #6595BE;
+}
+
+.cs-skin-elastic .cs-options .cs-selected span:hover {
+    background-color: #6595BE;
+}
+
+.cs-skin-elastic .cs-options .cs-selected span::after {
+    content: '';
+}
+
+.cs-skin-elastic .cs-options li.kerio-connect span {
+    background-image: url(../img/connect.png);
+}
+
+.cs-skin-elastic .cs-options li.kerioControl span {
+    background-image: url(../img/control.png);
+}
+
+.cs-skin-elastic .cs-options li.kerio-operator span {
+    background-image: url(../img/operator.png);
+}
+
+.cs-skin-elastic .cs-options li.kerio-box span {
+    background-image: url(../img/boxes.png);
+}
+
+.cs-skin-elastic .cs-options li.NG100 span {
+    background-image: url(../img/NG100.png);
+}
+
+.cs-skin-elastic .cs-options li.NG100w span {
+    background-image: url(../img/NG100w.png);
+}
+
+.cs-skin-elastic .cs-options li.NG300 span {
+    background-image: url(../img/NG300.png);
+}
+
+.cs-skin-elastic .cs-options li.NG300w span {
+    background-image: url(../img/NG300w.png);
+}
+
+.cs-skin-elastic .cs-options li.NG500 span {
+    background-image: url(../img/NG500.png);
+}
+
+.cs-skin-elastic .cs-options li.V300 span {
+    background-image: url(../img/V300.png);
+}
+
+.cs-skin-elastic .cs-options li.unlimited span {
+    background-image: url(../img/Unlimited.png);
+}
+
+.cs-skin-elastic .cs-options li.EDU span {
+    background-image: url(../img/edu.png);
+}
+
+.cs-skin-elastic .cs-options li.GOV span {
+    background-image: url(../img/Gov.png);
+}
+
+.cs-skin-elastic .cs-options li.Commercial span {
+    background-image: url(../img/commercial.png);
+}
+
+.cs-skin-elastic .cs-options li.users25 span {
+    background-image: url(../img/user.png);
+}
+
+.cs-skin-elastic .cs-options li.users50 span {
+    background-image: url(../img/user.png);
+}
+
+.cs-skin-elastic .cs-options li.users100 span {
+    background-image: url(../img/users.png);
+}
+
+.cs-skin-elastic .cs-options li.unlimited span {
+    background-image: url(../img/unlimited.png);
+}
+
+.cs-skin-elastic .cs-options li.CZK span {
+    background-image: url(../img/czk.png);
+}
+
+.cs-skin-elastic .cs-options li.EUR span {
+    background-image: url(../img/eur.png);
+}
+
+.cs-skin-elastic .cs-options li.bashta span {
+    background-image: url(../img/bashta.png);
+}
+
+@keyframes expand {
+    0% {
+        -webkit-transform: scale3d(1, 0, 1);
+        transform: scale3d(1, 0, 1);
+    }
+    25% {
+        -webkit-transform: scale3d(1, 1.2, 1);
+        transform: scale3d(1, 1.2, 1);
+    }
+    50% {
+        -webkit-transform: scale3d(1, 0.85, 1);
+        transform: scale3d(1, 0.85, 1);
+    }
+    75% {
+        -webkit-transform: scale3d(1, 1.05, 1);
+        transform: scale3d(1, 1.05, 1);
+    }
+    100% {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        -webkit-transform: translate3d(0, -25px, 0);
+        transform: translate3d(0, -25px, 0);
+        opacity: 0;
+    }
+    25% {
+        -webkit-transform: translate3d(0, 10px, 0);
+        transform: translate3d(0, 10px, 0);
+    }
+    50% {
+        -webkit-transform: translate3d(0, -6px, 0);
+        transform: translate3d(0, -6px, 0);
+    }
+    75% {
+        -webkit-transform: translate3d(0, 2px, 0);
+        transform: translate3d(0, 2px, 0);
+    }
+    100% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+}

@@ -28,7 +28,7 @@ var CZ_PRICES = {
     // hardware renewal
     "RenNG100_unl" : 4590,
     "RenNG100W_unl" : 4590,
-    "renNG300_25" : 10995,
+    "RenNG300_25": 10995,
     "RenNG300W_25" : 10955,
     "RenNG300_unl" : 15306,
     "RenNG300W_unl" : 15306,

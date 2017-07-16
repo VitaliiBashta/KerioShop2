@@ -3,6 +3,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title id="page-title">RAYNET by Vitalii Bashta</title>
     <link href="css/styles.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/cs-select.css"/>
+    <link rel="stylesheet" type="text/css" href="css/cs-skin-elastic.css"/>
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
     <script src="js/logic.js"></script>
     <script src="js/prices.js"></script>
@@ -10,56 +12,74 @@
 <body>
 
 <div class="mainframe">
-    <div style="visibility: visible"><label for="request">Request</label> <textarea id="request"> </textarea></div>
-    <!--<label for="response">Response</label><textarea id="response"> </textarea>-->
-    <button href="#" onclick="openOutlook()">open email</button>
-    <a href="outlook:">Click here to launch Microsoft Outlook</a>
+    <textarea id="request"></textarea>
     <form action="/" id="openForm">
+        <table id="clientTable" class="clientField">
+            <thead>
+            <tr>
+                <td id="clientNameLabel">Klient</td>
+                <td id="personLabel">Kontaktní osoba</td>
+                <td id="discountCaption">Marže partnera</td>
+                <td id="currencyLabel">Měna:</td>
+                <td id="ownerLabel">Vlastník</td>
+
+            </tr>
+            </thead>
+            <tr>
+                <td><input type="text" id="company" value=""/></td>
+                <td>
+                    <select id="persons" name="person"> </select>
+                </td>
+                <td>
+                    <select type="text" name="discountPercent" class="cs-select cs-skin-elastic"
+                            id="discountPercent">
+                        <option value="15" selected>15 %</option>
+                        <option value="20">20 %</option>
+                        <option value="25">25 %</option>
+                        <option value="30">30 %</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="currency" name="currency" class="cs-select cs-skin-elastic">
+                        <option value="15" data-class="CZK" selected>CZK</option>
+                        <option value="16" data-class="EUR">EUR</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="cs-select cs-skin-elastic" name="owner" id="owner">
+                        <option value="462" data-class="bashta">Vitalii Bashta</option>
+                        <option value="462">Vitalii Bashta</option>
+                    </select>
+                </td>
+                <td>
+                    <button href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít obchodní případ</button>
+                </td>
+            </tr>
+
+            <textarea style="display: none" id="companyID" name="company"></textarea>
+        </table>
         <table id="mainTable">
             <tr>
                 <td id="form">
-                    <div class="clientField">
-                        <textarea style="display: none" id="companyID" name="company"></textarea>
-                        <label for="company">Klient</label>
 
-                        <input type="text" id="company" onfocus="setCompany(this.value)" value="Czechin, s.r.o."/>
-                        <br><label for="persons">Kontaktní osoba</label>
-                        <select id="persons" name="person">
-                        </select>
-                    </div>
                     <div class="businessCaseFrame">
                         <label for="businessCase"> Předmět:</label>
-                        <select id="businessCase" name="name" onchange="businessCaseSelect(this.value)"></select>
+                        <select id="businessCase" name="name"></select>
 
-                        <label for="currency"> Měna:</label>
-                        <select id="currency" name="currency">
-                            <option value="15" selected>CZK</option>
-                            <option value="16">EUR</option>
-                        </select>
-
-                        <br/>
-                        <label for="owner">Vlastník:</label>
-                        <input type="text" size="24" id="owner" name="owner" value="462">
-
-                        <br/>
                         <label for="validFrom">Otevřeno od:</label>
                         <input type="date" class="date" id="validFrom" name="validFrom" value="">
                         <label for="scheduledEnd">Odhad uzavření:</label>
                         <input type="date" class="date" id="scheduledEnd" name="scheduledEnd" value="">
 
-                        <br/>
                         <label for="businessCasePhase">Stav:</label>
                         <select id="businessCasePhase" name="businessCasePhase">&nbsp;</select>
                         <br/>
                         <label for="probability"> Pravděpodobnost:</label>
                         <input type="range" id="probability" name="probability" value="50">
                         <br/>
-                        <label for="contactSource"> Zdroj:</label>
-                        <select id="contactSource" name="source">&nbsp;</select>
                         <br/>
                         <label for="businessCaseCategory"> Kategorie:</label>
                         <select id="businessCaseCategory" name="category">&nbsp;</select>
-
                     </div>
                     <div id="descriptionArea">
                         <label for="description" id="descriptionLabel">Popis</label>
@@ -67,30 +87,10 @@
                     </div>
                 </td>
                 <td id="items">
-                    <table id="orderItems">
-                        <thead>
-                        <tr>
-                            <td class="productName"> Název</td>
-                            <td> Prodejní cena</td>
-                            <td> Marže part. %</td>
-                            <td> Cena celkem</td>
-                            <td></td>
-                        </tr>
-                        </thead>
-                        <tr id="productExample">
-                            <td><input type="text" name="product" id="productName"></td>
-                            <td><input type="text" name="price" id="price"></td>
-                            <td><input type="text" name="discountPercent" id="discountPercent" value="15"></td>
-                            <td><input type="text" name="totalPrice" id="totalPrice"></td>
-                            <td></td>
-                        </tr>
-                    </table>
                     <div>
-                        <input onclick="setNewOrExistingLic();" type="radio" class="radio" id="newlic" name="licence"
-                               value="1" checked>
+                        <input type="radio" class="radio" id="newlic" name="licence" value="1" checked>
                         <label for="newlic">Nová licence</label>
-                        <input onclick="setNewOrExistingLic();" type="radio" class="radio" id="existlic" name="licence"
-                               value="2">
+                        <input type="radio" class="radio" id="existlic" name="licence" value="2">
                         <label for="existlic">Existující licence</label>
                     </div>
                     <div id="licnumdiv">
@@ -98,97 +98,132 @@
                         <input type="text" id="licnum" maxlength="25" value="">
                         <input type="submit" id="najit" value="Najít">
                     </div>
-                    <div id="newcalc">
-                        <label for="prod_group_id">Zvolte produkt</label>
-                        <select id="prod_group_id" onchange="setProduct(this.value)">
-                            <option value="0" selected></option>
-                            <option value="1">Kerio Connect</option>
-                            <option value="2">Kerio Control</option>
-                            <option value="3">Kerio Operator</option>
-                            <option value="15">Kerio Operator V300</option>
-                            <option value="5">Kerio Control Box 1120</option>
-                            <option value="10">Kerio Control NG100</option>
-                            <option value="11">Kerio Control NG300 Unlimited</option>
-                            <option value="12">Kerio Control NG300 25 Users</option>
-                            <option value="13">Kerio Control NG500 Unlimited</option>
-                            <option value="14">Kerio Control NG500 100 Users</option>
-                            <option value="16">Kerio Control NG500 50 Users</option>
-                            <option value="17">Kerio Control NG100W</option>
-                            <option value="18">Kerio Control NG300W 25 Users</option>
-                            <option value="19">Kerio Control NG300W Unlimited</option>
-                            <option value="20">Kerio Rack Mount Kit for 300 Series HW</option>
+
+                    <a href="#" class="buttonSubmit" id="updateEntityInRaynet">Upravit</a><br>
+                    <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a><br>
+                </td>
+            </tr>
+        </table>
+        <table id="products">
+            <thead>
+            <tr>
+                <td id="productNameCaption" colspan="2">Produkt</td>
+                <td id="usersCountCaption">Počet uživatelu</td>
+                <td id="licenseTypeCaption">Typ licence</td>
+                <td id="swmCaption">Počet let SWM</td>
+                <td id="extensionsCaption">Rožšiření</td>
+                <td id="priceCaption">Cena</td>
+                <td id="priceResultCaption">Cena pro partnera</td>
+            </tr>
+            </thead>
+            <tr>
+                <td id="productGroup" colspan="2">
+                    <section>
+                        <select id="prod_group_id" class="cs-select cs-skin-elastic">
+                            <option value="kerioConnect" data-class="kerio-connect" selected>Kerio Connect</option>
+                            <option value="kerioControl" data-class="kerioControl">Kerio Control</option>
+                            <option value="kerioOperator" data-class="kerio-operator">Kerio Operator</option>
+                            <option value="kerioBox" data-class="kerio-box">Kerio Boxes...</option>
                         </select>
-                        <div id="lic_type">
-                            <label for="goods_type">Typ licence</label>
-                            <select id="goods_type">
-                                <option value="0" selected>&nbsp;</option>
-                                <option value="1"> GOV</option>
-                                <option value="2"> EDU</option>
-                            </select>
-                        </div>
-                        <div id="user_num">
-                            <label for="users">Zvolte počet uživatelů</label>
-                            <input type="number" id="users" size="10" min="5" max="10000" step="5" value="5">
-                        </div>
-                        <div id="new_swm">
-                            <label for="swm_select">Zvolte počet let SWM</label>
-                            <select id="swm_select">
-                                <option value="1" selected>1</option>
-                                <option value="2">2</option>
-                            </select>
-                        </div>
-                        <fieldset id="availext">
-                            <legend>Dostupná rozšíření</legend>
-                            <ul>
-                                <li id="lblExt0">
-                                    <input type="checkbox" class="checkbox" id="ext_av">
-                                    <label for="ext_av">Kerio Antivirus</label>
-                                </li>
-                                <li id="lblExt1">
-                                    <input type="checkbox" class="checkbox" id="ext_sync">
-                                    <label for="ext_sync">Exchange ActiveSync</label>
-                                </li>
-                                <li id="lblExt2">
-                                    <input type="checkbox" class="checkbox" id="ext_as">
-                                    <label for="ext_as">Kerio Anti-spam</label>
-                                </li>
-                                <li id="lblExt3">
-                                    <input type="checkbox" class="checkbox" id="ext_war">
-                                    <label for="ext_war">Extended Warranty (3 years)</label>
-                                </li>
-                                <li id="lblExt4">
-                                    <input type="checkbox" class="checkbox" id="ext_wf">
-                                    <label for="ext_wf">Kerio WebFilter </label>
-                                </li>
-                            </ul>
-                        </fieldset>
-                    </div>
-                    <a href="#" class="buttonSubmit" id="createEntityInRaynet" onclick="createEntityInRaynet()">Vytvořít obchodní případ</a>
+                    </section>
+                </td>
+                <td id="boxGroup">
+                    <select id="hardware" class="cs-select cs-skin-elastic">
+                        <option value="NG100" data-class="NG100" selected>Control NG100</option>
+                        <option value="NG100W" data-class="NG100W" selected>Control NG100W</option>
+                        <option value="NG300" data-class="NG300">Control NG300</option>
+                        <option value="NG300W" data-class="NG300W">Control NG300W</option>
+                        <option value="NG500" data-class="NG500">Control NG500</option>
+                        <option value="V300" data-class="V300">Operator V300</option>
+                    </select>
+                </td>
+                <td id="usersSection">
+                    <section id="hwUsersSection">
+                        <select id="hwUsers" class="cs-select cs-skin-elastic">
+                            <option value="25" data-class="users25">25 Users</option>
+                            <option value="50" data-class="users50">50 Users</option>
+                            <option value="100" data-class="users100">100 Users</option>
+                            <option value="unl" data-class="unlimited" selected>Unlimited</option>
+                        </select>
+                    </section>
+                    <section id="swUsersSection">
+                        <input type="number" id="swUsers" size="10" min="5" max="1000" step="5" value="5">
+                    </section>
+                </td>
+                <td>
+                    <section id="lic_type">
+                        <select id="goodsType" class="cs-select cs-skin-elastic">
+                            <option value="" selected data-class="Commercial">Komerční</option>
+                            <option value="GOV" data-class="GOV">GOV</option>
+                            <option value="EDU" data-class="EDU">EDU</option>
+                        </select>
+                    </section>
+                </td>
+                <td>
+                    <section id="new_swm">
+                        <select id="swm_select" class="cs-select cs-skin-elastic">
+                            <option value="1" selected>1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </section>
+                </td>
+                <td>
+                    <ul id="extensions">
+                        <li id="antivirusLabel">
+                            <input type="checkbox" class="checkbox" id="antivirus">
+                            <label for="antivirus">Antivirus</label>
+                        </li>
+                        <li id="activeSyncLabel">
+                            <input type="checkbox" class="checkbox" id="activeSync">
+                            <label for="activeSync">ActiveSync</label>
+                        </li>
+                        <li id="antispamLabel">
+                            <input type="checkbox" class="checkbox" id="antispam">
+                            <label for="antispam">Anti-spam</label>
+                        </li>
+                        <li id="webFilterLabel">
+                            <input type="checkbox" class="checkbox" id="webFilter">
+                            <label for="webFilter">Kerio WebFilter </label>
+                        </li>
+                        <li id="warrantyLabel">
+                            <input type="checkbox" class="checkbox" id="warranty">
+                            <label for="warranty">Extended Warranty (3 years)</label>
+                        </li>
+
+                    </ul>
+                </td>
+                <td>
+                    <input type="text" name="price" id="price">
+                </td>
+
+                <td>
+                    <input type="text" name="totalPrice" id="totalPrice">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <input type="text" name="product" id="productFullName">
                 </td>
             </tr>
         </table>
     </form>
 
-    <a href="#" class="buttonSubmit" id="updateEntityInRaynet" onclick="updateEntityInRaynet()">Upravit</a>
-    <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a>
-</div>
 
+</div>
 
 <script type="text/javascript" src="js/jquery.autocomplete.js"></script>
 <script>
     initForm();
-
-    function showValues() {
-        var str = $("form").serialize();
-        console.log(str);
-        $("#request").text(str);
-    }
-    $("#buttonSubmit").on("mouseover", showValues);
-
-    $("#company").on("click", setDefaults);
-
-    $("#newcalc").on("mouseover", createProductName)
+    linkEventsAndComponents();
 </script>
-
+<script src="js/classie.js"></script>
+<script src="js/selectFx.js"></script>
+<script>
+    (function () {
+        [].slice.call(document.querySelectorAll('select.cs-select')).forEach(function (el) {
+            new SelectFx(el);
+        });
+    })();
+</script>
 </body>
 </html>

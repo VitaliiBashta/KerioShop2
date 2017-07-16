@@ -3,7 +3,6 @@ package logic.objects;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import logic.Utils;
-import logic.dials.SecurityLevel;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -19,8 +18,6 @@ public class BusinessCaseWrite {
     private final long owner;
     private final long company; //required
     private final long person;
-    public double totalAmount;
-    public double estimatedValue;
     private final int probability;
     public String description;
     private final long currency;  //required
@@ -32,7 +29,6 @@ public class BusinessCaseWrite {
     private final int businessCasePhase;
     public List<Product> items;
     public transient Offer offer;
-    SecurityLevel securityLevel;
 
     public BusinessCaseWrite(FormObject formObject) {
         this.name = formObject.name;
