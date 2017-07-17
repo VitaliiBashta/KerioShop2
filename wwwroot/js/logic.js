@@ -18,7 +18,7 @@ function linkEventsAndComponents() {
     $(".checkbox").live("change", getFullNameAndCalculatePrice);
     $("#swUsers").live("change", getFullNameAndCalculatePrice);
     $("#prod_group_id").on("change", getFullNameAndCalculatePrice);
-    $("#company").on("blur", setCompany);
+    $("#company").on("click", setCompany);
 
     // $("#newcalc").on("mouseover", createProductName);
 
@@ -28,6 +28,7 @@ function linkEventsAndComponents() {
     $("#newlic").on("click", setNewOrExistingLic);
     $("#existlic").on("click", setNewOrExistingLic);
     $("#businessCase").on("change", businessCaseSelect);
+
     $("#updateEntityInRaynet").on("click", updateEntityInRaynet);
 
 }
@@ -39,17 +40,17 @@ function setDefaults() {
 
 function businessCaseSelect() {
     var businessCaseId = $("#businessCase").val();
-    $("#createEntityInRaynet").hide();
-    $("#updateEntityInRaynet").hide();
     $("#items").hide();
+    $("#products").hide();
+    $("#downloadPDF").hide();
+    $("#createEntityInRaynet").hide();
 
     if (businessCaseId === "0") {
         $("#createEntityInRaynet").show();
         $("#items").show();
-        $("#downloadPDF").hide();
+        $("#products").show();
     }
     else {
-        $("#updateEntityInRaynet").show();
         var XmlHTTP;
         if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
 

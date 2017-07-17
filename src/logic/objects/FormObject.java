@@ -72,7 +72,7 @@ public class FormObject {
         this.businessCasePhase = 42; // cenova nabidka
     }
 
-    public FormObject(String query) throws ParseException {
+    public FormObject(String query) {
         this();
         Map<String, String> params = Utils.split(query);
         if (params.get("product") != null) this.name = params.get("product");
@@ -80,13 +80,17 @@ public class FormObject {
         if (params.get("company") != null) this.company = Integer.valueOf((params.get("company")));
         if (params.get("currency") != null) this.currency = Integer.valueOf((params.get("currency")));
         if (params.get("owner") != null) this.owner = Integer.valueOf((params.get("owner")));
-        if (params.get("validFrom") != null) {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            this.validFrom = format.parse(params.get("validFrom"));
-        }
-        if (params.get("scheduledEnd") != null) {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            this.scheduledEnd = format.parse(params.get("scheduledEnd"));
+        try {
+            if (params.get("validFrom") != null) {
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                this.validFrom = format.parse(params.get("validFrom"));
+            }
+            if (params.get("scheduledEnd") != null) {
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                this.scheduledEnd = format.parse(params.get("scheduledEnd"));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         if (params.get("probability") != null) this.probability = Integer.parseInt(params.get("probability"));
         if (params.get("category") != null) this.category = Integer.parseInt(params.get("category"));
