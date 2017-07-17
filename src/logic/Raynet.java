@@ -32,7 +32,6 @@ public class Raynet {
     Raynet() {
         dials.put("businessCaseCategory", new TreeMap<>());
         dials.put("businessCasePhase", new TreeMap<>());
-        dials.put("contactSource", new TreeMap<>());
     }
 
     public Company getCompanyById(int id) {
@@ -42,7 +41,6 @@ public class Raynet {
         return null;
     }
     void init() {
-        initDials();
         initCompanies();
         initPersons();
         initAllBusinessCases();
@@ -70,29 +68,6 @@ public class Raynet {
         linkBusinessCaseAndOwnerAndPerson();
         LinkBusinessCaseAndCompany();
         LinkBusinessCaseAndOffer();
-    }
-
-    private void initDials() {
-        for (Map.Entry<String, Map<String, Dial>> entry : dials.entrySet()) {
-            String response = Methods.sendGet("/api/v2/" + entry.getKey() + "/");
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            JsonDial json = gson.fromJson(response, JsonDial.class);
-            Map<String, Dial> dialList = new TreeMap<>();
-            for (int j = 0; j < json.data.size(); j++) {
-                dialList.put(json.data.get(j).code01, json.data.get(j));
-                entry.setValue(dialList);
-            }
-            System.out.println("Loading " + entry.getKey() + "... Loaded:" + entry.getValue().size() + ":" + json.totalCount);
-        }
-    }
-
-    String getDialHtml(String dial) {
-        StringBuilder result = new StringBuilder();
-        Collection<Dial> dialList = dials.get(dial).values();
-        for (Dial item : dialList) {
-            result.append(item.asHtmlOption());
-        }
-        return result.toString();
     }
 
     public void LinkBusinessCaseAndOffer() {
@@ -275,6 +250,7 @@ public class Raynet {
     public String getBusinessCases(String companyName) {
         StringBuilder result = new StringBuilder();
         Company company = companies.get(companyName);
+        result.append("<option selected disabled value=\"\"></option>");
         result.append("<option value=\"0\">(nový)</option>");
         for (BusinessCaseRead businessCase : company.businessCases) {
             result.append(businessCase.asHTML());

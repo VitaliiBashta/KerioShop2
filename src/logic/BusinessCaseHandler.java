@@ -25,8 +25,9 @@ private Raynet raynet;
 
             FormObject formObject = new FormObject(URLDecoder.decode(query, "UTF-8"));
             Integer businessCaseId = formObject.getBusinessCase().createBusinessCaseInRaynet();
-
+            formObject.getProduct().setBusinessCaseId(businessCaseId);
             Integer productId = formObject.getProduct().createProductInRaynet();
+            formObject.getOffer().setBusinessCase(businessCaseId);
             Integer offerId = formObject.getOffer().createOfferInRaynet();
             formObject.getOffer().sync();
 

@@ -2,8 +2,6 @@ var companiesList;
 
 function initForm() {
     getCompanyList();
-    sendGet("?getList=businessCaseCategory", "businessCaseCategory")
-    sendGet("?getList=businessCasePhase", "businessCasePhase");
 
     var date = new Date();
     $("#validFrom").val(date.format());
@@ -284,11 +282,13 @@ function getFullNameAndCalculatePrice() {
 
 function setCompany() {
     var company = $("#company").val();
+
     $("#persons").innerHTML = "";
 
     sendGet("?getPersonsFor=" + company, "persons");
     sendGet("?getIdFor=" + company, "companyID");
     sendGet("?getBusinessCasesFor=" + company, "businessCase");
+    if(company !="") $("#mainTable").show();
 }
 
 function createEntityInRaynet() {

@@ -24,7 +24,7 @@ class DynamicHandler implements HttpHandler {
         if (he.getRequestMethod().equals("GET")) {
 
             String query = requestedUri.getQuery();
-            System.out.println("GET parameters>\t" + query);
+
             String response = "";
             if (query == null) {
                 if (requestedUri.getPath().equals("/"))
@@ -32,12 +32,9 @@ class DynamicHandler implements HttpHandler {
                 else
                     sendFile(requestedUri.getRawPath(), he);
             } else {
+                System.out.println("GET parameters>\t" + query);
                 if (query.equals("getCompanyList"))
                     response = raynet.companiesToJson(raynet.companies.values());
-                if (query.startsWith("getList")) {
-                    String className = query.split("=")[1];
-                    response = raynet.getDialHtml(className);
-                }
                 if (query.startsWith("getPersonsFor")) {
                     String companyName = query.split("=")[1];
                     response = raynet.getPersons(companyName);

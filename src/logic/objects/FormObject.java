@@ -39,20 +39,14 @@ public class FormObject {
 
 
     public ProductWrite getProduct() {
-        if (productWrite == null)
-            this.productWrite = new ProductWrite(this);
         return productWrite;
     }
 
     public BusinessCaseWrite getBusinessCase() {
-        if (businessCase == null)
-            this.businessCase = new BusinessCaseWrite(this);
         return businessCase;
     }
 
     public OfferWrite getOffer() {
-        if (offer == null)
-            this.offer = new OfferWrite(this);
         return offer;
     }
 
@@ -100,6 +94,9 @@ public class FormObject {
         this.count = 1;
         this.cost = this.price * (1 - Raynet.DISTRIBUTOR_MARGIN);
         if (this.currency == 15) this.taxRate = 21;
+        this.businessCase = new BusinessCaseWrite(this);
+        this.productWrite = new ProductWrite(this);
+        this.offer = new OfferWrite(this);
     }
 }
 

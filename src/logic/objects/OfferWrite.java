@@ -3,13 +3,12 @@ package logic.objects;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import logic.Utils;
-import logic.jsonObjects.JsonOfferPdfExport;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import webAccess.Methods;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 public class OfferWrite {
@@ -19,7 +18,12 @@ public class OfferWrite {
     private final Integer owner;
     private final Integer person;
     private final Integer company;
-    private final Integer businessCase;
+
+    public void setBusinessCase(Integer businessCase) {
+        this.businessCase = businessCase;
+    }
+
+    private Integer businessCase;
     private final Date validFrom;
     private final Date expirationDate;
     private final String description;

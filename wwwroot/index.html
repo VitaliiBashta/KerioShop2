@@ -17,27 +17,23 @@
         <table id="clientTable" class="clientField">
             <thead>
             <tr>
-                <td id="clientNameLabel">Klient</td>
-                <td id="personLabel">Kontaktní osoba</td>
-                <td id="discountCaption">Marže partnera</td>
-                <td id="currencyLabel">Měna:</td>
-                <td id="ownerLabel">Vlastník</td>
+                <td id="clientNameLabel"><label for="company">Klient</label></td>
+                <td id="personLabel"><label for="persons">Kontaktní osoba</label></td>
+                <td id="discountCaption"><label for="discountPercent">Marže partnera</label></td>
+                <td id="currencyLabel"><label for="currency">Měna:</label></td>
+                <td id="ownerLabel"><label for="owner">Vlastník</label></td>
             </tr>
             </thead>
             <tr>
                 <td><input type="text" id="company" value=""/></td>
-                <td>
-                    <select id="persons" name="person"> </select>
-                </td>
-                <td>
-                    <select type="text" name="discountPercent" class="cs-select cs-skin-elastic"
+                <td><select id="persons" name="person"> </select></td>
+                <td><select type="text" name="discountPercent" class="cs-select cs-skin-elastic"
                             id="discountPercent">
-                        <option value="15" selected>15 %</option>
-                        <option value="20">20 %</option>
-                        <option value="25">25 %</option>
-                        <option value="30">30 %</option>
-                    </select>
-                </td>
+                    <option value="15" selected>15 %</option>
+                    <option value="20">20 %</option>
+                    <option value="25">25 %</option>
+                    <option value="30">30 %</option>
+                </select></td>
                 <td>
                     <select id="currency" name="currency" class="cs-select cs-skin-elastic">
                         <option value="15" data-class="CZK" selected>CZK</option>
@@ -55,50 +51,55 @@
         </table>
         <table id="mainTable">
             <tr>
-                <th>
-                    <label for="businessCase"> Předmět:</label>
-                </th>
-                <td>
+                <th><label for="businessCase"> Předmět:</label></th>
+                <td colspan="4">
                     <select id="businessCase" name="name"></select>
                 </td>
-                <td>
-                    <a href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít obchodní případ</a>
+                <td colspan="2">
+                    <a href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít OP</a>
                     <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a>
                 </td>
             </tr>
             <tr>
-                <th>
-                    <label for="validFrom">Otevřeno od:</label>
-                </th>
-                <td>
+                <th>Časové rozmezí</th>
+                <td><label for="validFrom">Otevřeno od:</label></td>
+                <td colspan="2"><input type="date" class="date" id="validFrom" name="validFrom" value=""></td>
+                <td><label for="scheduledEnd">Odhad uzavření:</label></td>
+                <td colspan="2"><input type="date" class="date" id="scheduledEnd" name="scheduledEnd" value=""></td>
+            </tr>
+            <tr>
+                <th></th>
+                <td><label for="businessCasePhase">Stav:</label></td>
+                <td colspan="2"><select class="cs-select cs-skin-elastic" id="businessCasePhase" name="businessCasePhase">
+                    <option value="41">Analýza potřeb</option>
+                    <option value="42" selected>Cenová nabídka</option>
+                    <option value="39">Identifikace příležitosti</option>
+                    <option value="40">Inicializační jednání</option>
+                    <option value="46">Prohra</option>
+                    <option value="44">Před uzavřením</option>
+                    <option value="43">Vyjednávání / Revize</option>
+                    <option value="45">Výhra</option>
+                    <option value="47">Zrušeno</option>
+                </select></td>
+                <td><label for="businessCaseCategory"> Kategorie:</label></td>
+                <td colspan="2"><select class="cs-select cs-skin-elastic" id="businessCaseCategory" name="category">
+                    <option value="486">KERIO CONNECT</option>
+                    <option value="487">KERIO CONTROL</option>
+                    <option value="488">KERIO OPERATOR</option>
+                    <option value="485">KERIO CLOUD</option>
+                    <option value="225">GFI Email &amp; Messaging</option>
+                    <option value="226">GFI Network Security</option>
+                    <option value="286">GFI New &amp; Renewals</option>
+                    <option value="227">GFI Renewals</option>
+                </select></td>
+            </tr>
 
-                    <input type="date" class="date" id="validFrom" name="validFrom" value="">
-                    <label for="scheduledEnd">Odhad uzavření:</label>
-                    <input type="date" class="date" id="scheduledEnd" name="scheduledEnd" value="">
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="businessCasePhase">Stav:</label>
-                </th>
-                <td>
-                    <select id="businessCasePhase" name="businessCasePhase">&nbsp;</select>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="businessCaseCategory"> Kategorie:</label>
-                </th>
-                <td>
-                    <select id="businessCaseCategory" name="category">&nbsp;</select>
-                </td>
-            </tr>
             <tr>
                 <th>
                     <label for="probability"> Pravděpodobnost:</label><br>
                     <input type="range" id="probability" name="probability" value="50">
                 </th>
-                <td>
+                <td colspan="6">
                     <div id="descriptionArea">
                         <label for="description" id="descriptionLabel">Popis</label>
                         <textarea id="description" name="description"> </textarea>
@@ -107,22 +108,15 @@
             </tr>
 
         </table>
-        <table>
-            <tr>
-                <td id="items">
-                    <div>
-                        <input type="radio" class="radio" id="newlic" name="licence" value="1" checked>
-                        <label for="newlic">Nová licence</label>
-                        <input type="radio" class="radio" id="existlic" name="licence" value="2">
-                        <label for="existlic">Existující licence</label>
-                        <input type="text" id="licnum" maxlength="25" value="">
-                        <button type="submit" id="najit">Najít</button>
-                    </div>
-                </td>
-            </tr>
-        </table>
+        <div id="items">
+            <input type="radio" class="radio" id="newlic" name="licence" value="1" checked>
+            <label for="newlic">Nová licence</label>
+            <input type="radio" class="radio" id="existlic" name="licence" value="2">
+            <label for="existlic">Existující licence</label>
+            <input type="text" id="licnum" maxlength="25" value="">
+            <button type="submit" id="najit">Najít</button>
+        </div>
         <table id="products">
-
             <thead>
             <tr>
                 <td id="productNameCaption" colspan="2">Produkt</td>
