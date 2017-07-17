@@ -275,7 +275,7 @@ public class Raynet {
     public String getBusinessCases(String companyName) {
         StringBuilder result = new StringBuilder();
         Company company = companies.get(companyName);
-        result.append("<option value=\"0\"></option>");
+        result.append("<option value=\"0\">(nový)</option>");
         for (BusinessCaseRead businessCase : company.businessCases) {
             result.append(businessCase.asHTML());
         }

@@ -22,7 +22,6 @@
                 <td id="discountCaption">Marže partnera</td>
                 <td id="currencyLabel">Měna:</td>
                 <td id="ownerLabel">Vlastník</td>
-
             </tr>
             </thead>
             <tr>
@@ -51,60 +50,79 @@
                         <option value="462">Vitalii Bashta</option>
                     </select>
                 </td>
-                <td>
-                    <button href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít obchodní případ</button>
-                </td>
             </tr>
-
             <textarea style="display: none" id="companyID" name="company"></textarea>
         </table>
         <table id="mainTable">
             <tr>
-                <td id="form">
+                <th>
+                    <label for="businessCase"> Předmět:</label>
+                </th>
+                <td>
+                    <select id="businessCase" name="name"></select>
+                </td>
+                <td>
+                    <a href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít obchodní případ</a>
+                    <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="validFrom">Otevřeno od:</label>
+                </th>
+                <td>
 
-                    <div class="businessCaseFrame">
-                        <label for="businessCase"> Předmět:</label>
-                        <select id="businessCase" name="name"></select>
-
-                        <label for="validFrom">Otevřeno od:</label>
-                        <input type="date" class="date" id="validFrom" name="validFrom" value="">
-                        <label for="scheduledEnd">Odhad uzavření:</label>
-                        <input type="date" class="date" id="scheduledEnd" name="scheduledEnd" value="">
-
-                        <label for="businessCasePhase">Stav:</label>
-                        <select id="businessCasePhase" name="businessCasePhase">&nbsp;</select>
-                        <br/>
-                        <label for="probability"> Pravděpodobnost:</label>
-                        <input type="range" id="probability" name="probability" value="50">
-                        <br/>
-                        <br/>
-                        <label for="businessCaseCategory"> Kategorie:</label>
-                        <select id="businessCaseCategory" name="category">&nbsp;</select>
-                    </div>
+                    <input type="date" class="date" id="validFrom" name="validFrom" value="">
+                    <label for="scheduledEnd">Odhad uzavření:</label>
+                    <input type="date" class="date" id="scheduledEnd" name="scheduledEnd" value="">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="businessCasePhase">Stav:</label>
+                </th>
+                <td>
+                    <select id="businessCasePhase" name="businessCasePhase">&nbsp;</select>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="businessCaseCategory"> Kategorie:</label>
+                </th>
+                <td>
+                    <select id="businessCaseCategory" name="category">&nbsp;</select>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="probability"> Pravděpodobnost:</label><br>
+                    <input type="range" id="probability" name="probability" value="50">
+                </th>
+                <td>
                     <div id="descriptionArea">
                         <label for="description" id="descriptionLabel">Popis</label>
                         <textarea id="description" name="description"> </textarea>
                     </div>
                 </td>
+            </tr>
+
+        </table>
+        <table>
+            <tr>
                 <td id="items">
                     <div>
                         <input type="radio" class="radio" id="newlic" name="licence" value="1" checked>
                         <label for="newlic">Nová licence</label>
                         <input type="radio" class="radio" id="existlic" name="licence" value="2">
                         <label for="existlic">Existující licence</label>
-                    </div>
-                    <div id="licnumdiv">
-                        <label for="licnum">Stavajicí licence:</label>
                         <input type="text" id="licnum" maxlength="25" value="">
-                        <input type="submit" id="najit" value="Najít">
+                        <button type="submit" id="najit">Najít</button>
                     </div>
-
-                    <a href="#" class="buttonSubmit" id="updateEntityInRaynet">Upravit</a><br>
-                    <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a><br>
                 </td>
             </tr>
         </table>
         <table id="products">
+
             <thead>
             <tr>
                 <td id="productNameCaption" colspan="2">Produkt</td>
@@ -189,7 +207,6 @@
                             <input type="checkbox" class="checkbox" id="warranty">
                             <label for="warranty">Extended Warranty (3 years)</label>
                         </li>
-
                     </ul>
                 </td>
                 <td>
@@ -207,8 +224,6 @@
             </tr>
         </table>
     </form>
-
-
 </div>
 
 <script type="text/javascript" src="js/jquery.autocomplete.js"></script>
