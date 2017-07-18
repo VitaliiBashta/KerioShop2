@@ -162,7 +162,6 @@ public class Raynet {
         }
     }
 
-
     private void linkCompanyAndPerson() {
         for (Person person : persons.values()) {
             if (person.primaryRelationship != null) {
@@ -173,7 +172,6 @@ public class Raynet {
                 } else {
                     System.out.println("===error in person : " + person);
                 }
-//                System.out.println(person + " works in " + companies.get(person.primaryRelationship.company.name));
             }
         }
     }

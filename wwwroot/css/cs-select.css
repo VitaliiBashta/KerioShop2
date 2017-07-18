@@ -28,19 +28,12 @@ div.cs-select:focus {
     text-overflow: ellipsis;
 }
 
-/* Placeholder and selected option */
-.cs-select > span {
-    /*padding-right: 3em;*/
-}
-
 .cs-select > span::after,
 .cs-select .cs-selected span::after {
     speak: none;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 .cs-select > span::after {

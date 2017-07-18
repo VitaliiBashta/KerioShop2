@@ -32,7 +32,7 @@ class DynamicHandler implements HttpHandler {
                 else
                     sendFile(requestedUri.getRawPath(), he);
             } else {
-                System.out.println("GET parameters>\t" + query);
+                System.out.println(">>> GET parameters:\t" + query);
                 if (query.equals("getCompanyList"))
                     response = raynet.companiesToJson(raynet.companies.values());
                 if (query.startsWith("getPersonsFor")) {
@@ -41,7 +41,7 @@ class DynamicHandler implements HttpHandler {
                 }
                 if (query.startsWith("getIdFor")) {
                     String companyName = query.split("=")[1];
-                    System.out.println("response for getIdFor " + companyName + raynet.companies.get(companyName).id);
+                    System.out.println("response for getIdFor (" + companyName + ")=" + raynet.companies.get(companyName).id);
                     response = String.valueOf(raynet.companies.get(companyName).id);
                 }
                 if (query.startsWith("getBusinessCasesFor")) {
@@ -54,6 +54,7 @@ class DynamicHandler implements HttpHandler {
                 }
             }
             if (!response.equals("")) {
+                System.out.println("<<<: \t");
                 he.sendResponseHeaders(200, response.getBytes().length);
                 os.write(response.getBytes());
             }
