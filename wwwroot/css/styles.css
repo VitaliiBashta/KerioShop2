@@ -1,5 +1,4 @@
-﻿/*kerio-color: #6595BE;*/
-
+﻿/*kerio-color:#6595BE;*/
 * {
     margin: 0;
     padding: 0;
@@ -18,12 +17,25 @@ ul {
     padding-left: 0;
 }
 
-.wrapper {
-    width: 400px;
-    margin: 50px auto;
-    padding: 15px;
-    border: 1px dashed #CCC;
-    border-radius: 4px;
+div {
+    border: 0px dotted black;
+}
+
+table {
+    table-layout: fixed;
+    margin: auto;
+}
+
+table, th, td {
+    border: 0px solid greenyellow;
+    vertical-align: middle;
+}
+
+thead, th {
+    background: #6595BE;
+    color: white;
+    font-size: 1em;
+    text-align: center;
 }
 
 .checkbox {
@@ -31,10 +43,6 @@ ul {
     width: 17px;
     height: 17px;
     margin: 0 3px 12px 0;
-}
-
-.checkbox + label {
-    cursor: pointer;
 }
 
 .checkbox:not(checked) {
@@ -138,31 +146,12 @@ ul {
     box-shadow: 0 0 0 3px rgba(255, 255, 0, .5);
 }
 
-.container {
-    width: 800px;
-    margin: 0 auto;
-}
-
-div {
-    border: 0px solid black;
-}
-
-table, th, td {
-    border: 0px solid black;
-    vertical-align: middle;
-    margin: auto;
-}
-
 .autocomplete-suggestions {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
-    border: 1px solid #999;
+    border: 3px solid #999;
     background: #FFF;
     cursor: default;
     overflow: auto;
-    -webkit-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64);
-    -moz-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64);
     box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64);
 }
 
@@ -177,7 +166,7 @@ table, th, td {
 }
 
 .autocomplete-selected {
-    background: #F0F0F0;
+    background: #6595BE;
 }
 
 .autocomplete-suggestions strong {
@@ -185,60 +174,50 @@ table, th, td {
     color: #000;
 }
 
-.autocomplete-group {
-    padding: 2px 5px;
-    font-weight: bold;
-    font-size: 16px;
-    color: #000;
-    display: block;
-    border-bottom: 1px solid #000;
+#company, #persons {
+    width: 100%;
+    height: 50px;
+    font-size: 1.5em;
 }
 
-#productNameCaption {
-    width: 700px;
-}
-
-#ownerLabel {
-    width: 200px;
-}
-
-#usersCountCaption {
-    width: 150px;
-}
-
-#licenseTypeCaption {
-    width: 120px;
-}
-
-#swmCaption {
+.width70 {
     width: 70px;
 }
 
-#products {
-    width: 1500px;
+.width100 {
+    width: 100px;
 }
 
-#extensionsCaption {
+.width120 {
+    width: 120px;
+}
+
+.width200 {
+    width: 200px;
+}
+
+.width300 {
+    width: 300px;
+}
+
+.width400 {
+    width: 400px;
+}
+
+.width500 {
     width: 500px;
 }
 
-#orderItems td {
-    text-align: left;
-}
-
-thead, th {
-    background: #6595BE;
-    color: white;
-    font-size: 1em;
-    text-align: center;
+#products {
+    width: 1400px;
+    max-width: 1400px;
+    margin: auto;
+    display: none;
 }
 
 
-
-
-#owner {
-    width: 400px;
-    margin: 1em
+#items, #mainTable {
+    display: none;
 }
 
 .date {
@@ -246,20 +225,10 @@ thead, th {
     margin: 1em;
 }
 
-#response {
-    margin: auto;
-    width: 90%;
-    background-color: green;
-    padding: 1em;
-    color: white;
-    font-size: 1em;
-    text-align: left;
-}
-
 #description {
     height: 100px;
     width: 100%;
-    max-width: 100%
+    max-width: 100%;
 }
 
 #descriptionLabel {
@@ -273,27 +242,14 @@ thead, th {
     background: #ffefc0;
 }
 
-.createBusinessCase {
-    width: 100%;
-    height: 80px;
-}
-
-#addProduct {
-    margin-top: 2em;
-    margin-bottom: 2em;
-}
-
 a.buttonSubmit {
     font-family: Arial, Helvetica, sans-serif;
-    /*display: none;*/
+    display: none;
     text-decoration: none;
     font-size: 24px;
     color: #ffffff;
+    width: 400px;
     padding: 10px 20px;
-    background: -moz-linear-gradient(
-            top,
-            #6595be 0%,
-            #375166);
     background: -webkit-gradient(
             linear, left top, left bottom,
             from(#6595be),
@@ -304,68 +260,33 @@ a.buttonSubmit {
     0px 1px 2px rgba(255, 255, 255, 1);
 }
 
-
 .buttonSubmit:hover {
     box-shadow: 6px 7px 3px rgba(000, 000, 000, 0.6),
     inset 0px 0px 2px rgba(255, 255, 255, 1);
 }
 
-
 #request {
-    width: 90%;
-}
-
-#productExample input {
-    width: 60px;
-}
-
-#productExample input[name="product"] {
-    width: 350px;
-}
-
-#priceCaption {
-    width: 100px;
-}
-
-#discountCaption {
-    width: 100px;
-}
-
-#clientNameLabel {
-    width: 300px;
-}
-
-#currencyLabel {
-    width: 100px;
-}
-
-#priceResultCaption {
-    width: 160px;
-}
-
-#response1 {
-    width: 1000px;
-    margin: auto;
-    font-size: 30px;
-}
-
-#boxGroup {
+    width: 100%;
     display: none;
 }
 
-#hwUsersSection {
-    display: none;
+#mainTable {
+    width: 900px;
 }
 
-#personLabel {
-    width: 300px;
+#mainTable th {
+    width: 200px;
+}
+
+#boxGroup, #hwUsersSection {
+    display: none;
 }
 
 #antivirusLabel, #activeSyncLabel, #antispamLabel, #webFilterLabel, #warrantyLabel {
     display: none;
 }
 
-#company, #persons, #swUsers, #price, #totalPrice, #businessCase {
+#swUsers, #price, #totalPrice, #businessCase, #productFullName {
     width: 100%;
     height: 50px;
     font-size: 1.5em;
@@ -374,8 +295,4 @@ a.buttonSubmit {
 #extensions li {
     float: left;
     padding-top: 1em;
-}
-
-#productFullName {
-    width: 100%;
 }

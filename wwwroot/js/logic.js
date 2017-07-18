@@ -2,8 +2,6 @@ var companiesList;
 
 function initForm() {
     getCompanyList();
-    sendGet("?getList=businessCaseCategory", "businessCaseCategory")
-    sendGet("?getList=businessCasePhase", "businessCasePhase");
 
     var date = new Date();
     $("#validFrom").val(date.format());
@@ -21,16 +19,8 @@ function linkEventsAndComponents() {
     $("#company").on("click", setCompany);
 
     // $("#newcalc").on("mouseover", createProductName);
-
-
     $("#createEntityInRaynet").on("click", createEntityInRaynet);
-
-    $("#newlic").on("click", setNewOrExistingLic);
-    $("#existlic").on("click", setNewOrExistingLic);
     $("#businessCase").on("change", businessCaseSelect);
-
-    $("#updateEntityInRaynet").on("click", updateEntityInRaynet);
-
 }
 
 function setDefaults() {
@@ -207,6 +197,7 @@ function getFullNameAndCalculatePrice() {
         }
 
         if (boxProduct === "NG500") { // Kerio Control NG500
+            productFullName += "Kerio Control NG500";
             users50.show();
             users100.show();
             basicPrice = prices.NG500_unl;
@@ -285,10 +276,10 @@ function getFullNameAndCalculatePrice() {
 function setCompany() {
     var company = $("#company").val();
     $("#persons").innerHTML = "";
-
     sendGet("?getPersonsFor=" + company, "persons");
     sendGet("?getIdFor=" + company, "companyID");
     sendGet("?getBusinessCasesFor=" + company, "businessCase");
+    if (company !== "") $("#mainTable").show();
 }
 
 function createEntityInRaynet() {
@@ -309,21 +300,6 @@ function createEntityInRaynet() {
     XmlHTTP.send(request);
 }
 
-function updateEntityInRaynet() {
-    var request = $("#request").val();
-    var businessCaseId = $("#businessCase").val();
-    var XmlHTTP;
-    if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
-    XmlHTTP.onreadystatechange = function () {
-        if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200)
-            $("#response1").attr("href", XmlHTTP.responseText);
-        $("#response1").show();
-    };
-    XmlHTTP.open("POST", "/businessCase/" + businessCaseId, true);
-    XmlHTTP.send(request);
-}
-
-
 function getCompanyList() {
     var XmlHTTP;
     if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
@@ -339,18 +315,6 @@ function getCompanyList() {
     XmlHTTP.send();
 }
 
-function sendPut(request, uri, container) {
-    var XmlHTTP;
-    if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
-    XmlHTTP.onreadystatechange = function () {
-        if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200)
-            document.getElementById(container).innerHTML = XmlHTTP.responseText;
-    };
-    var params = request;
-    XmlHTTP.open("PUT", uri, container);
-    XmlHTTP.send(params);
-}
-
 function sendGet(request, container) {
     var XmlHTTP;
     if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
@@ -361,18 +325,6 @@ function sendGet(request, container) {
     };
     XmlHTTP.open("GET", request, true);
     XmlHTTP.send();
-}
-
-function setNewOrExistingLic() {
-    var newLicense = $("#licnumdiv");
-    var newLicenseRadio = $("#newlic");
-    var existingLicense = $("#newcalc");
-
-    newLicense.hide();
-    existingLicense.hide();
-    if (newLicenseRadio.is(':checked')) existingLicense.show();
-    else
-        newLicense.show();
 }
 
 Date.prototype.format = function () {

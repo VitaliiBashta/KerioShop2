@@ -2,8 +2,6 @@ package logic;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import logic.dials.Dial;
-import logic.jsonDials.JsonDial;
 import logic.jsonObjects.*;
 import logic.objects.BusinessCaseRead;
 import logic.objects.Company;
@@ -21,19 +19,10 @@ public class Raynet {
     public static final String RAYNET_URL = "https://app.raynet.cz";
     public static final Double DISTRIBUTOR_MARGIN = 0.45;
     private static final int HOPS = 5;
-
-    final Map<String, Company> companies = new TreeMap<>();
-    private final Map<String, Map<String, Dial>> dials = new HashMap<>();
-    private final Map<Integer, Person> persons = new HashMap<>();
     public final Map<Integer, BusinessCaseRead> businessCases = new HashMap<>();
     public final Map<Integer, Offer> offers = new HashMap<>();
-
-
-    Raynet() {
-        dials.put("businessCaseCategory", new TreeMap<>());
-        dials.put("businessCasePhase", new TreeMap<>());
-        dials.put("contactSource", new TreeMap<>());
-    }
+    final Map<String, Company> companies = new TreeMap<>();
+    private final Map<Integer, Person> persons = new HashMap<>();
 
     public Company getCompanyById(int id) {
         for (Company company: companies.values()             ) {
@@ -42,7 +31,6 @@ public class Raynet {
         return null;
     }
     void init() {
-        initDials();
         initCompanies();
         initPersons();
         initAllBusinessCases();
@@ -70,29 +58,6 @@ public class Raynet {
         linkBusinessCaseAndOwnerAndPerson();
         LinkBusinessCaseAndCompany();
         LinkBusinessCaseAndOffer();
-    }
-
-    private void initDials() {
-        for (Map.Entry<String, Map<String, Dial>> entry : dials.entrySet()) {
-            String response = Methods.sendGet("/api/v2/" + entry.getKey() + "/");
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            JsonDial json = gson.fromJson(response, JsonDial.class);
-            Map<String, Dial> dialList = new TreeMap<>();
-            for (int j = 0; j < json.data.size(); j++) {
-                dialList.put(json.data.get(j).code01, json.data.get(j));
-                entry.setValue(dialList);
-            }
-            System.out.println("Loading " + entry.getKey() + "... Loaded:" + entry.getValue().size() + ":" + json.totalCount);
-        }
-    }
-
-    String getDialHtml(String dial) {
-        StringBuilder result = new StringBuilder();
-        Collection<Dial> dialList = dials.get(dial).values();
-        for (Dial item : dialList) {
-            result.append(item.asHtmlOption());
-        }
-        return result.toString();
     }
 
     public void LinkBusinessCaseAndOffer() {
@@ -275,6 +240,7 @@ public class Raynet {
     public String getBusinessCases(String companyName) {
         StringBuilder result = new StringBuilder();
         Company company = companies.get(companyName);
+        result.append("<option selected disabled value=\"\"></option>");
         result.append("<option value=\"0\">(nový)</option>");
         for (BusinessCaseRead businessCase : company.businessCases) {
             result.append(businessCase.asHTML());
