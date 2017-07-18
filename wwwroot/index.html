@@ -17,11 +17,11 @@
         <table id="clientTable" class="clientField">
             <thead>
             <tr>
-                <td id="clientNameLabel"><label for="company">Klient</label></td>
-                <td id="personLabel"><label for="persons">Kontaktní osoba</label></td>
-                <td id="discountCaption"><label for="discountPercent">Marže partnera</label></td>
-                <td id="currencyLabel"><label for="currency">Měna:</label></td>
-                <td id="ownerLabel"><label for="owner">Vlastník</label></td>
+                <td class="width300"><label for="company">Klient</label></td>
+                <td class="width300"><label for="persons">Kontaktní osoba</label></td>
+                <td class="width100"><label for="discountPercent">Marže partnera</label></td>
+                <td class="width100"><label for="currency">Měna:</label></td>
+                <td class="width200"><label for="owner">Vlastník</label></td>
             </tr>
             </thead>
             <tr>
@@ -70,16 +70,12 @@
             <tr>
                 <th></th>
                 <td><label for="businessCasePhase">Stav:</label></td>
-                <td colspan="2"><select class="cs-select cs-skin-elastic" id="businessCasePhase" name="businessCasePhase">
+                <td colspan="2"><select class="cs-select cs-skin-elastic" id="businessCasePhase"
+                                        name="businessCasePhase">
                     <option value="41">Analýza potřeb</option>
                     <option value="42" selected>Cenová nabídka</option>
-                    <option value="39">Identifikace příležitosti</option>
-                    <option value="40">Inicializační jednání</option>
                     <option value="46">Prohra</option>
-                    <option value="44">Před uzavřením</option>
-                    <option value="43">Vyjednávání / Revize</option>
                     <option value="45">Výhra</option>
-                    <option value="47">Zrušeno</option>
                 </select></td>
                 <td><label for="businessCaseCategory"> Kategorie:</label></td>
                 <td colspan="2"><select class="cs-select cs-skin-elastic" id="businessCaseCategory" name="category">
@@ -87,13 +83,8 @@
                     <option value="487">KERIO CONTROL</option>
                     <option value="488">KERIO OPERATOR</option>
                     <option value="485">KERIO CLOUD</option>
-                    <option value="225">GFI Email &amp; Messaging</option>
-                    <option value="226">GFI Network Security</option>
-                    <option value="286">GFI New &amp; Renewals</option>
-                    <option value="227">GFI Renewals</option>
                 </select></td>
             </tr>
-
             <tr>
                 <th>
                     <label for="probability"> Pravděpodobnost:</label><br>
@@ -119,25 +110,23 @@
         <table id="products">
             <thead>
             <tr>
-                <td id="productNameCaption" colspan="2">Produkt</td>
-                <td id="usersCountCaption">Počet uživatelu</td>
-                <td id="licenseTypeCaption">Typ licence</td>
-                <td id="swmCaption">Počet let SWM</td>
-                <td id="extensionsCaption">Rožšiření</td>
-                <td id="priceCaption">Cena</td>
-                <td id="priceResultCaption">Cena pro partnera</td>
+                <td class="width400" colspan="2">Produkt</td>
+                <td class="width120">Počet uživatelu</td>
+                <td class="width120"><label for="swm_select">Typ licence</label></td>
+                <td class="width70">Počet let SWM</td>
+                <td class="width500">Rožšiření</td>
+                <td class="width100"><label for="price">Cena</label></td>
+                <td class="width100"><label for="totalPrice">Cena pro partnera</label></td>
             </tr>
             </thead>
             <tr>
                 <td id="productGroup" colspan="2">
-                    <section>
-                        <select id="prod_group_id" class="cs-select cs-skin-elastic">
-                            <option value="kerioConnect" data-class="kerio-connect" selected>Kerio Connect</option>
-                            <option value="kerioControl" data-class="kerioControl">Kerio Control</option>
-                            <option value="kerioOperator" data-class="kerio-operator">Kerio Operator</option>
-                            <option value="kerioBox" data-class="kerio-box">Kerio Boxes...</option>
-                        </select>
-                    </section>
+                    <select id="prod_group_id" class="cs-select cs-skin-elastic">
+                        <option value="kerioConnect" data-class="kerio-connect" selected>Kerio Connect</option>
+                        <option value="kerioControl" data-class="kerioControl">Kerio Control</option>
+                        <option value="kerioOperator" data-class="kerio-operator">Kerio Operator</option>
+                        <option value="kerioBox" data-class="kerio-box">Kerio Boxes...</option>
+                    </select>
                 </td>
                 <td id="boxGroup">
                     <select id="hardware" class="cs-select cs-skin-elastic">

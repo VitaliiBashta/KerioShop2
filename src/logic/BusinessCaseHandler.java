@@ -5,7 +5,10 @@ import com.sun.net.httpserver.HttpHandler;
 import logic.objects.Company;
 import logic.objects.FormObject;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URLDecoder;
 
 class BusinessCaseHandler implements HttpHandler {
@@ -36,7 +39,7 @@ private Raynet raynet;
             raynet.initOffers(formObject.company);
             Company company = raynet.getCompanyById(formObject.company);
             if (company != null) {
-                company.businessCases.clear();
+//                company.businessCases.clear();
                 company.businessCases.add(raynet.businessCases.get(businessCaseId));
                 raynet.businessCases.get(businessCaseId).offer = raynet.offers.get(offerId);
             }

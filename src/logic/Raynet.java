@@ -2,8 +2,6 @@ package logic;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import logic.dials.Dial;
-import logic.jsonDials.JsonDial;
 import logic.jsonObjects.*;
 import logic.objects.BusinessCaseRead;
 import logic.objects.Company;
@@ -21,18 +19,10 @@ public class Raynet {
     public static final String RAYNET_URL = "https://app.raynet.cz";
     public static final Double DISTRIBUTOR_MARGIN = 0.45;
     private static final int HOPS = 5;
-
-    final Map<String, Company> companies = new TreeMap<>();
-    private final Map<String, Map<String, Dial>> dials = new HashMap<>();
-    private final Map<Integer, Person> persons = new HashMap<>();
     public final Map<Integer, BusinessCaseRead> businessCases = new HashMap<>();
     public final Map<Integer, Offer> offers = new HashMap<>();
-
-
-    Raynet() {
-        dials.put("businessCaseCategory", new TreeMap<>());
-        dials.put("businessCasePhase", new TreeMap<>());
-    }
+    final Map<String, Company> companies = new TreeMap<>();
+    private final Map<Integer, Person> persons = new HashMap<>();
 
     public Company getCompanyById(int id) {
         for (Company company: companies.values()             ) {

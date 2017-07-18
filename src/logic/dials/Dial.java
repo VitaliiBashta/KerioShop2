@@ -3,7 +3,7 @@ package logic.dials;
 
 public class Dial {
     public int id;
-    public String code01;
+    private String code01;
 
     @Override
     public String toString() {

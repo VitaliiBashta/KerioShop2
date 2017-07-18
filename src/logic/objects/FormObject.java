@@ -12,20 +12,19 @@ import java.util.Locale;
 import java.util.Map;
 
 public class FormObject {
-    String name; //required
+    public final Double exchangeRate;
+    public final Integer source;
+    public final Integer businessCasePhase; //
     public String code;
     public Integer owner;
     public Integer company; //required
     public Integer person;
     public Integer probability;
-    public final String description;
+    public String description;
     public Integer currency;  //required
-    public final Double exchangeRate;
     public Integer category;
-    public final Integer source;
     public Date validFrom;
     public Date scheduledEnd;
-    public final Integer businessCasePhase; //
     public String product;
     public Double price;
     public String discountPercent;
@@ -33,22 +32,11 @@ public class FormObject {
     public Number cost;
     public Number taxRate;
     public transient List<Product> items;
+    String name; //required
     private transient BusinessCaseWrite businessCase;
     private transient OfferWrite offer;
     private transient ProductWrite productWrite;
 
-
-    public ProductWrite getProduct() {
-        return productWrite;
-    }
-
-    public BusinessCaseWrite getBusinessCase() {
-        return businessCase;
-    }
-
-    public OfferWrite getOffer() {
-        return offer;
-    }
 
     private FormObject() {
         this.name = "testForm";
@@ -70,10 +58,11 @@ public class FormObject {
         this();
         Map<String, String> params = Utils.split(query);
         if (params.get("product") != null) this.name = params.get("product");
-        if (params.get("person") != null) this.person = Integer.valueOf((params.get("person")));
-        if (params.get("company") != null) this.company = Integer.valueOf((params.get("company")));
-        if (params.get("currency") != null) this.currency = Integer.valueOf((params.get("currency")));
-        if (params.get("owner") != null) this.owner = Integer.valueOf((params.get("owner")));
+        if (params.get("person") != null) this.person = Integer.valueOf(params.get("person"));
+        if (params.get("company") != null) this.company = Integer.valueOf(params.get("company"));
+        if (params.get("currency") != null) this.currency = Integer.valueOf(params.get("currency"));
+        if (params.get("currency") != null) this.currency = Integer.valueOf(params.get("currency"));
+        if (params.get("description") != null) this.description = params.get("description");
         try {
             if (params.get("validFrom") != null) {
                 DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -91,12 +80,25 @@ public class FormObject {
         if (params.get("product") != null) this.product = params.get("product");
         if (params.get("price") != null) this.price = Double.valueOf(params.get("price"));
         if (params.get("discountPercent") != null) this.discountPercent = params.get("discountPercent");
+        if (params.get("discountPercent") != null) this.discountPercent = params.get("discountPercent");
         this.count = 1;
         this.cost = this.price * (1 - Raynet.DISTRIBUTOR_MARGIN);
         if (this.currency == 15) this.taxRate = 21;
         this.businessCase = new BusinessCaseWrite(this);
         this.productWrite = new ProductWrite(this);
         this.offer = new OfferWrite(this);
+    }
+
+    public ProductWrite getProduct() {
+        return productWrite;
+    }
+
+    public BusinessCaseWrite getBusinessCase() {
+        return businessCase;
+    }
+
+    public OfferWrite getOffer() {
+        return offer;
     }
 }
 
