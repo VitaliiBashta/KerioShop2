@@ -17,27 +17,23 @@
         <table id="clientTable" class="clientField">
             <thead>
             <tr>
-                <td id="clientNameLabel">Klient</td>
-                <td id="personLabel">Kontaktní osoba</td>
-                <td id="discountCaption">Marže partnera</td>
-                <td id="currencyLabel">Měna:</td>
-                <td id="ownerLabel">Vlastník</td>
+                <td class="width300"><label for="company">Klient</label></td>
+                <td class="width300"><label for="persons">Kontaktní osoba</label></td>
+                <td class="width100"><label for="discountPercent">Marže partnera</label></td>
+                <td class="width100"><label for="currency">Měna:</label></td>
+                <td class="width200"><label for="owner">Vlastník</label></td>
             </tr>
             </thead>
             <tr>
                 <td><input type="text" id="company" value=""/></td>
-                <td>
-                    <select id="persons" name="person"> </select>
-                </td>
-                <td>
-                    <select type="text" name="discountPercent" class="cs-select cs-skin-elastic"
+                <td><select id="persons" name="person"> </select></td>
+                <td><select type="text" name="discountPercent" class="cs-select cs-skin-elastic"
                             id="discountPercent">
-                        <option value="15" selected>15 %</option>
-                        <option value="20">20 %</option>
-                        <option value="25">25 %</option>
-                        <option value="30">30 %</option>
-                    </select>
-                </td>
+                    <option value="15" selected>15 %</option>
+                    <option value="20">20 %</option>
+                    <option value="25">25 %</option>
+                    <option value="30">30 %</option>
+                </select></td>
                 <td>
                     <select id="currency" name="currency" class="cs-select cs-skin-elastic">
                         <option value="15" data-class="CZK" selected>CZK</option>
@@ -55,50 +51,46 @@
         </table>
         <table id="mainTable">
             <tr>
-                <th>
-                    <label for="businessCase"> Předmět:</label>
-                </th>
-                <td>
+                <th><label for="businessCase"> Předmět:</label></th>
+                <td colspan="4">
                     <select id="businessCase" name="name"></select>
                 </td>
-                <td>
-                    <a href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít obchodní případ</a>
+                <td colspan="2">
+                    <a href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít OP</a>
                     <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a>
                 </td>
             </tr>
             <tr>
-                <th>
-                    <label for="validFrom">Otevřeno od:</label>
-                </th>
-                <td>
-
-                    <input type="date" class="date" id="validFrom" name="validFrom" value="">
-                    <label for="scheduledEnd">Odhad uzavření:</label>
-                    <input type="date" class="date" id="scheduledEnd" name="scheduledEnd" value="">
-                </td>
+                <th>Časové rozmezí</th>
+                <td><label for="validFrom">Otevřeno od:</label></td>
+                <td colspan="2"><input type="date" class="date" id="validFrom" name="validFrom" value=""></td>
+                <td><label for="scheduledEnd">Odhad uzavření:</label></td>
+                <td colspan="2"><input type="date" class="date" id="scheduledEnd" name="scheduledEnd" value=""></td>
             </tr>
             <tr>
-                <th>
-                    <label for="businessCasePhase">Stav:</label>
-                </th>
-                <td>
-                    <select id="businessCasePhase" name="businessCasePhase">&nbsp;</select>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="businessCaseCategory"> Kategorie:</label>
-                </th>
-                <td>
-                    <select id="businessCaseCategory" name="category">&nbsp;</select>
-                </td>
+                <th></th>
+                <td><label for="businessCasePhase">Stav:</label></td>
+                <td colspan="2"><select class="cs-select cs-skin-elastic" id="businessCasePhase"
+                                        name="businessCasePhase">
+                    <option value="41">Analýza potřeb</option>
+                    <option value="42" selected>Cenová nabídka</option>
+                    <option value="46">Prohra</option>
+                    <option value="45">Výhra</option>
+                </select></td>
+                <td><label for="businessCaseCategory"> Kategorie:</label></td>
+                <td colspan="2"><select class="cs-select cs-skin-elastic" id="businessCaseCategory" name="category">
+                    <option value="486">KERIO CONNECT</option>
+                    <option value="487">KERIO CONTROL</option>
+                    <option value="488">KERIO OPERATOR</option>
+                    <option value="485">KERIO CLOUD</option>
+                </select></td>
             </tr>
             <tr>
                 <th>
                     <label for="probability"> Pravděpodobnost:</label><br>
                     <input type="range" id="probability" name="probability" value="50">
                 </th>
-                <td>
+                <td colspan="6">
                     <div id="descriptionArea">
                         <label for="description" id="descriptionLabel">Popis</label>
                         <textarea id="description" name="description"> </textarea>
@@ -107,43 +99,34 @@
             </tr>
 
         </table>
-        <table>
-            <tr>
-                <td id="items">
-                    <div>
-                        <input type="radio" class="radio" id="newlic" name="licence" value="1" checked>
-                        <label for="newlic">Nová licence</label>
-                        <input type="radio" class="radio" id="existlic" name="licence" value="2">
-                        <label for="existlic">Existující licence</label>
-                        <input type="text" id="licnum" maxlength="25" value="">
-                        <button type="submit" id="najit">Najít</button>
-                    </div>
-                </td>
-            </tr>
-        </table>
+        <div id="items">
+            <input type="radio" class="radio" id="newlic" name="licence" value="1" checked>
+            <label for="newlic">Nová licence</label>
+            <input type="radio" class="radio" id="existlic" name="licence" value="2">
+            <label for="existlic">Existující licence</label>
+            <input type="text" id="licnum" maxlength="25" value="">
+            <button type="submit" id="najit">Najít</button>
+        </div>
         <table id="products">
-
             <thead>
             <tr>
-                <td id="productNameCaption" colspan="2">Produkt</td>
-                <td id="usersCountCaption">Počet uživatelu</td>
-                <td id="licenseTypeCaption">Typ licence</td>
-                <td id="swmCaption">Počet let SWM</td>
-                <td id="extensionsCaption">Rožšiření</td>
-                <td id="priceCaption">Cena</td>
-                <td id="priceResultCaption">Cena pro partnera</td>
+                <td class="width400" colspan="2">Produkt</td>
+                <td class="width120">Počet uživatelu</td>
+                <td class="width120"><label for="swm_select">Typ licence</label></td>
+                <td class="width70">Počet let SWM</td>
+                <td class="width500">Rožšiření</td>
+                <td class="width100"><label for="price">Cena</label></td>
+                <td class="width100"><label for="totalPrice">Cena pro partnera</label></td>
             </tr>
             </thead>
             <tr>
                 <td id="productGroup" colspan="2">
-                    <section>
-                        <select id="prod_group_id" class="cs-select cs-skin-elastic">
-                            <option value="kerioConnect" data-class="kerio-connect" selected>Kerio Connect</option>
-                            <option value="kerioControl" data-class="kerioControl">Kerio Control</option>
-                            <option value="kerioOperator" data-class="kerio-operator">Kerio Operator</option>
-                            <option value="kerioBox" data-class="kerio-box">Kerio Boxes...</option>
-                        </select>
-                    </section>
+                    <select id="prod_group_id" class="cs-select cs-skin-elastic">
+                        <option value="kerioConnect" data-class="kerio-connect" selected>Kerio Connect</option>
+                        <option value="kerioControl" data-class="kerioControl">Kerio Control</option>
+                        <option value="kerioOperator" data-class="kerio-operator">Kerio Operator</option>
+                        <option value="kerioBox" data-class="kerio-box">Kerio Boxes...</option>
+                    </select>
                 </td>
                 <td id="boxGroup">
                     <select id="hardware" class="cs-select cs-skin-elastic">

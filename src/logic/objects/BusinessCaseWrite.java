@@ -12,14 +12,11 @@ import java.util.Date;
 import java.util.List;
 
 public class BusinessCaseWrite {
-    public int id;
     private final String name;  //required
-    public String code;
     private final long owner;
     private final long company; //required
     private final long person;
     private final int probability;
-    public String description;
     private final long currency;  //required
     private final double exchangeRate;
     private final long category;
@@ -27,8 +24,11 @@ public class BusinessCaseWrite {
     private final Date validFrom;
     private final Date scheduledEnd;
     private final int businessCasePhase;
+    public int id;
+    public String code;
     public List<Product> items;
     public transient Offer offer;
+    private String description;
 
     public BusinessCaseWrite(FormObject formObject) {
         this.name = formObject.name;
@@ -43,6 +43,7 @@ public class BusinessCaseWrite {
         this.validFrom = formObject.validFrom;
         this.scheduledEnd = formObject.scheduledEnd;
         this.businessCasePhase = formObject.businessCasePhase;
+        this.description = formObject.description;
     }
 
     public Integer createBusinessCaseInRaynet() {

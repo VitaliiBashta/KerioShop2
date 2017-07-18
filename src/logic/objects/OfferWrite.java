@@ -3,28 +3,26 @@ package logic.objects;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import logic.Utils;
-import logic.jsonObjects.JsonOfferPdfExport;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import webAccess.Methods;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 public class OfferWrite {
-    private int id;
     private final String name;
-    public String code;
     private final Integer owner;
     private final Integer person;
     private final Integer company;
-    private final Integer businessCase;
     private final Date validFrom;
     private final Date expirationDate;
+    //    private final long category;
     private final String description;
     private final Integer offerStatus;
-
+    public String code;
+    private int id;
+    private Integer businessCase;
     public OfferWrite(FormObject formObject) {
         this.name = formObject.name;
         this.owner = formObject.owner;
@@ -34,12 +32,19 @@ public class OfferWrite {
         this.validFrom = formObject.validFrom;
         this.expirationDate = formObject.scheduledEnd;
         this.description = formObject.description;
+//        this.category = formObject.category;
         this.offerStatus = 49; //Nabidnuta
+    }
+
+    public void setBusinessCase(Integer businessCase) {
+        this.businessCase = businessCase;
     }
 
     private String getJson() {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        return gson.toJson(this);
+        String result = gson.toJson(this);
+        System.out.println(result);
+        return result;
     }
 
     public Integer createOfferInRaynet() {
