@@ -2,12 +2,14 @@ var companiesList;
 
 function initForm() {
     getCompanyList();
-
     var date = new Date();
     $("#validFrom").val(date.format());
-    date.setDate(date.getDate() + 25);
+    // date.setDate(date.getDate() + 25);
     $("#scheduledEnd").val(date.format());
+    // $("#expirationDate").val(date.format());
+
 }
+
 function linkEventsAndComponents() {
     $("#createEntityInRaynet").on("mouseover", serialize);
 
@@ -16,7 +18,9 @@ function linkEventsAndComponents() {
     $(".checkbox").live("change", getFullNameAndCalculatePrice);
     $("#swUsers").live("change", getFullNameAndCalculatePrice);
     $("#prod_group_id").on("change", getFullNameAndCalculatePrice);
-    $("#company").on("click", setCompany);
+    // $("#company").on("click", setCompany);
+    $(".autocomplete-suggestion").live("click", setCompany);
+
 
     // $("#newcalc").on("mouseover", createProductName);
     $("#createEntityInRaynet").on("click", createEntityInRaynet);
@@ -246,7 +250,7 @@ function getFullNameAndCalculatePrice() {
         extPrice += prices.webFilter;
     }
     if (warrantyLabel.is(":visible") && $("#warranty").is(':checked')) {
-        productFullName += ", incl. Ex Warr";
+        productFullName += " incl. Ext. Warranty";
         isExtWar = 1;
     }
 
@@ -275,11 +279,12 @@ function getFullNameAndCalculatePrice() {
 
 function setCompany() {
     var company = $("#company").val();
-    $("#persons").innerHTML = "";
-    sendGet("?getPersonsFor=" + company, "persons");
-    sendGet("?getIdFor=" + company, "companyID");
-    sendGet("?getBusinessCasesFor=" + company, "businessCase");
-    if (company !== "") $("#mainTable").show();
+    if (company !== "") {
+        sendGet("?getPersonsFor=" + company, $("#persons"));
+        sendGet("?getIdFor=" + company, $("#companyID"));
+        sendGet("?getBusinessCasesFor=" + company, $("#businessCase"));
+        $("#mainTable").show();
+    }
 }
 
 function createEntityInRaynet() {
@@ -320,7 +325,7 @@ function sendGet(request, container) {
     if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
     XmlHTTP.onreadystatechange = function () {
         if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
-            document.getElementById(container).innerHTML = XmlHTTP.responseText;
+            container.html(XmlHTTP.responseText);
         }
     };
     XmlHTTP.open("GET", request, true);
@@ -331,8 +336,10 @@ Date.prototype.format = function () {
     var mm = this.getMonth() + 1; // getMonth() is zero-based
     var dd = this.getDate();
 
-    return [this.getFullYear(), "-",
+    return [(dd > 9 ? '' : '0') + dd, "-",
         (mm > 9 ? '' : '0') + mm, "-",
-        (dd > 9 ? '' : '0') + dd
+        this.getFullYear(),
+
+
     ].join('');
 };

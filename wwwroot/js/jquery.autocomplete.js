@@ -246,7 +246,7 @@
             // If user clicked on a suggestion, hide() will
             // be canceled, otherwise close suggestions
             that.blurTimeoutId = setTimeout(function () {
-                that.hide();
+                // that.hide();
             }, 200);
         },
 

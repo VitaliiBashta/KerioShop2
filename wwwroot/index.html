@@ -1,11 +1,11 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title id="page-title">RAYNET by Vitalii Bashta</title>
-    <link href="css/styles.css" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="css/cs-select.css"/>
-    <link rel="stylesheet" type="text/css" href="css/cs-skin-elastic.css"/>
-    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <title>RAYNET by Vitalii Bashta</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+    <link href="css/cs-select.css" rel="stylesheet" type="text/css">
+    <link href="css/cs-skin-elastic.css" rel="stylesheet" type="text/css"/>
+    <script src="js/jquery-1.8.2.min.js"></script>
     <script src="js/logic.js"></script>
     <script src="js/prices.js"></script>
 </head>
@@ -97,23 +97,68 @@
                     </div>
                 </td>
             </tr>
-
         </table>
-        <div id="items">
-            <input type="radio" class="radio" id="newlic" name="licence" value="1" checked>
-            <label for="newlic">Nová licence</label>
-            <input type="radio" class="radio" id="existlic" name="licence" value="2">
-            <label for="existlic">Existující licence</label>
-            <input type="text" id="licnum" maxlength="25" value="">
-            <button type="submit" id="najit">Najít</button>
-        </div>
+        <table id="items">
+            <tr>
+                <td>
+                    <input type="radio" class="radio" id="newlic" name="licence" value="1" checked>
+                    <label for="newlic">Nová licence</label>
+                    <input type="radio" class="radio" id="existlic" name="licence" value="2">
+                    <label for="existlic">Existující licence</label>
+                    <input type="text" id="licnum" maxlength="25" value="">
+                    <button type="submit" id="najit">Najít</button>
+                </td>
+            </tr>
+        </table>
+        <table id="existingProducts">
+            <thead>
+            <tr>
+                <td class="width400" colspan="2">Licenční číslo</td>
+                <td class="width120">Stavajicí počet uživatelu</td>
+                <td class="width200"><label for="swm_select">Expirace</label></td>
+                <td class="width700">Zakoupená rožšiření</td>
+
+            </tr>
+            </thead>
+            <tr>
+                <td colspan="2">
+                    <input type="text" id="licenseNumber" value="10111-5UUBZ-C1A02">
+                </td>
+                <td>
+                    <input type="text" id="existingUsers" value="20">
+                </td>
+                <td>
+                    <input type="date" id="expirationDate" value="2017-05-15">
+                </td>
+                <td>
+                    <ul id="existingExtensions">
+                        <li id="existingAntivirusLabel">
+                            <input type="checkbox" class="checkbox" id="existingAntivirus">
+                            <label for="existingAntivirus">Antivirus</label>
+                        </li>
+                        <li id="existingActiveSyncLabel">
+                            <input type="checkbox" class="checkbox" id="existingActiveSync">
+                            <label for="existingActiveSync">ActiveSync</label>
+                        </li>
+                        <li id="existingAntispamLabel">
+                            <input type="checkbox" class="checkbox" id="existingAntispam">
+                            <label for="existingAntispam">Anti-spam</label>
+                        </li>
+                        <li id="existingWebFilterLabel">
+                            <input type="checkbox" class="checkbox" id="existingWebFilter">
+                            <label for="existingWebFilter">Kerio WebFilter </label>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
         <table id="products">
             <thead>
             <tr>
                 <td class="width400" colspan="2">Produkt</td>
                 <td class="width120">Počet uživatelu</td>
                 <td class="width120"><label for="swm_select">Typ licence</label></td>
-                <td class="width70">Počet let SWM</td>
+                <td class="width80">Počet let SWM</td>
                 <td class="width500">Rožšiření</td>
                 <td class="width100"><label for="price">Cena</label></td>
                 <td class="width100"><label for="totalPrice">Cena pro partnera</label></td>
@@ -131,14 +176,14 @@
                 <td id="boxGroup">
                     <select id="hardware" class="cs-select cs-skin-elastic">
                         <option value="NG100" data-class="NG100" selected>Control NG100</option>
-                        <option value="NG100W" data-class="NG100W" selected>Control NG100W</option>
+                        <option value="NG100W" data-class="NG100W">Control NG100W</option>
                         <option value="NG300" data-class="NG300">Control NG300</option>
                         <option value="NG300W" data-class="NG300W">Control NG300W</option>
                         <option value="NG500" data-class="NG500">Control NG500</option>
                         <option value="V300" data-class="V300">Operator V300</option>
                     </select>
                 </td>
-                <td id="usersSection">
+                <td>
                     <section id="hwUsersSection">
                         <select id="hwUsers" class="cs-select cs-skin-elastic">
                             <option value="25" data-class="users25">25 Users</option>
@@ -195,7 +240,6 @@
                 <td>
                     <input type="text" name="price" id="price">
                 </td>
-
                 <td>
                     <input type="text" name="totalPrice" id="totalPrice">
                 </td>
@@ -209,7 +253,7 @@
     </form>
 </div>
 
-<script type="text/javascript" src="js/jquery.autocomplete.js"></script>
+<script src="js/jquery.autocomplete.js"></script>
 <script>
     initForm();
     linkEventsAndComponents();
