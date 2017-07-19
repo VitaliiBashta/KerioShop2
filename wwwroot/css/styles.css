@@ -46,12 +46,14 @@ thead, th {
 }
 
 .checkbox:not(checked) {
-    opacity: 0;
+    /*opacity: 0;*/
+    display: none;
+    /*position: absolute;*/
 }
 
 .checkbox:not(checked) + label {
     position: relative;
-    padding: 0 0 40px 60px;
+    padding-left: 60px;
 }
 
 .checkbox:not(checked) + label:before {
@@ -219,7 +221,8 @@ thead, th {
     /*display: none;*/
 }
 
-#items, #mainTable {
+/*#items, */
+#mainTable {
     display: none;
 }
 
@@ -298,5 +301,6 @@ a.buttonSubmit {
 #extensions li, #existingExtensions li {
     float: left;
     padding-top: 1em;
+    padding-left: 1em;
 }
 

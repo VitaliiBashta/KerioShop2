@@ -102,9 +102,9 @@
             <tr>
                 <td>
                     <input type="radio" class="radio" id="newlic" name="licence" value="1" checked>
-                    <label for="newlic">Nová licence</label>
+                    <label for="newlic" class="newOrExisting">Nová licence</label>
                     <input type="radio" class="radio" id="existlic" name="licence" value="2">
-                    <label for="existlic">Existující licence</label>
+                    <label for="existlic" class="newOrExisting">Existující licence</label>
                     <input type="text" id="licnum" maxlength="25" value="">
                     <button type="submit" id="najit">Najít</button>
                 </td>
@@ -133,20 +133,16 @@
                 <td>
                     <ul id="existingExtensions">
                         <li id="existingAntivirusLabel">
-                            <input type="checkbox" class="checkbox" id="existingAntivirus">
-                            <label for="existingAntivirus">Antivirus</label>
+                            <label id="existingAntivirus">Antivirus</label>
                         </li>
                         <li id="existingActiveSyncLabel">
-                            <input type="checkbox" class="checkbox" id="existingActiveSync">
-                            <label for="existingActiveSync">ActiveSync</label>
+                            <label id="existingActiveSync" style="display: none">ActiveSync</label>
                         </li>
                         <li id="existingAntispamLabel">
-                            <input type="checkbox" class="checkbox" id="existingAntispam">
-                            <label for="existingAntispam">Anti-spam</label>
+                            <label id="existingAntispam" style="display: none">Anti-spam</label>
                         </li>
                         <li id="existingWebFilterLabel">
-                            <input type="checkbox" class="checkbox" id="existingWebFilter">
-                            <label for="existingWebFilter">Kerio WebFilter </label>
+                            <label id="existingWebFilter" style="display: none">Kerio WebFilter </label>
                         </li>
                     </ul>
                 </td>

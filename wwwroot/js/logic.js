@@ -1,5 +1,6 @@
 var companiesList;
 
+
 function initForm() {
     getCompanyList();
     var date = new Date();
@@ -13,13 +14,13 @@ function initForm() {
 function linkEventsAndComponents() {
     $("#createEntityInRaynet").on("mouseover", serialize);
 
-    $("#company").on("click", setDefaults);
-    $(".cs-options").live("click", getFullNameAndCalculatePrice);
-    $(".checkbox").live("change", getFullNameAndCalculatePrice);
-    $("#swUsers").live("change", getFullNameAndCalculatePrice);
-    $("#prod_group_id").on("change", getFullNameAndCalculatePrice);
+    $(".cs-options").live("click", calculate);
+    $(".checkbox").live("change", calculate);
+    $("#swUsers").live("change", calculate);
+    $("#prod_group_id").on("change", calculate);
     // $("#company").on("click", setCompany);
     $(".autocomplete-suggestion").live("click", setCompany);
+    $(".newOrExisting").live("click", newOrExistingToggle);
 
 
     // $("#newcalc").on("mouseover", createProductName);
@@ -27,10 +28,6 @@ function linkEventsAndComponents() {
     $("#businessCase").on("change", businessCaseSelect);
 }
 
-function setDefaults() {
-    $("#businessCasePhase").val("42");
-    $("#contactSource").val("61");
-}
 
 function businessCaseSelect() {
     var businessCaseId = $("#businessCase").val();
@@ -65,7 +62,171 @@ function serialize() {
     $("#request").text(str);
 }
 
-function getFullNameAndCalculatePrice() {
+function newOrExistingToggle() {
+    var existingUsers = $("#existingUsers").val();
+    var swUsers = $("#swUsers");
+    var existingProducts = $("#existingProducts");
+    var antivirusLabel = $("#antivirusLabel");
+    var activeSyncLabel = $("#activeSyncLabel");
+    var antispamLabel = $("#antispamLabel");
+    var warrantyLabel = $("#warrantyLabel");
+    var webFilterLabel = $("#webFilterLabel");
+
+    var existingAntivirus = $("#existingAntivirus");
+    var existingActiveSync = $("#existingActiveSync");
+    var existingAntispam = $("#existingAntispam");
+    var existingWebFilter = $("#existingWebFilter");
+
+
+    if (!$("#newlic").prop("checked")) {
+        existingProducts.hide();
+
+    } else {
+        existingProducts.show();
+        $("#existingUsers").prop('disabled', 'disabled');
+        $("#licenseNumber").prop('disabled', 'disabled');
+        $("#expirationDate").prop('disabled', 'disabled');
+        swUsers.val(existingUsers);
+        swUsers.attr("min", existingUsers);
+        if (existingAntivirus.is(":visible")) antivirusLabel.hide();
+        if (existingActiveSync.is(":visible")) activeSyncLabel.hide();
+        if (existingAntispam.is(":visible")) antispamLabel.hide();
+        if (existingAntispam.is(":visible")) antispamLabel.hide();
+        if (existingWebFilter.is(":visible")) webFilterLabel.hide();
+    }
+
+}
+
+function calculate() {
+    if ($("#newlic").prop("checked")) {
+        getFullNameAndCalculatePriceNewLicense()
+    } else {
+        getFullNameAndCalculatePriceExistingLicense();
+    }
+
+}
+function getFullNameAndCalculatePriceExistingLicense() {
+    var product = $("#prod_group_id").val();
+    var GOV = $(".GOV");
+    var EDU = $(".EDU");
+    var swUsers = $("#swUsers").val();
+    var new_swm = $("#new_swm");
+    var antivirusLabel = $("#antivirusLabel");
+    var activeSyncLabel = $("#activeSyncLabel");
+    var antispamLabel = $("#antispamLabel");
+    var warrantyLabel = $("#warrantyLabel");
+    var webFilterLabel = $("#webFilterLabel");
+
+    var existingAntivirus = $("#existingAntivirus");
+    var existingActiveSync = $("#existingActiveSync");
+    var existingAntispam = $("#existingAntispam");
+    var existingWebFilter = $("#existingWebFilter");
+
+    var lic_type = $("#lic_type").find(".cs-placeholder").text();
+
+    var basicPrice = 0;
+    var renPrice = 0;
+    var expCount = 0;
+    var extPrice = 0;
+    var exWarPrice = 0;
+    var isExtWar = 0;
+    var specPrice = 1;
+    var addSwm = 0;
+
+
+    GOV.hide();
+    EDU.hide();
+    antivirusLabel.hide();
+    activeSyncLabel.hide();
+    antispamLabel.hide();
+    webFilterLabel.hide();
+    warrantyLabel.hide();
+
+
+    var productFullName = "";
+    var prices = CZ_PRICES;
+    if ($("#currency").val() === "16") prices = EUR_PRICES;
+
+    if (product === "kerioConnect") {
+        productFullName += "Upgrade Kerio Connect";
+        renPrice = prices.RenConnectServer;
+        if (!existingAntivirus.is(":visible")) antivirusLabel.show();
+        if (!existingActiveSync.is(":visible")) activeSyncLabel.show();
+        if (!existingAntispam.is(":visible")) antispamLabel.show();
+    }
+    if (product === "kerioControl") {
+        GOV.show();
+        EDU.show();
+        antivirusLabel.show();
+        webFilterLabel.show();
+        productFullName += "Upgrade for Kerio Control";
+        renPrice = prices.RenControlServer;
+    }
+    if (product === "kerioOperator") {
+        GOV.show();
+        EDU.show();
+        productFullName += "Upgrade for Kerio Operator";
+        renPrice = prices.RenOperatorServer;
+    }
+    if (lic_type === "GOV") {
+        specPrice = 0.9;
+        productFullName += " GOV";
+    }
+
+    if (lic_type === "EDU") {
+        specPrice = 0.6;
+        productFullName += " EDU";
+    }
+
+    productFullName += ", " + swUsers + " users";
+    expCount = swUsers / 5 - 1;
+
+
+    if (antivirusLabel.is(":visible") && $("#antivirus").is(':checked')) {
+        productFullName += ", Kerio Antivirus";
+        extPrice += prices.antivirus;
+    }
+    if (activeSyncLabel.is(":visible") && $("#activeSync").is(':checked')) {
+        productFullName += ", ActiveSync";
+        extPrice += prices.activeSync;
+    }
+    if (antispamLabel.is(":visible") && $("#antispam").is(':checked')) {
+        productFullName += ", AntiSpam";
+        extPrice += prices.antiSpam;
+    }
+    if (webFilterLabel.is(":visible") && $("#webFilter").is(':checked')) {
+        productFullName += ", Kerio Web Filter";
+        extPrice += prices.webFilter;
+    }
+    if (warrantyLabel.is(":visible") && $("#warranty").is(':checked')) {
+        productFullName += " incl. Ext. Warranty";
+        isExtWar = 1;
+    }
+
+    if (new_swm === "2") {
+        productFullName += ", +1year SWM";
+        addSwm = 1;
+    }
+
+    $("#productFullName").val(productFullName);
+    $("#businessCase").val(productFullName);
+
+
+    var price = (basicPrice + expCount * prices.add5users + (expCount + 1) * extPrice // first year swm
+        + (renPrice + (expCount ) * prices.RenAdd5users + (expCount + 1) * extPrice) * addSwm) // add swm
+        * specPrice   // norm, gov, edu
+        + exWarPrice * isExtWar;
+    $("#price").val(Math.round(100 * price) / 100);
+
+    var discount = $("#discountPercent").val();
+    var totalPrice = (price * (100 - discount)) / 100;
+    $("#totalPrice").val(Math.round(100 * totalPrice) / 100);
+
+    var str = $("form").serialize();
+    $("#request").text(str);
+}
+
+function getFullNameAndCalculatePriceNewLicense() {
     var product = $("#prod_group_id").val();
     var GOV = $(".GOV");
     var EDU = $(".EDU");
