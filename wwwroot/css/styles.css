@@ -227,6 +227,7 @@ thead, th {
 #items,
 #mainTable {
     display: none;
+    text-align: center;
 }
 
 .date {
@@ -292,13 +293,13 @@ a.buttonSubmit {
 }
 
 #antivirusLabel, #activeSyncLabel, #antispamLabel, #webFilterLabel, #warrantyLabel,
-#existingAntivirus, #existingActiveSync, #existingAntispam, #existingWebFilter {
+#existingAntivirus, #existingActiveSync, #existingAntispam, #existingWebFilter, #licnum, #existingProducts {
     display: none;
 }
 
 #swUsers, #price, #totalPrice, #businessCase, #productFullName,
 #prod_group_id, #licenseNumber, #existingUsers, #expirationDate,
-#businessCaseCategory, #lic_type {
+#businessCaseCategory, #lic_type, #response {
     width: 100%;
     height: 50px;
     font-size: 1.5em;

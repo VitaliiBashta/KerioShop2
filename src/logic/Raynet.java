@@ -7,13 +7,17 @@ import logic.objects.BusinessCaseRead;
 import logic.objects.Company;
 import logic.objects.Offer;
 import logic.objects.Person;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import webAccess.Methods;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Raynet {
     public static final String RAYNET_URL = "https://app.raynet.cz";
@@ -24,12 +28,23 @@ public class Raynet {
     final Map<String, Company> companies = new TreeMap<>();
     private final Map<Integer, Person> persons = new HashMap<>();
 
+    public static void main(String[] args) throws ParseException {
+        String oldDate = "July 18, 2018";
+        DateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+        Date startDate = df.parse(oldDate);
+
+        DateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String value = newFormat.format(startDate);
+        System.out.println(value);
+    }
+
     public Company getCompanyById(int id) {
         for (Company company: companies.values()             ) {
             if (company.id == id) return company;
         }
         return null;
     }
+
     void init() {
         initCompanies();
         initPersons();
@@ -73,7 +88,7 @@ public class Raynet {
     public void LinkBusinessCaseAndCompany() {
         for (BusinessCaseRead businessCase : businessCases.values()) {
             if (businessCase.company.id > 0) {
-                System.out.println("linking businessCase: " + businessCase.id + ":" + businessCase.name);
+//                System.out.println("linking businessCase: " + businessCase.id + ":" + businessCase.name);
                 Company company = companies.get(businessCase.company.name);
                 if (company != null) {
                     company.businessCases.add(businessCase);
@@ -244,5 +259,36 @@ public class Raynet {
             result.append(businessCase.asHTML());
         }
         return result.toString();
+    }
+
+    public String getLicKeyInfo(String licenseNumber) {
+        String params = "licence=" + licenseNumber + "&next=Continue";
+        String url = "https://secure.kerio.com/order/upgrWizIndex.php";
+        String response = Methods.sendPost2(url, params);
+        Document doc = Jsoup.parse(response);
+        Element table = doc.body().select(".tableVertical ").get(0);
+        Elements rows = table.select("tr");
+        List<String> licInfo = new ArrayList<>();
+        for (int i = 0; i < rows.size(); i++) {
+            Element row = rows.get(i);
+            String key = row.select("th").get(0).text();
+            String value = row.select("td").get(0).text();
+            if (i == 4) {
+                DateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+                Date startDate = null;
+                try {
+                    startDate = df.parse(value);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                DateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
+                value = newFormat.format(startDate);
+            }
+            licInfo.add(value);
+        }
+        Gson gson = new Gson();
+        String json = gson.toJson(licInfo);
+        System.out.println(json);
+        return json;
     }
 }

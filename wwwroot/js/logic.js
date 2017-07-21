@@ -1,54 +1,70 @@
 var companiesList;
 
-
 function initForm() {
     getCompanyList();
     var date = new Date();
     $("#validFrom").val(date.format());
     date.setDate(date.getDate() + 15);
     $("#scheduledEnd").val(date.format());
-    // $("#expirationDate").val(date.format());
-
 }
 
 function linkEventsAndComponents() {
-    $("#createEntityInRaynet").on("mouseover", serialize);
-
     $(".cs-options").live("click", calculate);
     $(".checkbox").live("change", calculate);
     $("#swUsers").live("change", calculate);
     $("#swm").live("change", calculate);
     $("#prod_group_id").on("change", calculate);
-    $("#findExistingLicense").on("click", findExistingLicense);
-
-    // $("#company").on("click", setCompany);
+    $("#getLicenseInfo").on("click", getLicenseInfo);
     $(".autocomplete-suggestion").live("click", setCompany);
     $('input[type=radio][name=license]').on("change", newOrExistingToggle);
-
 
     // $("#newcalc").on("mouseover", createProductName);
     $("#createEntityInRaynet").on("click", createEntityInRaynet);
     $("#businessCase").on("change", businessCaseSelect);
 }
 
-function findExistingLicense() {  //need to be done via API
+function getLicenseInfo() {  //need to be done via API
     var licenseNumber = $("#licnum").val();
     var swUsers = $("#swUsers");
     var existingUsers = $("#existingUsers");
 
-    // simulation
-    $("#licenseNumber").val(licenseNumber);
-    $("#prod_group_id").val("Kerio Connect");
-    $("#expirationDate").val("2017-05-15");
-    existingUsers.val("20");
+    $("#existingAntivirus").hide();
+    $("#existingActiveSync").hide();
+    $("#existingAntispam").hide();
+    $("#existingWebFilter").hide();
+
+    sendGet("?getLicenseInfo=" + licenseNumber, $("#response"));
+    var json = JSON.parse($("#response").val());
+    var description = "";
+    for (var i = 0; i < json.length; i++) {
+        description += json[i] + "\n";
+    }
+    $("#description").html(description);
+
+    $("#licenseNumber").val(json[0]);
+    $("#prod_group_id").val(json[1]);
+
+    $("#lic_type").val(" " + json[2]);
+
+    existingUsers.val(json[3]);
+    $("#expirationDate").val(json[4]);
+
+
+    var extensions = json[5];
+    if (extensions.indexOf("Antivirus") !== -1 || extensions.indexOf("Sophos") !== -1)
+        $("#existingAntivirus").show();
+    if (extensions.indexOf("ActiveSync") !== -1)
+        $("#existingActiveSync").show();
+    if (extensions.indexOf("AntiSpam") !== -1)
+        $("#existingAntispam").show();
+    if (extensions.indexOf("Web Filter") !== -1 || extensions.indexOf("WebFilter") !== -1)
+        $("#existingWebFilter").show();
     // end simulation
 
     swUsers.val(existingUsers.val());
     swUsers.attr("min", existingUsers.val());
-
-    $("#existingAntivirus").show();
-
-
+    calculate();
+    // $("#existingAntivirus").show();
 }
 
 function businessCaseSelect() {
@@ -91,11 +107,11 @@ function newOrExistingToggle() {
     var licType = $("#lic_typeColumn").find(".cs-placeholder");
     var existingLicType = $("#lic_type");
     var licnum = $("#licnum");
-    var findExistingLicense = $("#findExistingLicense");
+    var getLicenseInfo = $("#getLicenseInfo");
 
     if ($("#newlic").prop("checked")) {
         licnum.hide();
-        findExistingLicense.hide();
+        getLicenseInfo.hide();
         existingProducts.hide();
         existingLicType.hide();
         swUsers.attr("min", "5");
@@ -106,7 +122,7 @@ function newOrExistingToggle() {
         existingProduct.attr("enabled", "enabled");
     } else {
         licnum.show();
-        findExistingLicense.show();
+        getLicenseInfo.show();
         existingProducts.show();
         existingLicType.show();
         product.hide();
@@ -140,6 +156,11 @@ function calculate() {
     $("#productFullName").val(fullName);
     $("#businessCase").val(fullName);
 
+    var price = $("#price").val();
+    var discount = $("#discountPercent").val();
+    var totalPrice = (price * (100 - discount)) / 100;
+    $("#totalPrice").val(Math.round(100 * totalPrice) / 100);
+
     var str = $("form").serialize();
     $("#request").text(str);
 }
@@ -148,9 +169,6 @@ function setNewPrices() {
     var price;
     price = getNewPrice();
     $("#price").val(price);
-    var discount = $("#discountPercent").val();
-    var totalPrice = (price * (100 - discount)) / 100;
-    $("#totalPrice").val(Math.round(100 * totalPrice) / 100);
 }
 
 function getLicTypeModifier() {
@@ -356,6 +374,8 @@ function fitElements() {
 function hideAll() {
     $(".GOV").hide();
     $(".EDU").hide();
+
+
     $("#antivirusLabel").hide();
     $("#activeSyncLabel").hide();
     $("#antispamLabel").hide();
@@ -403,6 +423,7 @@ function setCompany() {
 }
 
 function createEntityInRaynet() {
+    serialize();
     var request = $("#request").val();
     $("#createEntityInRaynet").hide();
     var XmlHTTP;

@@ -11,6 +11,7 @@
 </head>
 <body>
 
+<textarea id="response"></textarea>
 <div class="mainframe">
     <textarea id="request"></textarea>
     <form action="/" id="openForm">
@@ -99,11 +100,11 @@
         </table>
         <div id="items">
             <input type="radio" class="radio" id="newlic" name="license" value="new" checked>
-            <label for="newlic" class="newOrExisting">Nová licence</label>
+            <label for="newlic" class="newOrExisting">Nová licence</label><br>
             <input type="radio" class="radio" id="existlic" name="license" value="existing">
             <label for="existlic" class="newOrExisting">Existující licence</label>
             <input type="text" id="licnum" maxlength="25" value="">
-            <input type="button" id="findExistingLicense" value="Najít">
+            <input type="button" id="getLicenseInfo" value="Najít">
             <table id="existingProducts">
                 <thead>
                 <tr>
@@ -111,7 +112,6 @@
                     <td class="width120"><label for="existingUsers">Stavajicí počet uživatelu</label></td>
                     <td class="width200"><label for="expirationDate">Expirace</label></td>
                     <td class="width700">Zakoupená rožšiření</td>
-
                 </tr>
                 </thead>
                 <tr>
@@ -127,7 +127,7 @@
                     <td>
                         <ul id="existingExtensions">
                             <li id="existingAntivirus">Kerio Antivirus</li>
-                            <li id="existingActiveSync"> ActiveSync</li>
+                            <li id="existingActiveSync">ActiveSync</li>
                             <li id="existingAntispam">Kerio Anti-spam</li>
                             <li id="existingWebFilter">Kerio WebFilter</li>
                         </ul>
@@ -207,7 +207,7 @@
                             </li>
                             <li id="webFilterLabel">
                                 <input type="checkbox" class="checkbox" id="webFilter">
-                                <label for="webFilter">Kerio WebFilter </label>
+                                <label for="webFilter">Kerio WebFilter</label>
                             </li>
                             <li id="warrantyLabel">
                                 <input type="checkbox" class="checkbox" id="warranty">

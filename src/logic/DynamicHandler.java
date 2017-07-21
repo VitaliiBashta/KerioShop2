@@ -52,6 +52,11 @@ class DynamicHandler implements HttpHandler {
                     Integer businessCaseId = Integer.valueOf(query.split("=")[1]);
                     response = raynet.getPdfUrl(businessCaseId);
                 }
+                if (query.startsWith("getLicenseInfo")) {
+                    String licenseNumber = query.split("=")[1];
+                    response = raynet.getLicKeyInfo(licenseNumber);
+                }
+
             }
             if (!response.equals("")) {
                 System.out.println("<<<: \t");
@@ -60,6 +65,22 @@ class DynamicHandler implements HttpHandler {
             }
             os.flush();
         }
+
+        if (he.getRequestMethod().equals("POST")) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(he.getRequestBody(), "utf-8"));
+            String query = br.readLine();
+            System.out.println("query: " + query);
+            String params[] = query.split("[,]");
+            if (params[0].equalsIgnoreCase("off")) System.exit(0);
+
+            String response = "";
+            if (!response.equals("")) {
+                he.sendResponseHeaders(200, response.length());
+                os.write(response.getBytes());
+            }
+            os.flush();
+        }
+
         os.close();
     }
 

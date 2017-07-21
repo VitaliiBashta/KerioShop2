@@ -1,7 +1,8 @@
 {
-  "company":  "598",
-  "owner": "462",
-  "currency": "15",
-  "validFrom": "2017-01-14",
-  "scheduledEnd": "2017-01-08"
+  "license_number": "10111-2SVWN-9070F",
+  "command": "GETLICENSEINFO",
+  "protocol_version": 1,
+  "request_id": 1,
+  "username": "vitalii.bashta@zebra.cz",
+  "password": "s4LcSw"
 }
