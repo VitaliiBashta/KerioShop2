@@ -1,6 +1,5 @@
 package logic.objects;
 
-import logic.Raynet;
 import logic.Utils;
 
 import java.text.DateFormat;
@@ -16,8 +15,9 @@ public class FormObject {
     public final Integer source;
     public final Integer businessCasePhase; //
     public String code;
-    public Integer owner;
+    public final Integer owner;
     public Integer company; //required
+    public String companyName;
     public Integer person;
     public Integer probability;
     public String description;
@@ -56,10 +56,11 @@ public class FormObject {
 
     public FormObject(String query) {
         this();
-        Map<String, String> params = Utils.split(query);
+        Map<String, String> params = Utils.urlParamsToMap(query);
         if (params.get("product") != null) this.name = params.get("product");
         if (params.get("person") != null) this.person = Integer.valueOf(params.get("person"));
         if (params.get("company") != null) this.company = Integer.valueOf(params.get("company"));
+        if (params.get("companyName") != null) this.companyName = params.get("companyName");
         if (params.get("currency") != null) this.currency = Integer.valueOf(params.get("currency"));
         if (params.get("currency") != null) this.currency = Integer.valueOf(params.get("currency"));
         if (params.get("description") != null) this.description = params.get("description");
@@ -82,7 +83,7 @@ public class FormObject {
         if (params.get("discountPercent") != null) this.discountPercent = params.get("discountPercent");
         if (params.get("discountPercent") != null) this.discountPercent = params.get("discountPercent");
         this.count = 1;
-        this.cost = this.price * (1 - Raynet.DISTRIBUTOR_MARGIN);
+        this.cost = this.price * (1 - Utils.DISTRIBUTOR_MARGIN);
         if (this.currency == 15) this.taxRate = 21;
         this.businessCase = new BusinessCaseWrite(this);
         this.productWrite = new ProductWrite(this);

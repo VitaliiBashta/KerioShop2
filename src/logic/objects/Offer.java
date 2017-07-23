@@ -1,7 +1,6 @@
 package logic.objects;
 
 
-import logic.dials.BusinessCaseStatus;
 import logic.dials.Currency;
 
 import java.util.Date;
@@ -22,7 +21,6 @@ public class Offer {
     public Date scheduledEnd;
     public String description;
     public Currency currency;
-    public BusinessCaseStatus status;
 
     @Override
     public boolean equals(Object o) {

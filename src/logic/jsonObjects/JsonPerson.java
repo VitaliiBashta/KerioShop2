@@ -6,7 +6,5 @@ import java.util.List;
 
 
 public class JsonPerson {
-    public boolean success;
-    public int totalCount;
     public List<Person> data;
 }

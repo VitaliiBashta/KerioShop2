@@ -1,26 +1,5 @@
-div.cs-skin-elastic {
-    background: transparent;
-    font-weight: 700;
-    color: #5b8583;
-}
-
-@media screen and (max-width: 30em) {
-    div.cs-skin-elastic {
-        font-size: 1em;
-    }
-}
-
 .cs-skin-elastic > span {
     background-color: #fff;
-}
-
-.cs-skin-elastic .cs-options {
-    overflow: visible;
-    background: transparent;
-    opacity: 1;
-    visibility: visible;
-    padding-bottom: 1em;
-    pointer-events: none;
 }
 
 .cs-skin-elastic.cs-active .cs-options {
@@ -36,7 +15,7 @@ div.cs-skin-elastic {
     top: 0;
     transform: scale3d(1, 0, 1);
     background: #fff;
-    transform-origin: 50% 0%;
+    transform-origin: 50% 0;
     transition: transform 0.3s;
 }
 
@@ -62,22 +41,20 @@ div.cs-skin-elastic {
 .cs-skin-elastic .cs-options span {
     background: no-repeat 0 50%;
     background-size: 2em auto;
-    padding: 1em 0em 1em 2.5em;
+    padding: 1em 0 1em 2.5em;
 }
 
 .cs-skin-elastic .cs-options span:hover,
-.cs-skin-elastic .cs-options li.cs-focus span,
-.cs-skin-elastic .cs-options .cs-selected span {
-    color: #1e4c4a;
+.cs-skin-elastic .cs-options li.cs-focus span {
     background-color: #6595BE;
 }
 
-.cs-skin-elastic .cs-options .cs-selected span:hover {
-    background-color: #6595BE;
-}
+/*.cs-skin-elastic .cs-options .cs-selected span:hover {*/
+/*background-color: #6595BE;*/
+/*}*/
 
 .cs-skin-elastic .cs-options .cs-selected span::after {
-    content: '';
+    /*content: '';*/
 }
 
 .cs-skin-elastic .cs-options li.kerio-connect span {
@@ -164,49 +141,21 @@ div.cs-skin-elastic {
     background-image: url(../img/bashta.png);
 }
 
-@keyframes expand {
-    0% {
-        -webkit-transform: scale3d(1, 0, 1);
-        transform: scale3d(1, 0, 1);
-    }
-    25% {
-        -webkit-transform: scale3d(1, 1.2, 1);
-        transform: scale3d(1, 1.2, 1);
-    }
-    50% {
-        -webkit-transform: scale3d(1, 0.85, 1);
-        transform: scale3d(1, 0.85, 1);
-    }
-    75% {
-        -webkit-transform: scale3d(1, 1.05, 1);
-        transform: scale3d(1, 1.05, 1);
-    }
-    100% {
-        -webkit-transform: scale3d(1, 1, 1);
-        transform: scale3d(1, 1, 1);
-    }
-}
-
 @keyframes bounce {
     0% {
-        -webkit-transform: translate3d(0, -25px, 0);
         transform: translate3d(0, -25px, 0);
         opacity: 0;
     }
     25% {
-        -webkit-transform: translate3d(0, 10px, 0);
         transform: translate3d(0, 10px, 0);
     }
     50% {
-        -webkit-transform: translate3d(0, -6px, 0);
         transform: translate3d(0, -6px, 0);
     }
     75% {
-        -webkit-transform: translate3d(0, 2px, 0);
         transform: translate3d(0, 2px, 0);
     }
     100% {
-        -webkit-transform: translate3d(0, 0, 0);
         transform: translate3d(0, 0, 0);
         opacity: 1;
     }

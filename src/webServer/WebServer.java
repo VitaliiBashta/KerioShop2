@@ -1,6 +1,8 @@
-package logic;
+package webServer;
 
 import com.sun.net.httpserver.HttpServer;
+import logic.Raynet;
+import logic.handlers.*;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -22,9 +24,10 @@ class WebServer {
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             System.out.println("server started at " + port);
             server.createContext("/businessCase", new BusinessCaseHandler(raynet));
-            server.createContext("/", new DynamicHandler(raynet));
-            server.createContext("/css", new StaticHandler());
-            server.createContext("/js", new StaticHandler());
+            server.createContext("/companyList", new CompanyListHandler(raynet));
+            server.createContext("/licenseInfo", new LicenseInfoHandler());
+            server.createContext("/info", new DynamicHandler(raynet));
+            server.createContext("/", new StaticHandler());
             server.setExecutor(null);
             server.start();
         } catch (IOException e) {

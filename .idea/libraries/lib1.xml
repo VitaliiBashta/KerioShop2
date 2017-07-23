@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="lib">
+  <library name="lib1">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/commons-codec-1.9.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/gson-2.2.4.jar!/" />
@@ -12,10 +12,9 @@
       <root url="jar://$PROJECT_DIR$/lib/httpclient-4.5.3.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/httpmime-4.5.3.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jna-platform-4.1.0.jar!/" />
-      <root url="file://$PROJECT_DIR$/lib" />
+      <root url="jar://$PROJECT_DIR$/lib/jsoup-1.10.3.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
-    <jarDirectory url="file://$PROJECT_DIR$/lib" recursive="false" />
   </library>
 </component>

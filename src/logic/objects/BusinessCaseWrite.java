@@ -2,14 +2,14 @@ package logic.objects;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import logic.Methods;
 import logic.Utils;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import webAccess.Methods;
 
 import java.util.Date;
-import java.util.List;
+
 
 public class BusinessCaseWrite {
     private final String name;  //required
@@ -26,9 +26,7 @@ public class BusinessCaseWrite {
     private final int businessCasePhase;
     public int id;
     public String code;
-    public List<Product> items;
-    public transient Offer offer;
-    private String description;
+    private final String description;
 
     public BusinessCaseWrite(FormObject formObject) {
         this.name = formObject.name;
@@ -50,22 +48,7 @@ public class BusinessCaseWrite {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         String json = gson.toJson(this);
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
-        this.id = Utils.getCreatedId(Methods.sendPut("/api/v2/businessCase/", entity));
+        this.id = Utils.getCreatedId(Methods.sendPut(Utils.RAYNET_API_URL + "/businessCase/", entity));
         return this.id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        BusinessCaseWrite that = (BusinessCaseWrite) o;
-
-        return id == that.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
     }
 }

@@ -1,8 +1,8 @@
-package logic;
+package logic.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import logic.objects.Company;
+import logic.Raynet;
 import logic.objects.FormObject;
 
 import java.io.BufferedReader;
@@ -11,8 +11,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 
-class BusinessCaseHandler implements HttpHandler {
-private Raynet raynet;
+public class BusinessCaseHandler implements HttpHandler {
+    private final Raynet raynet;
 
     public BusinessCaseHandler(Raynet raynet) {
         this.raynet = raynet;
@@ -34,21 +34,11 @@ private Raynet raynet;
             Integer offerId = formObject.getOffer().createOfferInRaynet();
             formObject.getOffer().sync();
 
-            response = businessCaseId+"";
-            raynet.initBusinessCases(formObject.company);
-            raynet.initOffers(formObject.company);
-            Company company = raynet.getCompanyById(formObject.company);
-            if (company != null) {
-//                company.businessCases.clear();
-                company.businessCases.add(raynet.businessCases.get(businessCaseId));
-                raynet.businessCases.get(businessCaseId).offer = raynet.offers.get(offerId);
-            }
+            response = raynet.getBusinessCasesAndOffers(formObject.companyName);
             he.sendResponseHeaders(200, response.getBytes().length);
             os.write(response.getBytes());
             os.flush();
         }
         os.close();
     }
-
-
 }

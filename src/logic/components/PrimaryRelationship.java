@@ -4,7 +4,7 @@ package logic.components;
 import logic.objects.Company;
 
 public class PrimaryRelationship {
-    public Company company;
+    private Company company;
     int id;
 
     @Override

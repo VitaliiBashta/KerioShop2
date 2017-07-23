@@ -22,8 +22,7 @@
             el = el.parentNode || false;
         }
         return (el !== false);
-    };
-
+    }
     /**
      * extend obj function
      */
@@ -59,7 +58,7 @@
         onChange: function (val) {
             return false;
         }
-    }
+    };
 
     /**
      * init function
@@ -91,7 +90,7 @@
 
         // init events
         this._initEvents();
-    }
+    };
 
     /**
      * creates the structure for the select element
@@ -134,7 +133,7 @@
                 options += '<li class="cs-optgroup"><span>' + el.label + '</span><ul>';
                 [].slice.call(el.children).forEach(function (opt) {
                     options += createOptionHTML(opt);
-                })
+                });
                 options += '</ul></li>';
             }
         });
@@ -146,7 +145,7 @@
         this.selEl.innerHTML = '<span class="cs-placeholder">' + this.selectedOpt.textContent + '</span>' + opts_el;
         this.el.parentNode.appendChild(this.selEl);
         this.selEl.appendChild(this.el);
-    }
+    };
 
     /**
      * initialize the events
@@ -217,7 +216,7 @@
                     break;
             }
         });
-    }
+    };
 
     /**
      * navigate with up/dpwn keys
@@ -237,7 +236,7 @@
             // add class focus - track which option we are navigating
             classie.add(this.selOpts[this.preSelCurrent], 'cs-focus');
         }
-    }
+    };
 
     /**
      * open/close select
@@ -261,7 +260,7 @@
             }
             classie.add(this.selEl, 'cs-active');
         }
-    }
+    };
 
     /**
      * change option - the new value is set
@@ -302,24 +301,24 @@
 
         // callback
         this.options.onChange(this.el.value);
-    }
+    };
 
     /**
      * returns true if select element is opened
      */
     SelectFx.prototype._isOpen = function (opt) {
         return classie.has(this.selEl, 'cs-active');
-    }
+    };
 
     /**
      * removes the focus class from the option
      */
     SelectFx.prototype._removeFocus = function (opt) {
-        var focusEl = this.selEl.querySelector('li.cs-focus')
+        var focusEl = this.selEl.querySelector('li.cs-focus');
         if (focusEl) {
             classie.remove(focusEl, 'cs-focus');
         }
-    }
+    };
 
     /**
      * add to global namespace

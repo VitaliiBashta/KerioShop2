@@ -2,11 +2,11 @@ package logic.objects;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import logic.Methods;
 import logic.Utils;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import webAccess.Methods;
 
 import java.util.Date;
 
@@ -49,12 +49,12 @@ public class OfferWrite {
 
     public Integer createOfferInRaynet() {
         HttpEntity entity = new StringEntity(getJson(), ContentType.APPLICATION_JSON);
-        this.id = Utils.getCreatedId(Methods.sendPut("/api/v2/offer/", entity));
+        this.id = Utils.getCreatedId(Methods.sendPut(Utils.RAYNET_API_URL + "/offer/", entity));
         return this.id;
     }
 
     public void sync() {
-        String result = Methods.sendPost("/api/v2/offer/" + this.id + "/sync/", null);
+        Methods.sendPost(Utils.RAYNET_API_URL + "/offer/" + this.id + "/sync/", null);
     }
 
 }

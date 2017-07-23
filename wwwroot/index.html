@@ -3,19 +3,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>RAYNET by Vitalii Bashta</title>
     <link href="css/styles.css" rel="stylesheet" type="text/css"/>
-    <link href="css/cs-select.css" rel="stylesheet" type="text/css">
+    <link href="css/cs-select.css" rel="stylesheet" type="text/css"/>
     <link href="css/cs-skin-elastic.css" rel="stylesheet" type="text/css"/>
     <script src="js/jquery-1.8.2.min.js"></script>
+    <script src="js/priceCalculators.js"></script>
     <script src="js/logic.js"></script>
     <script src="js/prices.js"></script>
 </head>
 <body>
 
-<textarea id="response"></textarea>
+
 <div class="mainframe">
-    <textarea id="request"></textarea>
+
     <form action="/" id="openForm">
-        <table id="clientTable" class="clientField">
+        <textarea style="display: none" id="companyID" name="company"></textarea>
+        <table id="clientTable" class="clientField111">
             <thead>
             <tr>
                 <td class="width300"><label for="company">Klient</label></td>
@@ -26,9 +28,9 @@
             </tr>
             </thead>
             <tr>
-                <td><input type="text" id="company" value=""/></td>
+                <td><input id="company" name="companyName" value=""/></td>
                 <td><select id="persons" name="person"> </select></td>
-                <td><select type="text" name="discountPercent" class="cs-select cs-skin-elastic"
+                <td><select name="discountPercent" class="cs-select cs-skin-elastic"
                             id="discountPercent">
                     <option value="15" selected>15 %</option>
                     <option value="20">20 %</option>
@@ -44,17 +46,16 @@
                 <td>
                     <select class="cs-select cs-skin-elastic" name="owner" id="owner">
                         <option value="462" data-class="bashta">Vitalii Bashta</option>
-                        <option value="462">Vitalii Bashta</option>
                     </select>
                 </td>
             </tr>
-            <textarea style="display: none" id="companyID" name="company"></textarea>
+
         </table>
         <table id="mainTable">
             <tr>
                 <th><label for="businessCase"> Předmět:</label></th>
                 <td colspan="4">
-                    <select id="businessCase" name="name"></select>
+                    <select id="businessCase" name="name"> </select>
                 </td>
                 <td colspan="2">
                     <a href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít OP</a>
@@ -71,14 +72,15 @@
             <tr>
                 <th></th>
                 <td><label for="businessCasePhase">Stav:</label></td>
-                <td colspan="2"><select class="cs-select cs-skin-elastic" id="businessCasePhase"
-                                        name="businessCasePhase">
-                    <option value="41">Analýza potřeb</option>
-                    <option value="42" selected>Cenová nabídka</option>
-                    <option value="45">Výhra</option>
-                </select></td>
+                <td colspan="2">
+                    <select class="cs-select cs-skin-elastic" id="businessCasePhase" name="businessCasePhase">
+                        <option value="41">Analýza potřeb</option>
+                        <option value="42" selected>Cenová nabídka</option>
+                        <option value="45">Výhra</option>
+                    </select>
+                </td>
                 <td><label for="businessCaseCategory">Kategorie:</label></td>
-                <td colspan="2"><select id="businessCaseCategory" name="category" disabled>
+                <td colspan="2"><select id="businessCaseCategory" name="category">
                     <option value="486">Kerio Connect</option>
                     <option value="487">Kerio Control</option>
                     <option value="488">Kerio Operator</option>
@@ -97,41 +99,34 @@
                     </div>
                 </td>
             </tr>
+            <tr style="height: 50px;">
+                <th>
+                    <input type="checkbox" class="checkbox" id="existingLicense" name="license">
+                    <label for="existingLicense">Existující licence</label>
+                </th>
+                <td colspan="4">
+                    <input id="licnum" maxlength="25" value="">
+                </td>
+                <td colspan="2">
+                    <a href="#" class="buttonSubmit" id="getLicenseInfo">Najít</a>
+                </td>
+            </tr>
         </table>
         <div id="items">
-            <input type="radio" class="radio" id="newlic" name="license" value="new" checked>
-            <label for="newlic" class="newOrExisting">Nová licence</label><br>
-            <input type="radio" class="radio" id="existlic" name="license" value="existing">
-            <label for="existlic" class="newOrExisting">Existující licence</label>
-            <input type="text" id="licnum" maxlength="25" value="">
-            <input type="button" id="getLicenseInfo" value="Najít">
             <table id="existingProducts">
                 <thead>
                 <tr>
-                    <td class="width400" colspan="2"><label for="licenseNumber">Licenční číslo</label></td>
-                    <td class="width120"><label for="existingUsers">Stavajicí počet uživatelu</label></td>
-                    <td class="width200"><label for="expirationDate">Expirace</label></td>
-                    <td class="width700">Zakoupená rožšiření</td>
+                    <td class="width300">Licenční číslo</td>
+                    <td class="width120">Stavajicí počet uživatelu</td>
+                    <td class="width300"><label for="expirationDate">Expirace</label></td>
+                    <td class="width500">Zakoupená rožšiření</td>
                 </tr>
                 </thead>
                 <tr>
-                    <td colspan="2">
-                        <input type="text" id="licenseNumber" disabled>
-                    </td>
-                    <td>
-                        <input type="text" id="existingUsers" disabled>
-                    </td>
-                    <td>
-                        <input type="date" id="expirationDate" disabled>
-                    </td>
-                    <td>
-                        <ul id="existingExtensions">
-                            <li id="existingAntivirus">Kerio Antivirus</li>
-                            <li id="existingActiveSync">ActiveSync</li>
-                            <li id="existingAntispam">Kerio Anti-spam</li>
-                            <li id="existingWebFilter">Kerio WebFilter</li>
-                        </ul>
-                    </td>
+                    <td id="licenseNumber"></td>
+                    <td id="existingUsers"></td>
+                    <td><input type="date" id="expirationDate" disabled></td>
+                    <td id="existingExtensions"></td>
                 </tr>
             </table>
             <table id="products">
@@ -141,18 +136,19 @@
                     <td class="width120"><label for="hwUsers">Počet uživatelu</label></td>
                     <td class="width120"><label for="swm">Typ licence</label></td>
                     <td class="width80">Počet let SWM</td>
-                    <td class="width500">Rožšiření</td>
+                    <td class="width400">Dostupné rožšiření</td>
                     <td class="width100"><label for="price">Cena</label></td>
-                    <td class="width100"><label for="totalPrice">Cena pro partnera</label></td>
+                    <td class="width120"><label for="totalPrice">Cena pro partnera</label></td>
                 </tr>
                 </thead>
                 <tr>
                     <td id="productGroup" colspan="2">
-                        <select id="prod_group_id" class="cs-select cs-skin-elastic">
-                            <option value="Kerio Connect" data-class="kerio-connect" selected>Kerio Connect</option>
+                        <select id="prod_group_id" class="cs-select cs-skin-elastic" disabled>
+                            <option value="" selected disabled>Produkt ...</option>
+                            <option value="Kerio Connect" data-class="kerio-connect">Kerio Connect</option>
                             <option value="Kerio Control" data-class="kerioControl">Kerio Control</option>
                             <option value="Kerio Operator" data-class="kerio-operator">Kerio Operator</option>
-                            <option value="kerioBox" data-class="kerio-box">Kerio Boxes...</option>
+                            <option value="" data-class="kerio-box">Kerio Boxes...</option>
                         </select>
                     </td>
                     <td id="boxGroup">
@@ -187,47 +183,50 @@
                     </td>
                     <td>
                         <select id="swm">
-                            <option value="1" selected>1</option>
-                            <option value="2">2</option>
+                            <option value="0" selected>1</option>
+                            <option value="1">2</option>
+                            <option value="2">3</option>
+                            <option value="3">4</option>
+                            <option value="4">5</option>
                         </select>
                     </td>
                     <td>
                         <ul id="extensions">
-                            <li id="antivirusLabel">
+                            <li>
                                 <input type="checkbox" class="checkbox" id="antivirus">
-                                <label for="antivirus">Antivirus</label>
+                                <label for="antivirus" id="antivirusLabel">Antivirus</label>
                             </li>
-                            <li id="activeSyncLabel">
+                            <li>
                                 <input type="checkbox" class="checkbox" id="activeSync">
-                                <label for="activeSync">ActiveSync</label>
+                                <label for="activeSync" id="activeSyncLabel">ActiveSync</label>
                             </li>
-                            <li id="antispamLabel">
+                            <li>
                                 <input type="checkbox" class="checkbox" id="antispam">
-                                <label for="antispam">Anti-spam</label>
+                                <label for="antispam" id="antispamLabel">Anti-spam</label>
                             </li>
-                            <li id="webFilterLabel">
+                            <li>
                                 <input type="checkbox" class="checkbox" id="webFilter">
-                                <label for="webFilter">Kerio WebFilter</label>
+                                <label for="webFilter" id="webFilterLabel">Kerio WebFilter</label>
                             </li>
-                            <li id="warrantyLabel">
+                            <li>
                                 <input type="checkbox" class="checkbox" id="warranty">
-                                <label for="warranty">Extended Warranty (3 years)</label>
+                                <label for="warranty" id="warrantyLabel">Extended Warranty (3 years)</label>
                             </li>
                         </ul>
                     </td>
                     <td>
-                        <input type="text" name="price" id="price">
+                        <input name="price" id="price">
                     </td>
                     <td>
-                        <input type="text" name="totalPrice" id="totalPrice">
+                        <input name="totalPrice" id="totalPrice">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="6">
-                        <input type="text" name="product" id="productFullName">
+                        <input name="product" id="productFullName">
                     </td>
                     <td>
-                        <input type="text" id="price2">
+                        <input id="price2">
                     </td>
                 </tr>
             </table>
@@ -235,15 +234,16 @@
     </form>
 </div>
 
+<textarea id="response"></textarea>
+<textarea id="request"></textarea>
 <script src="js/jquery.autocomplete.js"></script>
 <script>
     initForm();
-    linkEventsAndComponents();
 </script>
 <script src="js/classie.js"></script>
 <script src="js/selectFx.js"></script>
 <script>
-    (function () {
+    (function CsSelect() {
         [].slice.call(document.querySelectorAll('select.cs-select')).forEach(function (el) {
             new SelectFx(el);
         });

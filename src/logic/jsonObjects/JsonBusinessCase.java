@@ -7,6 +7,5 @@ import java.util.List;
 
 public class JsonBusinessCase {
     public boolean success;
-    public int totalCount;
     public List<BusinessCaseRead> data;
 }

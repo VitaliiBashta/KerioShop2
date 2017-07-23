@@ -2,12 +2,11 @@ package logic.objects;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import logic.Methods;
 import logic.Utils;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import webAccess.Methods;
-
 
 public class ProductWrite {
     private Integer id;
@@ -42,7 +41,7 @@ public class ProductWrite {
 
     public Integer createProductInRaynet() {
         HttpEntity entity = new StringEntity(getJson(), ContentType.APPLICATION_JSON);
-        String url = "/api/v2/businessCase/" + this.businessCaseId + "/item/";
+        String url = Utils.RAYNET_API_URL + "/businessCase/" + this.businessCaseId + "/item/";
         this.id = Utils.getCreatedId(Methods.sendPut(url, entity));
         return this.id;
     }

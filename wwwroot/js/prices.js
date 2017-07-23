@@ -72,11 +72,8 @@ var EUR_PRICES = {
     "V300" : 785,
     // hardware renewal
     "RenNG100_unl" : 170,
-    "RenNG100W_unl" : 170,
-    "renNG300_25" : 401.1,
-    "RenNG300W_25" : 401.1,
+    "RenNG300_25": 401.1,
     "RenNG300_unl" : 567,
-    "RenNG300W_unl" : 567,
     "RenNG500_50" : 710,
     "RenNG500_100" : 949.12,
     "RenNG500_unl" : 1176.5,
