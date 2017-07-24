@@ -182,13 +182,13 @@
                         </select>
                     </td>
                     <td>
-                        <select id="swm">
-                            <option value="0" selected>1</option>
-                            <option value="1">2</option>
-                            <option value="2">3</option>
-                            <option value="3">4</option>
-                            <option value="4">5</option>
-                        </select>
+                        <input type="number" id="swm" min="1" value="1" max="2">
+                        <!--<option value="0" selected>1</option>-->
+                        <!--<option value="1">2</option>-->
+                        <!--<option value="2">3</option>-->
+                        <!--<option value="3">4</option>-->
+                        <!--<option value="4">5</option>-->
+                        <!--</input>-->
                     </td>
                     <td>
                         <ul id="extensions">
@@ -222,8 +222,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6">
+                    <td colspan="4">
                         <input name="product" id="productFullName">
+                    </td>
+                    <td>
+                        <input id="addUsers">
                     </td>
                     <td>
                         <input id="price2">

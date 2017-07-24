@@ -80,13 +80,64 @@ function calculateNewPrice(currency, product, users, swm, extensions) {
 
     var purchasePrice = basicPrice + expansionCount * prices.add5users + (expansionCount + 1) * extPrice;
     var nextYearPrice = (renPrice + expansionCount * prices.RenAdd5users + (expansionCount + 1) * extPrice);
-    var result = (purchasePrice + swm * nextYearPrice) * getLicTypeModifier();   // norm, gov, edu
+    var result = (purchasePrice + (swm - 1) * nextYearPrice) * getLicTypeModifier();   // norm, gov, edu
 
     if (extensions.indexOf("Warranty") > -1) result += exWarPrice;
 
     return Math.round(100 * result) / 100;
 }
 
-function calculateExistingPrice() {
-    return 0;
+function calculateExistingPrice(currency, product, users, swm) {
+    var validFrom = new Date($("#validFrom").val());
+    var expirationDate = new Date($("#expirationDate").val());
+    var timeDiff = expirationDate.getTime() - validFrom.getTime();
+    var diffDays = Math.round(timeDiff / (1000 * 3600 * 24));
+    var existingExtensions = $("#existingExtensions").text();
+    var prices = CZ_PRICES;
+    if (currency === "16") prices = EUR_PRICES;
+
+    var renPrice = 0;
+    var expansionCount = 0;
+    var extPrice = 0;
+    var addedExtPrice = 0;
+
+    var addAntivirus = $("#antivirus").is(':checked');
+    var addActiveSync = $("#activeSync").is(':checked');
+    var addAntispam = $("#antispam").is(':checked');
+    var addWebFilter = $("#webFilter").is(':checked');
+
+    var addUsers = users - $("#existingUsers").html();
+    $("#addUsers").val(addUsers);
+    if (product === "0") return;
+    if (diffDays > 0) {
+        if (product === "Kerio Connect") {
+            expansionCount = users / 5 - 1;
+            renPrice = prices.RenConnectServer;
+        }
+        if (product === "Kerio Control") {
+            expansionCount = users / 5 - 1;
+            renPrice = prices.RenControlServer;
+        }
+        if (product === "Kerio Operator") {
+            expansionCount = users / 5 - 1;
+            renPrice = prices.RenOperatorServer;
+        }
+
+        if (existingExtensions.indexOf("Antivirus") > -1 || existingExtensions.indexOf("Sophos") > -1)
+            extPrice += prices.antivirus;
+        if (existingExtensions.indexOf("ActiveSync") > -1) extPrice += prices.activeSync;
+        if (existingExtensions.indexOf("AntiSpam") > -1) extPrice += prices.antiSpam;
+        if (existingExtensions.indexOf("WebFilter") > -1) extPrice += prices.webFilter;
+        if (addAntivirus) addedExtPrice += prices.antivirus;
+        if (addActiveSync) addedExtPrice += prices.activeSync;
+        if (addAntispam) addedExtPrice += prices.antiSpam;
+        if (addWebFilter) addedExtPrice += prices.webFilter;
+
+        var nextYearPrice = (renPrice + expansionCount * prices.RenAdd5users + (expansionCount + 1) * extPrice
+            + (addUsers / 5) * (prices.add5users + extPrice)) * swm +
+            (users / 5) * addedExtPrice * (swm + 1);
+        var result = (nextYearPrice) * getLicTypeModifier();   // norm, gov, edu
+        return Math.round(100 * result) / 100;
+    } else
+        return 0;
 }

@@ -10,6 +10,7 @@ function initForm() {
     $(".cs-options").live("click", calculate);
     $(".checkbox").live("change", calculate);
     $("#swUsers").live("change", calculate);
+    $("#validFrom").live("change", calculate);
     $("#price").live("change", calculate);
     $("#swm").live("change", calculate);
     // $("#prod_group_id").on("change", calculate);
@@ -50,6 +51,15 @@ function getLicenseInfo() {  //need to be done via API
         $("#existingExtensions").html(json[5]);
         // end simulation
 
+        var validFrom = new Date($("#validFrom").val());
+        var expirationDate = new Date(json[4]);
+        var timeDiff = expirationDate.getTime() - validFrom.getTime();
+        var diffYears = Math.round(timeDiff / (1000 * 3600 * 24 * 365));
+        var swm = $("#swm");
+        swm.attr("min", "0");
+        if (diffYears < 0) {
+            swm.attr("max", 1 - diffYears);
+        }
         swUsers.val(json[3]);
         swUsers.attr("min", json[3]);
     }
@@ -206,6 +216,23 @@ function getFullNameExistingLicense() {
     return result;
 }
 
+function hideAll() {
+    $(".GOV").hide();
+    $(".EDU").hide();
+    $("#antivirusLabel").hide();
+    $("#activeSyncLabel").hide();
+    $("#antispamLabel").hide();
+    $("#webFilterLabel").hide();
+    $("#warrantyLabel").hide();
+    $("#boxGroup").hide();
+    $("#hwUsersSection").hide();
+    $("#swUsersSection").hide();
+    $(".users25").hide();
+    $(".users50").hide();
+    $(".users100").hide();
+    $("#productGroup").attr("colspan", "2");
+}
+
 function fitElements() {
     var productGroup = $("#prod_group_id").val();
     var swUsersSection = $("#swUsersSection");
@@ -266,25 +293,12 @@ function fitElements() {
     $("#businessCase").val(fullName);
 }
 
-function hideAll() {
-    $(".GOV").hide();
-    $(".EDU").hide();
-    $("#antivirusLabel").hide();
-    $("#activeSyncLabel").hide();
-    $("#antispamLabel").hide();
-    $("#webFilterLabel").hide();
-    $("#warrantyLabel").hide();
-    $("#boxGroup").hide();
-    $("#hwUsersSection").hide();
-    $("#swUsersSection").hide();
-    $(".users25").hide();
-    $(".users50").hide();
-    $(".users100").hide();
-    $("#productGroup").attr("colspan", "2");
-}
-
 function fitElementsExistingLicense() {
     var product = $("#prod_group_id").val();
+    var currency = $("#currency").val();
+    var users = $("#swUsers").val();
+    var swm = $("#swm").val();
+
     var antivirusLabel = $("#antivirusLabel");
     var existingAntivirus = $("#existingAntivirus");
     var existingExtensions = $("#existingExtensions").html();
@@ -302,11 +316,12 @@ function fitElementsExistingLicense() {
     $(".GOV").show();
     $(".EDU").show();
     $("#swUsersSection").show();
-    $("#price").val(calculateExistingPrice(product));
 
     var fullName = getFullNameExistingLicense();
     $("#productFullName").val(fullName);
     $("#businessCase").val(fullName);
+    var price = calculateExistingPrice(currency, product, users, swm)
+    $("#price").val(price);
 }
 
 function setCompany() {
