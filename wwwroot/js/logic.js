@@ -297,21 +297,25 @@ function fitElementsExistingLicense() {
     var product = $("#prod_group_id").val();
     var currency = $("#currency").val();
     var users = $("#swUsers").val();
-    var swm = $("#swm").val();
+    var swm = Number($("#swm").val());
 
     var antivirusLabel = $("#antivirusLabel");
+    var activeSyncLabel = $("#activeSyncLabel");
+    var antispamLabel = $("#antispamLabel");
+    var webFilterLabel = $("#webFilterLabel");
+
     var existingAntivirus = $("#existingAntivirus");
     var existingExtensions = $("#existingExtensions").html();
     hideAll();
     $("#productGroup").attr("colspan", "2");
     if (product === "Kerio Connect") {
         if (existingExtensions.indexOf("Sophos") === -1 && existingExtensions.indexOf("Antivirus") === -1) antivirusLabel.show();
-        if (existingExtensions.indexOf("ActiveSync") === -1) $("#activeSyncLabel").show();
-        if (existingExtensions.indexOf("AntiSpam") === -1) $("#antispamLabel").show();
+        if (existingExtensions.indexOf("ActiveSync") === -1) activeSyncLabel.show();
+        if (existingExtensions.indexOf("AntiSpam") === -1) antispamLabel.show();
     }
     if (product === "Kerio Control") {
         if (existingExtensions.indexOf("Sophos") === -1 && existingExtensions.indexOf("Antivirus") === -1) antivirusLabel.show();
-        if (existingExtensions.indexOf("WebFilter") === -1) $("#webFilterLabel").show();
+        if (existingExtensions.indexOf("WebFilter") === -1) webFilterLabel.show();
     }
     $(".GOV").show();
     $(".EDU").show();
@@ -320,8 +324,32 @@ function fitElementsExistingLicense() {
     var fullName = getFullNameExistingLicense();
     $("#productFullName").val(fullName);
     $("#businessCase").val(fullName);
-    var price = calculateExistingPrice(currency, product, users, swm)
+
+    var oldProduct = {
+        product: product,
+        users: $("#existingUsers").html(),
+        expirationDate: $("#expirationDate").val(),
+        extensions: existingExtensions
+    };
+
+    var addAntivirus = antivirusLabel.is(":visible") && $("#antivirus").is(':checked');
+    var addActiveSync = activeSyncLabel.is(":visible") && $("#activeSync").is(':checked');
+    var addAntispam = antispamLabel.is(":visible") && $("#antispam").is(':checked');
+    var addWebFilter = webFilterLabel.is(":visible") && $("#webFilter").is(':checked');
+
+    var newProduct = {
+        validFrom: $("#validFrom").val(),
+        users: users,
+        swm: swm,
+        antivirus: addAntivirus,
+        activeSync: addActiveSync,
+        antiSpam: addAntispam,
+        webFilter: addWebFilter
+    };
+    var price = calculateExistingPrice(currency, product, users, swm);
+    var price2 = calculateExistingPrice2(currency, newProduct, oldProduct);
     $("#price").val(price);
+    $("#price2").val(price2);
 }
 
 function setCompany() {
@@ -392,6 +420,6 @@ Date.prototype.format = function () {
 
     return [this.getFullYear(), "-",
         (mm > 9 ? '' : '0') + mm, "-",
-        (dd > 9 ? '' : '0') + dd,
+        (dd > 9 ? '' : '0') + dd
     ].join('');
 };
