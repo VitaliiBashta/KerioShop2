@@ -237,33 +237,26 @@ function fitElements() {
     var productGroup = $("#prod_group_id").val();
     var swUsersSection = $("#swUsersSection");
     var antivirusLabel = $("#antivirusLabel");
-    var product;
     var users;
     var swm = $("#swm").val();
-    var extensions = "";
 
     hideAll();
+
     if (productGroup === "0") return;
     users = $("#swUsers").val();
     if (productGroup === "Kerio Connect") {
         antivirusLabel.show();
         $("#activeSyncLabel").show();
         $("#antispamLabel").show();
-        if ($("#antivirus").is(':checked')) extensions += "Antivirus";
-        if ($("#activeSync").is(':checked')) extensions += "ActiveSync";
-        if ($("#antispam").is(':checked')) extensions += "AntiSpam";
     }
     if (productGroup === "Kerio Control") {
         antivirusLabel.show();
         $("#webFilterLabel").show();
-        if ($("#antivirus").is(':checked')) extensions += "Antivirus";
-        if ($("#webFilter").is(':checked')) extensions += "WebFilter";
     }
     if (productGroup === "") {
         $("#warrantyLabel").show();
         $("#boxGroup").show();
         $("#productGroup").attr("colspan", "1");
-        if ($("#warranty").is(':checked')) extensions += "Warranty";
         users = $("#hwUsers").val();
 
         var boxProduct = $("#hardware").val();
@@ -283,11 +276,22 @@ function fitElements() {
         $(".EDU").show();
         swUsersSection.show();
     }
-    var currency = $("#currency").val();
-    product = productGroup;
-    if (product === "") product = boxProduct;
 
-    $("#price").val(calculateNewPrice(currency, product, users, swm, extensions));
+    var currency = $("#currency").val();
+    if (productGroup === "") productGroup = boxProduct;
+
+    var newProduct = {
+        product: productGroup,
+        users: users,
+        swm: swm,
+        antivirus: antivirusLabel.is(":visible") && $("#antivirus").is(':checked'),
+        activeSync: $("#activeSyncLabel").is(":visible") && $("#activeSync").is(':checked'),
+        antiSpam: $("#antispamLabel").is(":visible") && $("#antispam").is(':checked'),
+        webFilter: $("#webFilterLabel").is(":visible") && $("#webFilter").is(':checked'),
+        exWarranty: $("#warrantyLabel").is(":visible") && $("#warranty").is(':checked')
+    };
+
+    $("#price").val(calculateNewPrice2(currency, newProduct));
     var fullName = getFullNameNewLicense();
     $("#productFullName").val(fullName);
     $("#businessCase").val(fullName);
@@ -332,19 +336,14 @@ function fitElementsExistingLicense() {
         extensions: existingExtensions
     };
 
-    var addAntivirus = antivirusLabel.is(":visible") && $("#antivirus").is(':checked');
-    var addActiveSync = activeSyncLabel.is(":visible") && $("#activeSync").is(':checked');
-    var addAntispam = antispamLabel.is(":visible") && $("#antispam").is(':checked');
-    var addWebFilter = webFilterLabel.is(":visible") && $("#webFilter").is(':checked');
-
     var newProduct = {
         validFrom: $("#validFrom").val(),
         users: users,
         swm: swm,
-        antivirus: addAntivirus,
-        activeSync: addActiveSync,
-        antiSpam: addAntispam,
-        webFilter: addWebFilter
+        antivirus: antivirusLabel.is(":visible") && $("#antivirus").is(':checked'),
+        activeSync: activeSyncLabel.is(":visible") && $("#activeSync").is(':checked'),
+        antiSpam: antispamLabel.is(":visible") && $("#antispam").is(':checked'),
+        webFilter: webFilterLabel.is(":visible") && $("#webFilter").is(':checked')
     };
     var price = calculateExistingPrice(currency, product, users, swm);
     var price2 = calculateExistingPrice2(currency, newProduct, oldProduct);
