@@ -68,7 +68,7 @@ public class Raynet {
         }
         getOffers(companyName);
 
-        result.append("<option selected disabled>(k dispozici " + businessCases.size() + " OP)</option>");
+        result.append("<option selected disabled>(k dispozici ").append(businessCases.size()).append(" OP)</option>");
         result.append("<option value=\"0\">(nový)</option>");
         for (BusinessCaseRead businessCase : businessCases.values()) {
             result.append(businessCase.asHTML());

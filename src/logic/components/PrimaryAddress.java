@@ -4,7 +4,7 @@ package logic.components;
 public class PrimaryAddress {
     int id;
     boolean primary;
-    public Address address;
+    private Address address;
     private ContactInfo contactInfo;
 
     @Override
