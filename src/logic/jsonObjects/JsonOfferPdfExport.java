@@ -12,7 +12,6 @@ public class JsonOfferPdfExport {
     private String instanceName;
 
     public String getRequest() throws UnsupportedEncodingException {
-
         return "https://app.raynet.cz/api/v2/exportBody/" +
                 uuid + '/' +
                 accessToken + '/' +

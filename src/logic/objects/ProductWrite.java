@@ -23,7 +23,7 @@ public class ProductWrite {
 
     private Integer businessCaseId;
 
-    public ProductWrite(FormObject formObject) {
+    ProductWrite(FormObject formObject) {
         this.name = formObject.product;
         this.price = formObject.price;
         this.discountPercent = formObject.discountPercent;
@@ -32,7 +32,6 @@ public class ProductWrite {
         this.taxRate = formObject.taxRate;
         this.businessCaseId = formObject.getBusinessCase().id;
     }
-
 
     private String getJson() {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();

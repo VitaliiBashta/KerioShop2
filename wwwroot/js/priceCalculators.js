@@ -1,4 +1,4 @@
-function calculateNewPrice2(currency, newProduct) {
+function calculateNewPrice(currency, newProduct) {
     var product = newProduct.product;
     var users = newProduct.users;
     if (product === "0") return;
@@ -89,7 +89,7 @@ function calculateNewPrice2(currency, newProduct) {
     return Math.round(100 * result) / 100;
 }
 
-function calculateExistingPrice2(currency, newProduct, oldProduct) {
+function calculateExistingPrice(currency, newProduct, oldProduct) {
     var validFrom = new Date(newProduct.validFrom);
     var expirationDate = new Date(oldProduct.expirationDate);
 
@@ -121,15 +121,15 @@ function calculateExistingPrice2(currency, newProduct, oldProduct) {
 
         var addedUsers5x = (newProduct.users - oldProduct.users) / 5;
         var oldUsers5x = oldProduct.users / 5;
-        var prorata = diffQuarters / 4;
+        var prorate = diffQuarters / 4;
         var renewExisting = newProduct.swm *
             (renPrice - prices.RenAdd5users + oldUsers5x * (prices.RenAdd5users + existingExtPrice));
 
         var addedUsersPrice = addedUsers5x * (
             prices.add5users - prices.RenAdd5users +
-            (prices.RenAdd5users + existingExtPrice) * (newProduct.swm + prorata)
+            (prices.RenAdd5users + existingExtPrice) * (newProduct.swm + prorate)
         );
-        var addedExtensionsPrice = newProduct.users / 5 * addedExtPrice * (newProduct.swm + prorata);
+        var addedExtensionsPrice = newProduct.users / 5 * addedExtPrice * (newProduct.swm + prorate);
         var result = (renewExisting + addedUsersPrice + addedExtensionsPrice) * getLicTypeModifier();   // norm, gov, edu
         return Math.round(100 * result) / 100;
     } else

@@ -12,16 +12,15 @@
 </head>
 <body>
 
-
 <div class="mainframe">
 
     <form action="/" id="openForm">
-        <textarea style="display: none" id="companyID" name="company"></textarea>
+        <textarea id="companyID" name="company"></textarea>
         <table id="clientTable" class="clientField111">
             <thead>
             <tr>
-                <td class="width300"><label for="company">Klient</label></td>
-                <td class="width300"><label for="persons">Kontaktní osoba</label></td>
+                <td class="width200"><label for="company">Klient</label></td>
+                <td class="width200"><label for="persons">Kontaktní osoba</label></td>
                 <td class="width100"><label for="discountPercent">Marže partnera</label></td>
                 <td class="width100"><label for="currency">Měna:</label></td>
                 <td class="width200"><label for="owner">Vlastník</label></td>
@@ -53,20 +52,30 @@
         </table>
         <table id="mainTable">
             <tr>
-                <th><label for="businessCase"> Předmět:</label></th>
+                <th><label for="businessCase">Obchodní případ:</label></th>
                 <td colspan="4">
                     <select id="businessCase" name="name"> </select>
                 </td>
                 <td colspan="2">
                     <a href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít OP</a>
+                </td>
+            </tr>
+            <tr id="offerDiv">
+                <th><label for="offer">Nabidka:</label></th>
+                <td colspan="4">
+                    <select id="offer" name="offerName"> </select>
+                </td>
+                <td colspan="2">
                     <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a>
                 </td>
             </tr>
+        </table>
+        <table id="newOP">
             <tr>
                 <th>Časové rozmezí</th>
                 <td><label for="validFrom">Otevřeno od:</label></td>
                 <td colspan="2"><input type="date" class="date" id="validFrom" name="validFrom"></td>
-                <td><label for="scheduledEnd">Odhad uzavření:</label></td>
+                <td><label for="scheduledEnd">Odhad uzav.</label></td>
                 <td colspan="2"><input type="date" class="date" id="scheduledEnd" name="scheduledEnd"></td>
             </tr>
             <tr>
@@ -93,150 +102,133 @@
                     <input type="range" id="probability" name="probability" value="50">
                 </th>
                 <td colspan="6">
-                    <div id="descriptionArea">
-                        <label for="description" id="descriptionLabel">Popis</label>
-                        <textarea id="description" name="description"> </textarea>
-                    </div>
+                    <label for="description" id="descriptionLabel">Popis</label>
+                    <textarea id="description" name="description"> </textarea>
                 </td>
             </tr>
-            <tr style="height: 50px;">
+            <tr>
                 <th>
                     <input type="checkbox" class="checkbox" id="existingLicense" name="license">
                     <label for="existingLicense">Existující licence</label>
                 </th>
-                <td colspan="4">
+                <td colspan="2">
                     <input id="licnum" maxlength="25" value="">
                 </td>
-                <td colspan="2">
+                <td>
                     <a href="#" class="buttonSubmit" id="getLicenseInfo">Najít</a>
                 </td>
             </tr>
         </table>
-        <div id="items">
-            <table id="existingProducts">
-                <thead>
-                <tr>
-                    <td class="width300">Licenční číslo</td>
-                    <td class="width120">Stavajicí počet uživatelu</td>
-                    <td class="width300"><label for="expirationDate">Expirace</label></td>
-                    <td class="width500">Zakoupená rožšiření</td>
-                </tr>
-                </thead>
-                <tr>
-                    <td id="licenseNumber"></td>
-                    <td id="existingUsers"></td>
-                    <td><input type="date" id="expirationDate" disabled></td>
-                    <td id="existingExtensions"></td>
-                </tr>
-            </table>
-            <table id="products">
-                <thead>
-                <tr>
-                    <td class="width400" colspan="2"><label for="prod_group_id">Produkt</label></td>
-                    <td class="width120"><label for="hwUsers">Počet uživatelu</label></td>
-                    <td class="width120"><label for="swm">Typ licence</label></td>
-                    <td class="width80">Počet let SWM</td>
-                    <td class="width400">Dostupné rožšiření</td>
-                    <td class="width100"><label for="price">Cena</label></td>
-                    <td class="width120"><label for="totalPrice">Cena pro partnera</label></td>
-                </tr>
-                </thead>
-                <tr>
-                    <td id="productGroup" colspan="2">
-                        <select id="prod_group_id" class="cs-select cs-skin-elastic" disabled>
-                            <option value="" selected disabled>Produkt ...</option>
-                            <option value="Kerio Connect" data-class="kerio-connect">Kerio Connect</option>
-                            <option value="Kerio Control" data-class="kerioControl">Kerio Control</option>
-                            <option value="Kerio Operator" data-class="kerio-operator">Kerio Operator</option>
-                            <option value="" data-class="kerio-box">Kerio Boxes...</option>
+        <table id="existingProducts">
+            <thead>
+            <tr>
+                <td class="width200">Licenční číslo</td>
+                <td class="width120">Stavajicí počet uživatelu</td>
+                <td class="width200"><label for="expirationDate">Expirace</label></td>
+                <td class="width300">Zakoupená rožšiření</td>
+            </tr>
+            </thead>
+            <tr>
+                <td id="licenseNumber"></td>
+                <td id="existingUsers"></td>
+                <td id="expirationDate">
+                    <input type="date" id="expirationDate2" style="display: none">
+                </td>
+                <td id="existingExtensions"></td>
+            </tr>
+        </table>
+        <table id="products">
+            <thead>
+            <tr>
+                <td class="width300" colspan="2"><label for="prod_group_id">Produkt</label></td>
+                <td class="width120"><label for="hwUsers">Počet uživatelu</label></td>
+                <td class="width120"><label for="swm">Typ licence</label></td>
+                <td class="width80">Počet let SWM</td>
+                <td class="width400">Dostupná rožšiření</td>
+                <td class="width100"><label for="price">Cena</label></td>
+                <td class="width120"><label for="totalPrice">Cena pro partnera</label></td>
+            </tr>
+            </thead>
+            <tr>
+                <td id="productGroup" colspan="2">
+                    <select id="prod_group_id" class="cs-select cs-skin-elastic" disabled>
+                        <option value="" selected disabled>Produkt ...</option>
+                        <option value="Kerio Connect" data-class="kerio-connect">Kerio Connect</option>
+                        <option value="Kerio Control" data-class="kerioControl">Kerio Control</option>
+                        <option value="Kerio Operator" data-class="kerio-operator">Kerio Operator</option>
+                        <option value="" data-class="kerio-box">Kerio Boxes...</option>
+                    </select>
+                </td>
+                <td id="boxGroup">
+                    <select id="hardware" class="cs-select cs-skin-elastic">
+                        <option value="NG100" data-class="NG100" selected>NG100</option>
+                        <option value="NG100W" data-class="NG100W">NG100W</option>
+                        <option value="NG300" data-class="NG300">NG300</option>
+                        <option value="NG300W" data-class="NG300W">NG300W</option>
+                        <option value="NG500" data-class="NG500">NG500</option>
+                        <option value="V300" data-class="V300">Operator V300</option>
+                    </select>
+                </td>
+                <td>
+                    <section id="hwUsersSection">
+                        <select id="hwUsers" class="cs-select cs-skin-elastic">
+                            <option value="25 users" data-class="users25">25 Users</option>
+                            <option value="50 users" data-class="users50">50 Users</option>
+                            <option value="100 users" data-class="users100">100 Users</option>
+                            <option value="Unlimited" data-class="unlimited" selected>Unlimited</option>
                         </select>
-                    </td>
-                    <td id="boxGroup">
-                        <select id="hardware" class="cs-select cs-skin-elastic">
-                            <option value="NG100" data-class="NG100" selected>Control NG100</option>
-                            <option value="NG100W" data-class="NG100W">Control NG100W</option>
-                            <option value="NG300" data-class="NG300">Control NG300</option>
-                            <option value="NG300W" data-class="NG300W">Control NG300W</option>
-                            <option value="NG500" data-class="NG500">Control NG500</option>
-                            <option value="V300" data-class="V300">Operator V300</option>
-                        </select>
-                    </td>
-                    <td>
-                        <section id="hwUsersSection">
-                            <select id="hwUsers" class="cs-select cs-skin-elastic">
-                                <option value="25 users" data-class="users25">25 Users</option>
-                                <option value="50 users" data-class="users50">50 Users</option>
-                                <option value="100 users" data-class="users100">100 Users</option>
-                                <option value="Unlimited" data-class="unlimited" selected>Unlimited</option>
-                            </select>
-                        </section>
-                        <section id="swUsersSection">
-                            <input type="number" id="swUsers" size="10" min="5" max="1000" step="5" value="5">
-                        </section>
-                    </td>
-                    <td id="lic_typeColumn">
-                        <select id="lic_type" class="cs-select cs-skin-elastic" disabled>
-                            <option value="" selected data-class="Commercial">Komerční</option>
-                            <option value=" GOV" data-class="GOV">GOV</option>
-                            <option value=" EDU" data-class="EDU">EDU</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" id="swm" min="1" value="1" max="2">
-                        <!--<option value="0" selected>1</option>-->
-                        <!--<option value="1">2</option>-->
-                        <!--<option value="2">3</option>-->
-                        <!--<option value="3">4</option>-->
-                        <!--<option value="4">5</option>-->
-                        <!--</input>-->
-                    </td>
-                    <td>
-                        <ul id="extensions">
-                            <li>
-                                <input type="checkbox" class="checkbox" id="antivirus">
-                                <label for="antivirus" id="antivirusLabel">Antivirus</label>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checkbox" id="activeSync">
-                                <label for="activeSync" id="activeSyncLabel">ActiveSync</label>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checkbox" id="antispam">
-                                <label for="antispam" id="antispamLabel">Anti-spam</label>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checkbox" id="webFilter">
-                                <label for="webFilter" id="webFilterLabel">Kerio WebFilter</label>
-                            </li>
-                            <li>
-                                <input type="checkbox" class="checkbox" id="warranty">
-                                <label for="warranty" id="warrantyLabel">Extended Warranty (3 years)</label>
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <input name="price" id="price">
-                    </td>
-                    <td>
-                        <input name="totalPrice" id="totalPrice">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        <input name="product" id="productFullName">
-                    </td>
-                    <td>
-                        <input id="addUsers">
-                    </td>
-                    <td>
-                        <input id="quarters">
-                    </td>
-                    <td>
-                        <input id="price2">
-                    </td>
-                </tr>
-            </table>
-        </div>
+                    </section>
+                    <section id="swUsersSection">
+                        <input type="number" id="swUsers" size="10" min="5" max="1000" step="5" value="5">
+                    </section>
+                </td>
+                <td id="lic_typeColumn">
+                    <select id="lic_type" class="cs-select cs-skin-elastic" disabled>
+                        <option value="" selected data-class="Commercial">Komerční</option>
+                        <option value=" GOV" data-class="GOV">GOV</option>
+                        <option value=" EDU" data-class="EDU">EDU</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" id="swm" min="1" value="1" max="2">
+                </td>
+                <td>
+                    <ul id="extensions">
+                        <li>
+                            <input type="checkbox" class="checkbox" id="antivirus">
+                            <label for="antivirus" id="antivirusLabel">Antivirus</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checkbox" id="activeSync">
+                            <label for="activeSync" id="activeSyncLabel">ActiveSync</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checkbox" id="antispam">
+                            <label for="antispam" id="antispamLabel">Anti-spam</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checkbox" id="webFilter">
+                            <label for="webFilter" id="webFilterLabel">Kerio WebFilter</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checkbox" id="warranty">
+                            <label for="warranty" id="warrantyLabel">Extended Warranty (3 years)</label>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <input name="price" id="price">
+                </td>
+                <td>
+                    <input name="totalPrice" id="totalPrice">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <input name="product" id="productFullName">
+                </td>
+            </tr>
+        </table>
     </form>
 </div>
 

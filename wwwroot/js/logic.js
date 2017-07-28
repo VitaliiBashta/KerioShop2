@@ -9,31 +9,35 @@ function initForm() {
     $("input").live("change", calculate);
     $(".cs-options").live("click", calculate);
     $(".checkbox").live("change", calculate);
-    // $("#swUsers").live("change", calculate);
-    // $("#validFrom").live("change", calculate);
-    // $("#price").live("change", calculate);
-    // $("#swm").live("change", calculate);
-    // $("#prod_group_id").on("change", calculate);
+
     $("#getLicenseInfo").on("click", getLicenseInfo);
+    $("#company").live("change", editCompany);
     $(".autocomplete-suggestion").live("click", setCompany);
     $("#existingLicense").on("change", newOrExistingToggle);
 
     $("#createEntityInRaynet").on("click", createEntityInRaynet);
     $("#businessCase").on("change", businessCaseSelect);
+    $("#offer").on("change", offerSelect);
 }
 
 function getLicenseInfo() {  //need to be done via API
     var licenseNumber = $("#licnum").val();
     var swUsers = $("#swUsers");
+    // var licenseNumber = $("#licenseNumber");
+    var prod_group_id = $("#prod_group_id");
+    var lic_type = $("#lic_type");
+    var existingUsers = $("#existingUsers");
+    var existingExtensions = $("#existingExtensions");
+    var expirationDate = $("#expirationDate");
 
     var XmlHTTP = new XMLHttpRequest();
 
     $("#licenseNumber").html("");
-    $("#prod_group_id").val("");
-    $("#lic_type").val(" ");
-    $("#existingUsers").html("");
-    $("#expirationDate").val("");
-    $("#existingExtensions").html("");
+    prod_group_id.val("");
+    lic_type.val(" ");
+    existingUsers.html("");
+    expirationDate.html("");
+    existingExtensions.html("");
 
     XmlHTTP.open("GET", "/licenseInfo/?" + licenseNumber, false);
     XmlHTTP.send();
@@ -51,16 +55,16 @@ function getLicenseInfo() {  //need to be done via API
         }
         $("#description").html(description);
         $("#licenseNumber").html(json[0]);
-        $("#prod_group_id").val(json[1]);
-        $("#lic_type").val(" " + json[2]);
-        $("#existingUsers").html(json[3]);
-        $("#expirationDate").val(json[4]);
-        $("#existingExtensions").html(json[5]);
+        prod_group_id.val(json[1]);
+        lic_type.val(" " + json[2]);
+        existingUsers.html(json[3]);
+        expirationDate.html(json[4]);
+        existingExtensions.html(json[5]);
         // end simulation
 
         var validFrom = new Date($("#validFrom").val());
-        var expirationDate = new Date(json[4]);
-        var timeDiff = expirationDate.getTime() - validFrom.getTime();
+        var expDate = new Date(json[4]);
+        var timeDiff = expDate.getTime() - validFrom.getTime();
         var diffYears = Math.round(timeDiff / (1000 * 3600 * 24 * 365));
         var swm = $("#swm");
         swm.attr("min", "0");
@@ -75,31 +79,54 @@ function getLicenseInfo() {  //need to be done via API
 
 function businessCaseSelect() {
     var businessCaseId = $("#businessCase").val();
-    var items = $("#items");
+    var newOP = $("#newOP");
+    var products = $("#products");
     var createEntityInRaynet = $("#createEntityInRaynet");
+    var offerDiv = $("#offerDiv");
     var downloadPDF = $("#downloadPDF");
+    var offer = $("#offer");
     downloadPDF.hide();
-    items.hide();
+    newOP.hide();
+    products.hide();
     createEntityInRaynet.hide();
+    offerDiv.hide();
 
     if (businessCaseId === "0") {
         createEntityInRaynet.show();
-        items.show();
+        newOP.show();
+        products.show();
     }
     else {
+        offerDiv.show();
+        offer.html("(none)");
         var XmlHTTP;
         if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
-
         XmlHTTP.onreadystatechange = function () {
             if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
-                var response = XmlHTTP.responseText;
-                downloadPDF.attr("href", response);
-                downloadPDF.show();
+                offer.html(XmlHTTP.responseText);
+                offerSelect();
             }
         };
-        XmlHTTP.open("GET", "/info/?getPdfUrl=" + businessCaseId, true);
+        XmlHTTP.open("GET", "/info/?getOffers=" + businessCaseId, true);
         XmlHTTP.send();
     }
+}
+
+function offerSelect() {
+    var offerID = $("#offer").val();
+    var downloadPDF = $("#downloadPDF");
+    downloadPDF.hide();
+    var XmlHTTP;
+    if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
+    XmlHTTP.onreadystatechange = function () {
+        if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
+            var response = XmlHTTP.responseText;
+            downloadPDF.attr("href", response);
+            downloadPDF.show();
+        }
+    };
+    XmlHTTP.open("GET", "/info/?getPdfUrl=" + offerID, true);
+    XmlHTTP.send();
 }
 
 function serialize() {
@@ -112,10 +139,8 @@ function newOrExistingToggle() {
     var swUsers = $("#swUsers");
     var licnum = $("#licnum");
     var getLicenseInfo = $("#getLicenseInfo");
-    var products = $("#products");
 
     if ($("#existingLicense").prop("checked")) {
-        products.hide();
         licnum.show();
         getLicenseInfo.show();
         $("#lic_type").show();
@@ -123,7 +148,6 @@ function newOrExistingToggle() {
         $("#productGroup").find(".cs-placeholder").hide();
         $("#lic_typeColumn").find(".cs-placeholder").hide();
     } else {
-        products.show();
         licnum.hide();
         getLicenseInfo.hide();
         $("#existingProducts").hide();
@@ -145,7 +169,6 @@ function calculate() {
     if (productGroup === "Kerio Operator") productCode = "488";
     if (productGroup === "" && boxProduct === "V300") productCode = "488";
     $("#businessCaseCategory").val(productCode);
-
 
     if ($("#existingLicense").prop("checked")) {
         fitElementsExistingLicense();
@@ -210,9 +233,9 @@ function getFullNameExistingLicense() {
     result += $("#lic_type").val();
 
     if ($("#antispamLabel").is(":visible") && $("#antispam").is(':checked')
-        || (existingExtensions.indexOf("Antispam") > -1 )) result += ", Kerio AntiSpam";
+        || (existingExtensions.indexOf("AntiSpam") > -1 )) result += ", Kerio AntiSpam";
     if ($("#antivirusLabel").is(":visible") && $("#antivirus").is(':checked')
-        || (existingExtensions.indexOf("Sophos") > -1 && existingExtensions.indexOf("Antivirus") > -1)) result += ", Kerio Antivirus";
+        || (existingExtensions.indexOf("Sophos") > -1 || existingExtensions.indexOf("Antivirus") > -1)) result += ", Kerio Antivirus";
     if ($("#activeSyncLabel").is(":visible") && $("#activeSync").is(':checked')
         || existingExtensions.indexOf("ActiveSync") > -1) result += ", ActiveSync";
     if ($("#webFilterLabel").is(":visible") && $("#webFilter").is(':checked')
@@ -247,6 +270,7 @@ function fitElements() {
     var activeSyncLabel = $("#activeSyncLabel");
     var antispamLabel = $("#antispamLabel");
     var webFilterLabel = $("#webFilterLabel");
+    var warrantyLabel = $("#warrantyLabel");
     var users;
     var swm = $("#swm").val();
 
@@ -264,7 +288,7 @@ function fitElements() {
         webFilterLabel.show();
     }
     if (productGroup === "") {
-        $("#warrantyLabel").show();
+        warrantyLabel.show();
         $("#boxGroup").show();
         $("#productGroup").attr("colspan", "1");
         users = $("#hwUsers").val();
@@ -298,10 +322,10 @@ function fitElements() {
         activeSync: activeSyncLabel.is(":visible") && $("#activeSync").is(':checked'),
         antiSpam: antispamLabel.is(":visible") && $("#antispam").is(':checked'),
         webFilter: webFilterLabel.is(":visible") && $("#webFilter").is(':checked'),
-        exWarranty: $("#warrantyLabel").is(":visible") && $("#warranty").is(':checked')
+        exWarranty: warrantyLabel.is(":visible") && $("#warranty").is(':checked')
     };
 
-    $("#price").val(calculateNewPrice2(currency, newProduct));
+    $("#price").val(calculateNewPrice(currency, newProduct));
     var fullName = getFullNameNewLicense();
     $("#productFullName").val(fullName);
     $("#businessCase").val(fullName);
@@ -341,7 +365,7 @@ function fitElementsExistingLicense() {
     var oldProduct = {
         product: product,
         users: $("#existingUsers").html(),
-        expirationDate: $("#expirationDate").val(),
+        expirationDate: $("#expirationDate").html(),
         extensions: existingExtensions
     };
 
@@ -354,21 +378,35 @@ function fitElementsExistingLicense() {
         antiSpam: antispamLabel.is(":visible") && $("#antispam").is(':checked'),
         webFilter: webFilterLabel.is(":visible") && $("#webFilter").is(':checked')
     };
-    // var price = calculateExistingPrice(currency, product, users, swm);
-    var price = calculateExistingPrice2(currency, newProduct, oldProduct);
+
+    var price = calculateExistingPrice(currency, newProduct, oldProduct);
     $("#price").val(price);
-    // $("#price2").val(price2);
 }
 
+function editCompany() {
+    var company = $("#company").val();
+    $("#mainTable").hide();
+    $("#newOP").hide();
+    $("#existingProducts").hide();
+    $("#products").hide();
+}
 function setCompany() {
     var company = $("#company").val();
+    var persons = $("#persons");
+    $("#mainTable").hide();
+    $("#newOP").hide();
+    $("#offerDiv").hide();
+    $("#existingProducts").hide();
+    $("#products").hide();
+    persons.html("");
     if (company !== "") {
-        sendGet("/info/?getPersonsFor=" + company, $("#persons"));
+        sendGet("/info/?getPersonsFor=" + company, persons);
         sendGet("/info/?getIdFor=" + company, $("#companyID"));
         sendGet("/info/?getBusinessCasesFor=" + company, $("#businessCase"));
+
         $("#mainTable").show();
     } else {
-        $("#mainTable").hide();
+
     }
 }
 
@@ -376,18 +414,17 @@ function createEntityInRaynet() {
     serialize();
     var request = $("#request").val();
     $("#createEntityInRaynet").hide();
-    var container = document.getElementById("businessCase");
-    sendPut("/businessCase", request, container);
+    sendPut("/businessCase", request);
 }
 
-function sendPut(url, params, container) {
+function sendPut(url, params) {
     serialize();
     var XmlHTTP;
     if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
     XmlHTTP.onreadystatechange = function () {
         if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
             sendGet("/info/?getBusinessCasesFor=" + $("#company").val(), "businessCase");
-            container.innerHTML = XmlHTTP.response;
+            $("#businessCase").html(XmlHTTP.response);
             alert("Obchodní případ vytvořen");
         }
     };

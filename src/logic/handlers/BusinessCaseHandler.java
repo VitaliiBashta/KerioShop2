@@ -34,7 +34,7 @@ public class BusinessCaseHandler implements HttpHandler {
             Integer offerId = formObject.getOffer().createOfferInRaynet();
             formObject.getOffer().sync();
 
-            response = raynet.getBusinessCasesAndOffers(formObject.companyName);
+            response = raynet.getBusinessCases(formObject.companyName);
             he.sendResponseHeaders(200, response.getBytes().length);
             os.write(response.getBytes());
             os.flush();

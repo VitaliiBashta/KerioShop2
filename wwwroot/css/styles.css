@@ -10,22 +10,21 @@ body {
 
 li {
     list-style-type: none;
-
 }
 
 table {
     table-layout: fixed;
     margin: auto;
+
     width: 900px;
-    max-width: 900px;
 }
 
 tr {
-    height: 50px;
+    height: 30px;
 }
 
 td {
-    border: 1px solid black;
+    border: 0px solid black;
 }
 
 th {
@@ -35,20 +34,16 @@ th {
 thead, th {
     background: #6595BE;
     color: white;
-    font-size: 1em;
     text-align: center;
 }
 
 input, select {
     width: 100%;
-    height: 50px;
-    font-size: 1.5em;
-    text-align: center;
+    height: 30px;
+    /*text-align: center;*/
 }
 
 #existingProducts tbody td {
-    height: 50px;
-    font-size: 1.5em;
     background: silver;
 }
 
@@ -73,8 +68,8 @@ textarea {
     position: absolute;
     top: -4px;
     left: 0;
-    width: 50px;
-    height: 26px;
+    width: 45px;
+    height: 22px;
     border-radius: 13px;
     background: #CDD1DA;
     box-shadow: inset 0 2px 3px rgba(0, 0, 0, .2);
@@ -85,9 +80,9 @@ textarea {
     position: absolute;
     top: -2px;
     left: 2px;
-    width: 22px;
-    height: 22px;
-    border-radius: 10px;
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
     background: #FFF;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
     transition: all .2s;
@@ -158,23 +153,18 @@ textarea {
     width: 400px;
 }
 
-.width500 {
-    width: 500px;
-}
-
-#items, #mainTable, #existingProducts {
+#mainTable, #existingProducts, #newOP, #products {
     display: none;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 a.buttonSubmit {
     font-family: Arial, Helvetica, sans-serif;
     display: none;
     text-decoration: none;
-    font-size: 24px;
     color: #ffffff;
-    width: 400px;
-    padding: 10px 20px;
+
+    padding: 5px 20px;
     background: -webkit-gradient(
             linear, left top, left bottom,
             from(#6595be),
@@ -191,7 +181,7 @@ a.buttonSubmit {
 }
 
 #boxGroup, #hwUsersSection, #getLicenseInfo,
-    /*#request,#response,*/
+#request, #response, #companyID, #offerDiv,
 #licnum,
 #antivirusLabel, #activeSyncLabel, #antispamLabel, #webFilterLabel, #warrantyLabel {
     display: none;

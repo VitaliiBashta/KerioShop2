@@ -27,24 +27,29 @@ public class LicenseInfoHandler implements HttpHandler {
         String params = "licence=" + licenseNumber + "&next=Continue";
         String response = Methods.sendPost(Utils.KERIO_URL, params);
         Document doc = Jsoup.parse(response);
-        Element table = doc.body().select(".tableVertical ").get(0);
-        Elements rows = table.select("tr");
+        Elements tables = doc.body().select(".tableVertical ");
         List<String> licInfo = new ArrayList<>();
-        for (int i = 0; i < rows.size(); i++) {
-            Element row = rows.get(i);
-            String value = row.select("td").get(0).text();
-            if (i == 4) {
-                DateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
-                Date startDate = null;
-                try {
-                    startDate = df.parse(value);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+        if (tables.size() > 0) {
+            Element table = tables.get(0);
+            Elements rows = table.select("tr");
+            for (int i = 0; i < rows.size(); i++) {
+                Element row = rows.get(i);
+                String value = row.select("td").get(0).text();
+                if (i == 4) {
+                    DateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+                    Date startDate = null;
+                    try {
+                        startDate = df.parse(value);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    DateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    value = newFormat.format(startDate);
                 }
-                DateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
-                value = newFormat.format(startDate);
+                licInfo.add(value);
             }
-            licInfo.add(value);
+        } else {
+            licInfo.add("Neplatné lic. číslo!");
         }
         Gson gson = new Gson();
         String json = gson.toJson(licInfo);

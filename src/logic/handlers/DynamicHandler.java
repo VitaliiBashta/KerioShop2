@@ -39,11 +39,16 @@ public class DynamicHandler implements HttpHandler {
                 }
                 if (query.startsWith("getBusinessCasesFor")) {
                     String companyName = query.split("=")[1];
-                    response = raynet.getBusinessCasesAndOffers(companyName);
+                    response = raynet.getBusinessCases(companyName);
                 }
-                if (query.startsWith("getPdfUrl")) {
+                if (query.startsWith("getOffers")) {
                     Integer businessCaseId = Integer.valueOf(query.split("=")[1]);
-                    response = raynet.getPdfUrl(businessCaseId);
+                    response = raynet.getOffers(businessCaseId);
+                }
+
+                if (query.startsWith("getPdfUrl")) {
+                    Integer offerId = Integer.valueOf(query.split("=")[1]);
+                    response = raynet.getPdfUrl(offerId);
                 }
             }
             if (!response.equals("")) {

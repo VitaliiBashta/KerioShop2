@@ -1,16 +1,12 @@
 package logic.objects;
 
-import logic.components.PrimaryAddress;
-import logic.dials.Dial;
-
-
 public class Company {
 
     public int id;
     public String name;   //required
-    public PrimaryAddress primaryAddress;
-    Dial category;
-    Dial contactSource;
+//    public PrimaryAddress primaryAddress;
+//    Dial category;
+//    Dial contactSource;
 
     @Override
     public String toString() {

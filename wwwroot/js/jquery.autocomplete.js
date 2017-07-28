@@ -25,8 +25,7 @@
 }(function ($) {
     'use strict';
 
-    var
-        utils = (function () {
+    var utils = (function () {
             return {
                 escapeRegExChars: function (value) {
                     return value.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");

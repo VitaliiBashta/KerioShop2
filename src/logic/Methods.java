@@ -34,13 +34,6 @@ public class Methods {
         return "";
     }
 
-//    public static String sendGet2(String url) throws IOException {
-//        HttpClient client = HttpClientBuilder.create().build();
-//        HttpGet request = new HttpGet(url);
-//        HttpResponse response = client.execute(request);
-//        return getStringResponse(response);
-//    }
-
     public static String sendPost(String url, String urlParameters) {
         StringBuilder response = new StringBuilder();
         try {

@@ -1,9 +1,6 @@
 .cs-skin-elastic > span {
     background-color: #fff;
-}
-
-.cs-skin-elastic.cs-active .cs-options {
-    pointer-events: auto;
+    border: 1px solid silver;
 }
 
 .cs-skin-elastic .cs-options > ul::before {
@@ -40,8 +37,8 @@
 
 .cs-skin-elastic .cs-options span {
     background: no-repeat 0 50%;
-    background-size: 2em auto;
-    padding: 1em 0 1em 2.5em;
+    background-size: 1.5em auto;
+    padding: 1em 0 0.5em 2em;
 }
 
 .cs-skin-elastic .cs-options span:hover,

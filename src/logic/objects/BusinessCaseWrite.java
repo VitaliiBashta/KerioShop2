@@ -10,15 +10,14 @@ import org.apache.http.entity.StringEntity;
 
 import java.util.Date;
 
-
 public class BusinessCaseWrite {
     private final String name;  //required
     private final long owner;
     private final long company; //required
-    private final long person;
+    private final Integer person;
     private final int probability;
     private final long currency;  //required
-    private final double exchangeRate;
+    //    private final double exchangeRate;
     private final long category;
     private final long source;
     private final Date validFrom;
@@ -28,14 +27,14 @@ public class BusinessCaseWrite {
     public String code;
     private final String description;
 
-    public BusinessCaseWrite(FormObject formObject) {
+    BusinessCaseWrite(FormObject formObject) {
         this.name = formObject.name;
         this.owner = formObject.owner;
         this.company = formObject.company;
         this.person = formObject.person;
         this.probability = formObject.probability;
         this.currency = formObject.currency;
-        this.exchangeRate = formObject.exchangeRate;
+//        this.exchangeRate = formObject.exchangeRate;
         this.category = formObject.category;
         this.source = formObject.source;
         this.validFrom = formObject.validFrom;
