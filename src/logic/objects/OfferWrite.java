@@ -11,29 +11,29 @@ import org.apache.http.entity.StringEntity;
 import java.util.Date;
 
 public class OfferWrite {
-    private final String name;
+    private int id;
+    private String name;
+    public String code;
     private final Integer owner;
     private final Integer person;
     private final Integer company;
     private final Date validFrom;
     private final Date expirationDate;
-    //    private final long category;
     private final String description;
     private final Integer offerStatus;
-    public String code;
-    private int id;
+
+
     private Integer businessCase;
-    public OfferWrite(FormObject formObject) {
-        this.name = formObject.name;
-        this.owner = formObject.owner;
-        this.person = formObject.person;
-        this.company = formObject.company;
-        this.businessCase = formObject.getBusinessCase().id;
-        this.validFrom = formObject.validFrom;
-        this.expirationDate = formObject.scheduledEnd;
-        this.description = formObject.description;
-//        this.category = formObject.category;
-        this.offerStatus = 49; //Nabidnuta
+
+    OfferWrite(FormObject formObject, int i) {
+        name = formObject.productFullNames.get(i);
+        owner = formObject.owner;
+        person = formObject.person;
+        company = formObject.company;
+        validFrom = formObject.validFrom;
+        expirationDate = formObject.scheduledEnd;
+        description = formObject.description;
+        offerStatus = 49; //Offered
     }
 
     public void setBusinessCase(Integer businessCase) {
@@ -47,14 +47,19 @@ public class OfferWrite {
         return result;
     }
 
-    public Integer createOfferInRaynet() {
-        HttpEntity entity = new StringEntity(getJson(), ContentType.APPLICATION_JSON);
-        this.id = Utils.getCreatedId(Methods.sendPut(Utils.RAYNET_API_URL + "/offer/", entity));
-        return this.id;
+    public Integer createOfferInRaynet(int businessCase) {
+        this.businessCase = businessCase;
+        String json = Utils.objectToEntity(this);
+        HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+        id = Utils.getCreatedId(Methods.sendPut(Utils.RAYNET_API_URL + "/offer/", entity));
+        return id;
     }
 
     public void sync() {
         Methods.sendPost(Utils.RAYNET_API_URL + "/offer/" + this.id + "/sync/", null);
     }
 
+    public String asHTML() {
+        return "<option value=\"" + id + "\">" + code + ":\t" + name + "</option>";
+    }
 }

@@ -1,7 +1,5 @@
 package logic.objects;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import logic.Methods;
 import logic.Utils;
 import org.apache.http.HttpEntity;
@@ -10,7 +8,7 @@ import org.apache.http.entity.StringEntity;
 
 import java.util.Date;
 
-public class BusinessCaseWrite {
+public class BusinessCase {
     private final String name;  //required
     private final long owner;
     private final long company; //required
@@ -19,16 +17,16 @@ public class BusinessCaseWrite {
     private final long currency;  //required
     //    private final double exchangeRate;
     private final long category;
-    private final long source;
+    private final long source = 42;
     private final Date validFrom;
     private final Date scheduledEnd;
     private final int businessCasePhase;
-    public int id;
+    private int id;
     public String code;
     private final String description;
 
-    BusinessCaseWrite(FormObject formObject) {
-        this.name = formObject.name;
+    BusinessCase(FormObject formObject) {
+        this.name = formObject.productFullNames.get(0);
         this.owner = formObject.owner;
         this.company = formObject.company;
         this.person = formObject.person;
@@ -36,7 +34,7 @@ public class BusinessCaseWrite {
         this.currency = formObject.currency;
 //        this.exchangeRate = formObject.exchangeRate;
         this.category = formObject.category;
-        this.source = formObject.source;
+//        this.source = 42; //formObject.source;
         this.validFrom = formObject.validFrom;
         this.scheduledEnd = formObject.scheduledEnd;
         this.businessCasePhase = formObject.businessCasePhase;
@@ -44,8 +42,8 @@ public class BusinessCaseWrite {
     }
 
     public Integer createBusinessCaseInRaynet() {
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        String json = gson.toJson(this);
+//        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        String json = Utils.objectToEntity(this);
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
         this.id = Utils.getCreatedId(Methods.sendPut(Utils.RAYNET_API_URL + "/businessCase/", entity));
         return this.id;

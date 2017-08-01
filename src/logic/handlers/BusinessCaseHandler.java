@@ -1,5 +1,7 @@
 package logic.handlers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import logic.Raynet;
@@ -9,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.URLDecoder;
 
 public class BusinessCaseHandler implements HttpHandler {
     private final Raynet raynet;
@@ -25,14 +26,25 @@ public class BusinessCaseHandler implements HttpHandler {
             BufferedReader br = new BufferedReader(new InputStreamReader(he.getRequestBody(), "utf-8"));
             String query = br.readLine();
             String response;
-
-            FormObject formObject = new FormObject(URLDecoder.decode(query, "UTF-8"));
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+            FormObject formObject = gson.fromJson(query, FormObject.class);
+            formObject.init();
+//            FormObject formObject = new FormObject(URLDecoder.decode(query, "UTF-8"));
             Integer businessCaseId = formObject.getBusinessCase().createBusinessCaseInRaynet();
-            formObject.getProduct().setBusinessCaseId(businessCaseId);
-            Integer productId = formObject.getProduct().createProductInRaynet();
-            formObject.getOffer().setBusinessCase(businessCaseId);
-            Integer offerId = formObject.getOffer().createOfferInRaynet();
-            formObject.getOffer().sync();
+
+
+            if (formObject.offersSeparate) {
+                for (int i = 0; i < formObject.products.size(); i++) {
+                    Integer offerId = formObject.getOffer(i).createOfferInRaynet(businessCaseId);
+                    Integer productId = formObject.getProduct(i).createProductInRaynet(offerId);
+                }
+            } else {
+                Integer offerId = formObject.getOffer(0).createOfferInRaynet(businessCaseId);
+                for (int i = 0; i < formObject.products.size(); i++) {
+                    Integer productId = formObject.getProduct(i).createProductInRaynet(offerId);
+                }
+            }
+            formObject.getOffer(0).sync();
 
             response = raynet.getBusinessCases(formObject.companyName);
             he.sendResponseHeaders(200, response.getBytes().length);

@@ -15,8 +15,7 @@ li {
 table {
     table-layout: fixed;
     margin: auto;
-
-    width: 900px;
+    width: 1000px;
 }
 
 tr {
@@ -24,7 +23,7 @@ tr {
 }
 
 td {
-    border: 0px solid black;
+    border: 1px solid black;
 }
 
 th {
@@ -40,7 +39,9 @@ thead, th {
 input, select {
     width: 100%;
     height: 30px;
-    /*text-align: center;*/
+}
+#offer {
+    height: 100%;
 }
 
 #existingProducts tbody td {
@@ -158,13 +159,12 @@ textarea {
     /*text-align: center;*/
 }
 
-a.buttonSubmit {
+.buttonSubmit {
     font-family: Arial, Helvetica, sans-serif;
     display: none;
     text-decoration: none;
     color: #ffffff;
-
-    padding: 5px 20px;
+    padding: 5px 22px 5px 15px;
     background: -webkit-gradient(
             linear, left top, left bottom,
             from(#6595be),
@@ -180,9 +180,27 @@ a.buttonSubmit {
     inset 0 0 2px white;
 }
 
+.removeProduct {
+    display: block;
+    background: -webkit-gradient(
+            linear, left top, left bottom,
+            from(#cc8682),
+            to(#ab0000));
+    }
+
 #boxGroup, #hwUsersSection, #getLicenseInfo,
-#request, #response, #companyID, #offerDiv,
-#licnum,
+    #request,
+#product1, #product2, #product3, #productFullName,
+#response, #companyID, #offerDiv,
+#licnum, #offersSeparateSwitchLabel,
 #antivirusLabel, #activeSyncLabel, #antispamLabel, #webFilterLabel, #warrantyLabel {
     display: none;
+}
+
+#addProduct {
+    display: block;
+}
+
+#offerDiv {
+    height: 5em;
 }

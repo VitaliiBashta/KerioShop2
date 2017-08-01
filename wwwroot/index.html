@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>RAYNET by Vitalii Bashta</title>
+    <title>ZEBNET by V. Bashta</title>
     <link href="css/styles.css" rel="stylesheet" type="text/css"/>
     <link href="css/cs-select.css" rel="stylesheet" type="text/css"/>
     <link href="css/cs-skin-elastic.css" rel="stylesheet" type="text/css"/>
@@ -29,12 +29,11 @@
             <tr>
                 <td><input id="company" name="companyName" value=""/></td>
                 <td><select id="persons" name="person"> </select></td>
-                <td><select name="discountPercent" class="cs-select cs-skin-elastic"
-                            id="discountPercent">
-                    <option value="15" selected>15 %</option>
-                    <option value="20">20 %</option>
-                    <option value="25">25 %</option>
-                    <option value="30">30 %</option>
+                <td><select name="discountPercent" id="discountPercent" class="cs-select cs-skin-elastic">
+                    <option value="15" selected data-class="bronze">15 %</option>
+                    <option value="20" data-class="bronze">20 %</option>
+                    <option value="25" data-class="silver">25 %</option>
+                    <option value="30" data-class="gold">30 %</option>
                 </select></td>
                 <td>
                     <select id="currency" name="currency" class="cs-select cs-skin-elastic">
@@ -45,6 +44,7 @@
                 <td>
                     <select class="cs-select cs-skin-elastic" name="owner" id="owner">
                         <option value="462" data-class="bashta">Vitalii Bashta</option>
+                        <option value="462" data-class="svandova">Jana Švandová</option>
                     </select>
                 </td>
             </tr>
@@ -53,17 +53,22 @@
         <table id="mainTable">
             <tr>
                 <th><label for="businessCase">Obchodní případ:</label></th>
-                <td colspan="4">
+                <td colspan="3">
                     <select id="businessCase" name="name"> </select>
                 </td>
-                <td colspan="2">
+                <td>
                     <a href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít OP</a>
+                </td>
+                <td colspan="1">
+                    <input type="checkbox" class="checkbox" id="offersSeparateSwitch">
+                    <label for="offersSeparateSwitch" id="offersSeparateSwitchLabel">NAB zvlašť</label>
+                    <input type="hidden" id="offersSeparate" name="offersSeparate" value="">
                 </td>
             </tr>
             <tr id="offerDiv">
                 <th><label for="offer">Nabidka:</label></th>
-                <td colspan="4">
-                    <select id="offer" name="offerName"> </select>
+                <td colspan="3">
+                    <select id="offer" name="offerName" size="5"> </select>
                 </td>
                 <td colspan="2">
                     <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a>
@@ -145,8 +150,9 @@
                 <td class="width120"><label for="swm">Typ licence</label></td>
                 <td class="width80">Počet let SWM</td>
                 <td class="width400">Dostupná rožšiření</td>
-                <td class="width100"><label for="price">Cena</label></td>
-                <td class="width120"><label for="totalPrice">Cena pro partnera</label></td>
+                <td class="width80"><label for="price">Cena</label></td>
+                <td class="width80"><label for="totalPrice">Cena pro partnera</label></td>
+                <!--<td class="width40"></td>-->
             </tr>
             </thead>
             <tr>
@@ -218,14 +224,34 @@
                 </td>
                 <td>
                     <input name="price" id="price">
+                    <input name="productFullName" id="productFullName">
                 </td>
                 <td>
                     <input name="totalPrice" id="totalPrice">
                 </td>
+                <td>
+                        <a href="#" class="buttonSubmit" id="addProduct">+</a>
+                </td>
             </tr>
-            <tr>
-                <td colspan="4">
-                    <input name="product" id="productFullName">
+            <tr id="product1">
+                <td colspan="6"><input name="product1" id="productFullName1"></td>
+                <td><input name="price1" id="price1"></td>
+                <td><input name="totalPrice1" id="totalPrice1"></td>
+                <td><a href="#" class="removeProduct buttonSubmit" id="remove1" onclick="removeProduct(this.id)">-</a>
+                </td>
+            </tr>
+            <tr id="product2">
+                <td colspan="6"><input name="product2" id="productFullName2"></td>
+                <td><input name="price2" id="price2"></td>
+                <td><input name="totalPrice2" id="totalPrice2"></td>
+                <td><a href="#" class="removeProduct buttonSubmit" id="remove2" onclick="removeProduct(this.id)">-</a>
+                </td>
+            </tr>
+            <tr id="product3">
+                <td colspan="6"><input name="product3" id="productFullName3"></td>
+                <td><input name="price3" id="price3"></td>
+                <td><input name="totalPrice3" id="totalPrice3"></td>
+                <td><a href="#" class="removeProduct buttonSubmit " id="remove3" onclick="removeProduct(this.id)">-</a>
                 </td>
             </tr>
         </table>

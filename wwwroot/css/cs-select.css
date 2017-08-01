@@ -58,5 +58,6 @@ div.cs-select:focus {
 
 .cs-select.cs-active .cs-options {
     visibility: visible;
+    z-index: 2;
 }
 

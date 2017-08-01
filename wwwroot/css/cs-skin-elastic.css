@@ -137,6 +137,21 @@
 .cs-skin-elastic .cs-options li.bashta span {
     background-image: url(../img/bashta.png);
 }
+.cs-skin-elastic .cs-options li.svandova span {
+    background-image: url(../img/svandova.png);
+}
+
+.cs-skin-elastic .cs-options li.bronze span {
+    background-image: url(../img/bronze.png);
+}
+
+.cs-skin-elastic .cs-options li.silver span {
+    background-image: url(../img/silver.png);
+}
+
+.cs-skin-elastic .cs-options li.gold span {
+    background-image: url(../img/gold.png);
+}
 
 @keyframes bounce {
     0% {

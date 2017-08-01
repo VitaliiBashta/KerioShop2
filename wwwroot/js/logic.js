@@ -11,6 +11,8 @@ function initForm() {
     $(".checkbox").live("change", calculate);
 
     $("#getLicenseInfo").on("click", getLicenseInfo);
+    $("#addProduct").on("click", addProduct);
+    // $(".removeProduct").live("click", removeProduct(this.id));
     $("#company").live("change", editCompany);
     $(".autocomplete-suggestion").live("click", setCompany);
     $("#existingLicense").on("change", newOrExistingToggle);
@@ -18,6 +20,27 @@ function initForm() {
     $("#createEntityInRaynet").on("click", createEntityInRaynet);
     $("#businessCase").on("change", businessCaseSelect);
     $("#offer").on("change", offerSelect);
+}
+
+function toJSONString() {
+    var obj = {};
+    var elements = $("#openForm").find("input, select, textarea");
+    // .filter(":visible");
+    for (var i = 0; i < elements.length; ++i) {
+        var element = elements[i];
+        var name = element.name;
+        var value = element.value;
+
+        if (name) {
+            obj[name] = value;
+        }
+    }
+    var data = {};
+    // return $("#openForm").serializeArray().map(function (x) {
+    //     data[x.name] = x.value;
+    // });
+    // // return data;
+    return JSON.stringify( obj );
 }
 
 function getLicenseInfo() {  //need to be done via API
@@ -80,6 +103,7 @@ function getLicenseInfo() {  //need to be done via API
 function businessCaseSelect() {
     var businessCaseId = $("#businessCase").val();
     var newOP = $("#newOP");
+    var offersSeparateSwitchLabel = $("#offersSeparateSwitchLabel");
     var products = $("#products");
     var createEntityInRaynet = $("#createEntityInRaynet");
     var offerDiv = $("#offerDiv");
@@ -87,13 +111,16 @@ function businessCaseSelect() {
     var offer = $("#offer");
     downloadPDF.hide();
     newOP.hide();
+    offersSeparateSwitchLabel.hide();
     products.hide();
-    createEntityInRaynet.hide();
+    offersSeparateSwitchLabel.hide();
     offerDiv.hide();
+    createEntityInRaynet.hide();
 
     if (businessCaseId === "0") {
         createEntityInRaynet.show();
         newOP.show();
+        offersSeparateSwitchLabel.show();
         products.show();
     }
     else {
@@ -178,11 +205,17 @@ function calculate() {
 
     var price = $("#price").val();
     var discount = $("#discountPercent").val();
-    var totalPrice = (price * (100 - discount)) / 100;
+    var totalPrice = (price * (100 - discount)) / 100;-
     $("#totalPrice").val(Math.round(100 * totalPrice) / 100);
 
-    var str = $("form").serialize();
-    $("#request").text(str);
+    $("#offersSeparate").val("false");
+    if ($("#offersSeparateSwitch").is(":checked")) {
+        $("#offersSeparate").val("true");
+    }
+
+    var str2 = toJSONString();
+    $("#request").text(str2);
+
 }
 
 function getLicTypeModifier() {
@@ -246,6 +279,14 @@ function getFullNameExistingLicense() {
     return result;
 }
 
+function getFullName() {
+    if ($("#existingLicense").prop("checked")) {
+        return getFullNameExistingLicense();
+    } else {
+        return getFullNameNewLicense();
+    }
+}
+
 function hideAll() {
     $(".GOV").hide();
     $(".EDU").hide();
@@ -261,6 +302,34 @@ function hideAll() {
     $(".users50").hide();
     $(".users100").hide();
     $("#productGroup").attr("colspan", "2");
+}
+
+function addProduct() {
+    var price = $("#price");
+    var totalPrice = $("#totalPrice");
+
+    for (var i = 1; i <= 3; i++) {
+        var product = $("#product" + i);
+        var totalPrice1 = $("#totalPrice" + i);
+        var price1 = $("#price" + i);
+        var productFullName1 = $("#productFullName" + i);
+        if (!product.is(":visible")) {
+            productFullName1.val(getFullName());
+            price1.val(price.val());
+            totalPrice1.val(totalPrice.val());
+            product.show();
+            calculate();
+            return;
+        }
+    }
+}
+
+function removeProduct(itemNumber) {
+    if (itemNumber === undefined) return;
+    var num = itemNumber.charAt(itemNumber.length - 1);
+    var product = $("#product" + num);
+    product.hide();
+    calculate();
 }
 
 function fitElements() {
@@ -390,6 +459,7 @@ function editCompany() {
     $("#existingProducts").hide();
     $("#products").hide();
 }
+
 function setCompany() {
     var company = $("#company").val();
     var persons = $("#persons");
@@ -411,14 +481,14 @@ function setCompany() {
 }
 
 function createEntityInRaynet() {
-    serialize();
+    // serialize();
     var request = $("#request").val();
     $("#createEntityInRaynet").hide();
     sendPut("/businessCase", request);
 }
 
 function sendPut(url, params) {
-    serialize();
+    // serialize();
     var XmlHTTP;
     if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
     XmlHTTP.onreadystatechange = function () {

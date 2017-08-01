@@ -23,6 +23,28 @@ import java.util.Locale;
 
 public class LicenseInfoHandler implements HttpHandler {
 
+
+    @Override
+    public void handle(HttpExchange he) throws IOException {
+        URI requestedUri = he.getRequestURI();
+        OutputStream os = he.getResponseBody();
+        if (he.getRequestMethod().equals("GET")) {
+            String query = requestedUri.getQuery();
+            String response = "";
+            if (query != null) {
+                System.out.println(">>> GETTING info about: " + query);
+                response = getLicKeyInfo(query);
+            }
+            if (!response.equals("")) {
+                System.out.println("<<<: \t" + response);
+                he.sendResponseHeaders(200, response.getBytes().length);
+                os.write(response.getBytes());
+            }
+            os.flush();
+        }
+        os.close();
+    }
+
     private static String getLicKeyInfo(String licenseNumber) {
         String params = "licence=" + licenseNumber + "&next=Continue";
         String response = Methods.sendPost(Utils.KERIO_URL, params);
@@ -49,32 +71,11 @@ public class LicenseInfoHandler implements HttpHandler {
                 licInfo.add(value);
             }
         } else {
-            licInfo.add("Neplatné lic. číslo!");
+            licInfo.add("License key error!");
         }
         Gson gson = new Gson();
         String json = gson.toJson(licInfo);
         System.out.println(json);
         return json;
-    }
-
-    @Override
-    public void handle(HttpExchange he) throws IOException {
-        URI requestedUri = he.getRequestURI();
-        OutputStream os = he.getResponseBody();
-        if (he.getRequestMethod().equals("GET")) {
-            String query = requestedUri.getQuery();
-            String response = "";
-            if (query != null) {
-                System.out.println(">>> GETTING info about: " + query);
-                response = getLicKeyInfo(query);
-            }
-            if (!response.equals("")) {
-                System.out.println("<<<: \t" + response);
-                he.sendResponseHeaders(200, response.getBytes().length);
-                os.write(response.getBytes());
-            }
-            os.flush();
-        }
-        os.close();
     }
 }

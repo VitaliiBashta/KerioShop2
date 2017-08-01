@@ -29,5 +29,15 @@ public class Utils {
         if (json.success) return json.data.id;
         else return -1;
     }
+
+    public static <T>String objectToEntity(T obj){
+//        this.businessCase = businessCase;
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        String json = gson.toJson(obj);
+        System.out.println(json);
+
+
+        return json;
+    }
 }
 
