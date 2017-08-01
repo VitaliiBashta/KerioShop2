@@ -1,7 +1,5 @@
 package logic.objects;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import logic.Methods;
 import logic.Utils;
 import org.apache.http.HttpEntity;
@@ -30,14 +28,9 @@ public class Product {
         this.offerId = offerId;
     }
 
-    private String getJson() {
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        return gson.toJson(this);
-    }
-
     public Integer createProductInRaynet(Integer offerId) {
         this.offerId = offerId;
-        String json = Utils.objectToEntity(this);
+        String json = Utils.objectToJson(this);
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
         String url = Utils.RAYNET_API_URL + "/offer/" + this.offerId + "/item/";
         this.id = Utils.getCreatedId(Methods.sendPut(url, entity));

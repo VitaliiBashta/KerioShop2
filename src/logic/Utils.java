@@ -1,27 +1,16 @@
 package logic;
 
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import logic.jsonObjects.JsonResponse;
+import com.sun.net.httpserver.HttpExchange;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class Utils {
     public static final String RAYNET_API_URL = "https://app.raynet.cz/api/v2";
     public static final String KERIO_URL = "https://secure.kerio.com/order/upgrWizIndex.php";
     public static final Double DISTRIBUTOR_MARGIN = 0.45;
-
-    public static Map<String, String> urlParamsToMap(String query) {
-        Map<String, String> result = new LinkedHashMap<>();
-        String[] params = query.split("&");
-        for (String param : params) {
-            String[] pairs = param.split("=");
-            if (pairs.length == 2) result.put(pairs[0], pairs[1]);
-        }
-        return result;
-    }
 
     public static Integer getCreatedId(String response) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -30,14 +19,29 @@ public class Utils {
         else return -1;
     }
 
-    public static <T>String objectToEntity(T obj){
-//        this.businessCase = businessCase;
+    public static <T> String objectToJson(T obj) {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        String json = gson.toJson(obj);
-        System.out.println(json);
+        return gson.toJson(obj);
+    }
 
+    public static void writeResponse(HttpExchange he, String response) {
+        try (OutputStream os = he.getResponseBody()) {
+            he.sendResponseHeaders(200, response.getBytes().length);
+            os.write(response.getBytes());
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-        return json;
+    private class JsonResponse {
+        public Dial data;
+        boolean success;
+
+        private class Dial {
+            public int id;
+            private String code01;
+        }
     }
 }
 

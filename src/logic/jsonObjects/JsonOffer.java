@@ -5,7 +5,7 @@ import java.util.List;
 public class JsonOffer {
     public boolean success;
     public int totalCount;
-    public List<OfferRead> data;
+    private List<OfferRead> data;
 
     private class OfferRead {
         private int id;

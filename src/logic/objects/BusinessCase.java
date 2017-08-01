@@ -15,9 +15,8 @@ public class BusinessCase {
     private final Integer person;
     private final int probability;
     private final long currency;  //required
-    //    private final double exchangeRate;
     private final long category;
-    private final long source = 42;
+    private final long source = 61; //email
     private final Date validFrom;
     private final Date scheduledEnd;
     private final int businessCasePhase;
@@ -32,9 +31,7 @@ public class BusinessCase {
         this.person = formObject.person;
         this.probability = formObject.probability;
         this.currency = formObject.currency;
-//        this.exchangeRate = formObject.exchangeRate;
         this.category = formObject.category;
-//        this.source = 42; //formObject.source;
         this.validFrom = formObject.validFrom;
         this.scheduledEnd = formObject.scheduledEnd;
         this.businessCasePhase = formObject.businessCasePhase;
@@ -42,8 +39,7 @@ public class BusinessCase {
     }
 
     public Integer createBusinessCaseInRaynet() {
-//        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        String json = Utils.objectToEntity(this);
+        String json = Utils.objectToJson(this);
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
         this.id = Utils.getCreatedId(Methods.sendPut(Utils.RAYNET_API_URL + "/businessCase/", entity));
         return this.id;

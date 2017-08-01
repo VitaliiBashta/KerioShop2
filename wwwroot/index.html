@@ -15,7 +15,7 @@
 <div class="mainframe">
 
     <form action="/" id="openForm">
-        <textarea id="companyID" name="company"></textarea>
+        <input type="hidden" id="companyID" name="company">
         <table id="clientTable" class="clientField111">
             <thead>
             <tr>
@@ -136,9 +136,7 @@
             <tr>
                 <td id="licenseNumber"></td>
                 <td id="existingUsers"></td>
-                <td id="expirationDate">
-                    <input type="date" id="expirationDate2" style="display: none">
-                </td>
+                <td id="expirationDate"></td>
                 <td id="existingExtensions"></td>
             </tr>
         </table>
@@ -147,8 +145,8 @@
             <tr>
                 <td class="width300" colspan="2"><label for="prod_group_id">Produkt</label></td>
                 <td class="width120"><label for="hwUsers">Počet uživatelu</label></td>
-                <td class="width120"><label for="swm">Typ licence</label></td>
-                <td class="width80">Počet let SWM</td>
+                <td class="width120"><label for="lic_type">Typ licence</label></td>
+                <td class="width80"><label for="swm">Počet let SWM</label></td>
                 <td class="width400">Dostupná rožšiření</td>
                 <td class="width80"><label for="price">Cena</label></td>
                 <td class="width80"><label for="totalPrice">Cena pro partnera</label></td>
@@ -185,7 +183,7 @@
                         </select>
                     </section>
                     <section id="swUsersSection">
-                        <input type="number" id="swUsers" size="10" min="5" max="1000" step="5" value="5">
+                        <input type="number" id="swUsers" min="5" max="1000" step="5" value="5">
                     </section>
                 </td>
                 <td id="lic_typeColumn">
@@ -230,7 +228,7 @@
                     <input name="totalPrice" id="totalPrice">
                 </td>
                 <td>
-                        <a href="#" class="buttonSubmit" id="addProduct">+</a>
+                    <a href="#" class="buttonSubmit" id="addProduct">+</a>
                 </td>
             </tr>
             <tr id="product1">

@@ -10,9 +10,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URI;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,26 +20,17 @@ import java.util.Locale;
 
 public class LicenseInfoHandler implements HttpHandler {
 
-
     @Override
-    public void handle(HttpExchange he) throws IOException {
-        URI requestedUri = he.getRequestURI();
-        OutputStream os = he.getResponseBody();
+    public void handle(HttpExchange he) {
         if (he.getRequestMethod().equals("GET")) {
-            String query = requestedUri.getQuery();
-            String response = "";
+            String query = he.getRequestURI().getQuery();
             if (query != null) {
                 System.out.println(">>> GETTING info about: " + query);
-                response = getLicKeyInfo(query);
-            }
-            if (!response.equals("")) {
+                String response = getLicKeyInfo(query);
                 System.out.println("<<<: \t" + response);
-                he.sendResponseHeaders(200, response.getBytes().length);
-                os.write(response.getBytes());
+                Utils.writeResponse(he, response);
             }
-            os.flush();
         }
-        os.close();
     }
 
     private static String getLicKeyInfo(String licenseNumber) {

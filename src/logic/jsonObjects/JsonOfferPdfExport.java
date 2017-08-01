@@ -11,15 +11,17 @@ public class JsonOfferPdfExport {
     private String accessToken;
     private String instanceName;
 
-    public String getRequest() throws UnsupportedEncodingException {
-        return "https://app.raynet.cz/api/v2/exportBody/" +
-                uuid + '/' +
-                accessToken + '/' +
-                instanceName + '/' +
-                "?fileName=\"" + URLDecoder.decode(fileName, "UTF-8") +
-                "\"&contentType=" + URLDecoder.decode(contentType, "UTF-8");
+    public String getRequest() {
+        try {
+            return "https://app.raynet.cz/api/v2/exportBody/" +
+                    uuid + '/' +
+                    accessToken + '/' +
+                    instanceName + '/' +
+                    "?fileName=\"" + URLDecoder.decode(fileName, "UTF-8") +
+                    "\"&contentType=" + URLDecoder.decode(contentType, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
-
-
-
 }

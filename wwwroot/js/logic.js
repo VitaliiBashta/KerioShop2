@@ -25,28 +25,18 @@ function initForm() {
 function toJSONString() {
     var obj = {};
     var elements = $("#openForm").find("input, select, textarea");
-    // .filter(":visible");
     for (var i = 0; i < elements.length; ++i) {
         var element = elements[i];
         var name = element.name;
         var value = element.value;
-
-        if (name) {
-            obj[name] = value;
-        }
+        if (name) obj[name] = value;
     }
-    var data = {};
-    // return $("#openForm").serializeArray().map(function (x) {
-    //     data[x.name] = x.value;
-    // });
-    // // return data;
-    return JSON.stringify( obj );
+    return JSON.stringify(obj);
 }
 
 function getLicenseInfo() {  //need to be done via API
-    var licenseNumber = $("#licnum").val();
+    var licenseNumber = $("#licenseNumber");
     var swUsers = $("#swUsers");
-    // var licenseNumber = $("#licenseNumber");
     var prod_group_id = $("#prod_group_id");
     var lic_type = $("#lic_type");
     var existingUsers = $("#existingUsers");
@@ -55,14 +45,14 @@ function getLicenseInfo() {  //need to be done via API
 
     var XmlHTTP = new XMLHttpRequest();
 
-    $("#licenseNumber").html("");
+    licenseNumber.html("");
     prod_group_id.val("");
     lic_type.val(" ");
     existingUsers.html("");
     expirationDate.html("");
     existingExtensions.html("");
 
-    XmlHTTP.open("GET", "/licenseInfo/?" + licenseNumber, false);
+    XmlHTTP.open("GET", "/licenseInfo/?" + $("#licnum").val(), false);
     XmlHTTP.send();
     if (XmlHTTP.status === 200) {
         $("#existingProducts").show();
@@ -77,7 +67,7 @@ function getLicenseInfo() {  //need to be done via API
             description += json[i] + "\n";
         }
         $("#description").html(description);
-        $("#licenseNumber").html(json[0]);
+        licenseNumber.html(json[0]);
         prod_group_id.val(json[1]);
         lic_type.val(" " + json[2]);
         existingUsers.html(json[3]);
@@ -131,10 +121,11 @@ function businessCaseSelect() {
         XmlHTTP.onreadystatechange = function () {
             if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
                 offer.html(XmlHTTP.responseText);
+                offer.prop('selectedIndex', 0);
                 offerSelect();
             }
         };
-        XmlHTTP.open("GET", "/info/?getOffers=" + businessCaseId, true);
+        XmlHTTP.open("GET", "/offer/?" + businessCaseId, true);
         XmlHTTP.send();
     }
 }
@@ -152,14 +143,8 @@ function offerSelect() {
             downloadPDF.show();
         }
     };
-    XmlHTTP.open("GET", "/info/?getPdfUrl=" + offerID, true);
+    XmlHTTP.open("GET", "/Pdf/?" + offerID, true);
     XmlHTTP.send();
-}
-
-function serialize() {
-    var str = $("form").serialize();
-    console.log(str);
-    $("#request").text(str);
 }
 
 function newOrExistingToggle() {
@@ -205,8 +190,9 @@ function calculate() {
 
     var price = $("#price").val();
     var discount = $("#discountPercent").val();
-    var totalPrice = (price * (100 - discount)) / 100;-
-    $("#totalPrice").val(Math.round(100 * totalPrice) / 100);
+    var totalPrice = (price * (100 - discount)) / 100;
+    -
+        $("#totalPrice").val(Math.round(100 * totalPrice) / 100);
 
     $("#offersSeparate").val("false");
     if ($("#offersSeparateSwitch").is(":checked")) {
@@ -463,37 +449,41 @@ function editCompany() {
 function setCompany() {
     var company = $("#company").val();
     var persons = $("#persons");
-    $("#mainTable").hide();
+    var companyID = $("#companyID");
+    var mainTable = $("#mainTable");
+    mainTable.hide();
     $("#newOP").hide();
     $("#offerDiv").hide();
     $("#existingProducts").hide();
     $("#products").hide();
     persons.html("");
+    var XmlHTTP = new XMLHttpRequest();
     if (company !== "") {
-        sendGet("/info/?getPersonsFor=" + company, persons);
-        sendGet("/info/?getIdFor=" + company, $("#companyID"));
-        sendGet("/info/?getBusinessCasesFor=" + company, $("#businessCase"));
-
-        $("#mainTable").show();
+        XmlHTTP.open("GET", "companyId/?" + company, false);
+        XmlHTTP.send();
+        if (XmlHTTP.status === 200) {
+            companyID.val(XmlHTTP.responseText);
+            var id = companyID.val();
+            sendGet("/person/?" + id, persons);
+            sendGet("/businessCase/?" + id, $("#businessCase"));
+            mainTable.show();
+        }
     } else {
 
     }
 }
 
 function createEntityInRaynet() {
-    // serialize();
     var request = $("#request").val();
     $("#createEntityInRaynet").hide();
     sendPut("/businessCase", request);
 }
 
 function sendPut(url, params) {
-    // serialize();
     var XmlHTTP;
     if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
     XmlHTTP.onreadystatechange = function () {
         if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
-            sendGet("/info/?getBusinessCasesFor=" + $("#company").val(), "businessCase");
             $("#businessCase").html(XmlHTTP.response);
             alert("Obchodní případ vytvořen");
         }

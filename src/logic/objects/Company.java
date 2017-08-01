@@ -1,19 +1,11 @@
 package logic.objects;
 
 public class Company {
+    public final String data;
+    public final String value;
 
-    public int id;
-    public String name;   //required
-//    public PrimaryAddress primaryAddress;
-//    Dial category;
-//    Dial contactSource;
-
-    @Override
-    public String toString() {
-        String name = this.name.replace("&", "\\u0026");
-        name = name.replace("\"", "\\\"");
-        name = name.replace("\'", "\\u0027");
-        if (id == 251) System.out.println("name:" + name);
-        return "{\"data\":\"" + id + "\",\"value\":\"" + name + "\"}";
+    public Company(int data, String value) {
+        this.data = String.valueOf(data);
+        this.value = value;
     }
 }
