@@ -9,6 +9,8 @@
     <script src="js/priceCalculators.js"></script>
     <script src="js/logic.js"></script>
     <script src="js/prices.js"></script>
+    <link rel="stylesheet" href="css/awesomplete.css"/>
+    <script src="js/awesomplete.js" async></script>
 </head>
 <body>
 
@@ -27,7 +29,7 @@
             </tr>
             </thead>
             <tr>
-                <td><input id="company" value=""/></td>
+                <td><input id="company" value="" class="awesomplete"></td>
                 <td><select id="person" name="person"> </select></td>
                 <td><select name="discountPercent" id="discountPercent" class="cs-select cs-skin-elastic">
                     <option value="15" selected data-class="bronze">15 %</option>
@@ -269,7 +271,7 @@
 
 <input type="hidden" id="response">
 <input type="hidden" id="request">
-<script src="js/jquery.autocomplete.js"></script>
+
 <script>
     initForm();
 </script>

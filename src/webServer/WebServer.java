@@ -6,7 +6,7 @@ import logic.handlers.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-public class WebServer {
+class WebServer {
 
     public static void main(String[] args) {
         WebServer webServer = new WebServer();
@@ -20,8 +20,7 @@ public class WebServer {
         HttpServer server;
         try {
             server = HttpServer.create(new InetSocketAddress(port), 0);
-            System.out.println("server started at " + port);
-            server.createContext("/companyList", new CompanyHandler());
+            server.createContext("/company", new CompanyHandler());
             server.createContext("/businessCase", new BusinessCaseHandler());
             server.createContext("/offer", new OffersHandler());
             server.createContext("/person", new PersonHandler());
@@ -30,6 +29,7 @@ public class WebServer {
             server.createContext("/", new StaticHandler());
             server.setExecutor(null);
             server.start();
+            System.out.println("server started at " + port);
         } catch (IOException e) {
             e.printStackTrace();
         }

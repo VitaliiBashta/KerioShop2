@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import logic.Utils;
-import logic.objects.Company;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +13,7 @@ import static logic.Utils.*;
 
 public class CompanyHandler implements HttpHandler {
     private static final List<Company> companies = new LinkedList<>();
+    private static final List<String> companiesName = new LinkedList<>();
     private static final int HOPS = 5;
 
     public CompanyHandler() {
@@ -25,13 +25,12 @@ public class CompanyHandler implements HttpHandler {
         for (int i = 0; i < HOPS + 1; i++) {
             response = sendRequest(Utils.RAYNET_URL + "/company/?limit=" + bulk + "&offset=" + i * bulk);
             jsonCompany = gson.fromJson(response, JsonCompany.class);
-            for (JsonCompany.Company company : jsonCompany.data) {
-                String name = company.name;
-                Integer id = company.id;
+            for (Company company : jsonCompany.data) {
 //                name = name.replace("&", "\\u0026");
-//                name = name.replace("\"", "\\\"");
+                company.name = company.name.replace("\"", "\\\"");
 //                name = name.replace("\'", "\\u0027");
-                companies.add(new Company(company.id, company.name));
+                companies.add(company);
+                companiesName.add(company.name);
             }
             System.out.print(".");
         }
@@ -44,23 +43,23 @@ public class CompanyHandler implements HttpHandler {
         if (companyName != null) {
             String id = "";
             for (Company comp : companies) {
-                if (comp.value.equals(companyName)) {
-                    id = comp.data;
+                if (comp.name.equals(companyName)) {
+                    id = String.valueOf(comp.id);
                     break;
                 }
             }
             writeResponse(he, id);
         } else
-            writeResponse(he, objectToJson(companies));
+            writeResponse(he, objectToJson(companiesName));
     }
 
     public class JsonCompany {
         int totalCount;
         private List<Company> data;
+    }
+    public class Company {
+        public int id;
+        public String name;
 
-        public class Company {
-            public int id;
-            public String name;   //required
-        }
     }
 }

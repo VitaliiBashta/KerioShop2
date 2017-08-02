@@ -1,4 +1,4 @@
-var companiesList;
+var companiesList ;
 
 function initForm() {
     getCompanyList();
@@ -12,19 +12,18 @@ function initForm() {
 
     $("#getLicenseInfo").on("click", getLicenseInfo);
     $("#addProduct").on("click", addProduct);
-    // $(".removeProduct").live("click", removeProduct(this.id));
-    $("#company").live("change", editCompany);
-    $(".autocomplete-suggestion").live("click", setCompany);
+    $("#company").live("awesomplete-open", editCompany);
+    $("#company").live("awesomplete-selectcomplete", setCompany);
     $("#existingLicense").on("change", newOrExistingToggle);
 
     $("#createEntityInRaynet").on("click", createEntityInRaynet);
-    $("#businessCase").on("change", businessCaseSelect);
+    $("#businessCase").live("change", businessCaseSelect);
     $("#offer").on("change", offerSelect);
 }
 
 function toJSONString() {
     var obj = {};
-    var elements = $("#openForm").find("input, select, textarea, td");
+    var elements = $("#openForm").find("input, select, textarea");
     for (var i = 0; i < elements.length; ++i) {
         var element = elements[i];
         var name = element.name;
@@ -114,19 +113,7 @@ function businessCaseSelect() {
         products.show();
     }
     else {
-        offerDiv.show();
-        offer.html("(none)");
-        var XmlHTTP;
-        if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
-        XmlHTTP.onreadystatechange = function () {
-            if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
-                offer.html(XmlHTTP.responseText);
-                offer.prop('selectedIndex', 0);
-                offerSelect();
-            }
-        };
-        XmlHTTP.open("GET", "/offer/?" + businessCaseId, true);
-        XmlHTTP.send();
+        sendGet("/offer/?" + businessCaseId, offer, offerDiv);
     }
 }
 
@@ -434,14 +421,14 @@ function editCompany() {
     $("#newOP").hide();
     $("#existingProducts").hide();
     $("#products").hide();
+    $("#person").hide();
+
 }
 
 function setCompany() {
     var company = $("#company").val();
     var person = $("#person");
     var companyId = $("#companyId");
-    var mainTable = $("#mainTable");
-    mainTable.hide();
     $("#newOP").hide();
     $("#offerDiv").hide();
     $("#existingProducts").hide();
@@ -449,17 +436,15 @@ function setCompany() {
     person.html("");
     var XmlHTTP = new XMLHttpRequest();
     if (company !== "") {
-        XmlHTTP.open("GET", "/companyList/?" + company, false);
+        XmlHTTP.open("GET", "/company/?" + company, false);
         XmlHTTP.send();
         if (XmlHTTP.status === 200) {
             var id = XmlHTTP.responseText;
             companyId.val(id);
-            sendGet("/person/?" + id, person);
-            sendGet("/businessCase/?" + id, $("#businessCase"));
-            mainTable.show();
+            sendGet("/person/?" + id, person, person);
+            sendGet("/businessCase/?" + id, $("#businessCase"), $("#mainTable"));
+            // $("#mainTable").show();
         }
-    } else {
-
     }
 }
 
@@ -487,22 +472,25 @@ function getCompanyList() {
     if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
     XmlHTTP.onreadystatechange = function () {
         if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
-            companiesList = JSON.parse(XmlHTTP.responseText);
-            $('#company').autocomplete({
-                lookup: companiesList
-            });
+            var text = XmlHTTP.responseText;
+            companiesList = JSON.parse(text);
+            var input = document.getElementById("company");
+            var awesomplete = new Awesomplete(input, {autoFirst: true, minChars: 1});
+            awesomplete.list = companiesList;
         }
     };
-    XmlHTTP.open("GET", "/companyList/", true);
+    XmlHTTP.open("GET", "/company/", true);
     XmlHTTP.send();
 }
 
-function sendGet(request, container) {
+function sendGet(request, container, showElement) {
     var XmlHTTP;
+    if (showElement) showElement.hide();
     if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
     XmlHTTP.onreadystatechange = function () {
         if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
             container.html(XmlHTTP.responseText);
+            if (showElement) showElement.show();
         }
     };
     XmlHTTP.open("GET", request, true);

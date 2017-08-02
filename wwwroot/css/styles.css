@@ -23,7 +23,7 @@ tr {
 }
 
 td {
-    border: 0px solid black;
+    border: 0 solid black;
 }
 
 th {
@@ -106,29 +106,6 @@ textarea {
     padding-top: 5px;
 }
 
-.autocomplete-suggestions {
-    box-sizing: border-box;
-    border: 3px solid #999;
-    background: #FFF;
-    cursor: default;
-    overflow: auto;
-    box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64);
-}
-
-.autocomplete-suggestion {
-    padding: 2px 5px;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-.autocomplete-selected {
-    background: #6595BE;
-}
-
-.autocomplete-suggestions strong {
-    font-weight: bold;
-}
-
 .width80 {
     width: 80px;
 }
@@ -152,8 +129,6 @@ textarea {
 .width400 {
     width: 400px;
 }
-
-
 
 .buttonSubmit {
     font-family: Arial, Helvetica, sans-serif;
@@ -186,12 +161,11 @@ textarea {
 
 #mainTable, #existingProducts, #newOP, #products {
     display: none;
-    /*text-align: center;*/
 }
 #boxGroup, #hwUsersSection, #getLicenseInfo,
 #product1, #product2, #product3,
-#response, #companyID, #offerDiv,
-#licnum, #offersSeparateSwitchLabel,
+#response, #offerDiv,
+#licnum, #offersSeparateSwitchLabel, #person,
 #antivirusLabel, #activeSyncLabel, #antispamLabel, #webFilterLabel, #warrantyLabel {
     display: none;
 }
@@ -201,5 +175,5 @@ textarea {
 }
 
 #offerDiv {
-    height: 5em;
+    height: 4em;
 }
