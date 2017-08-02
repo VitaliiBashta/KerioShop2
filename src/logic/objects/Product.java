@@ -1,10 +1,12 @@
 package logic.objects;
 
-import logic.Methods;
 import logic.Utils;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+
+import static logic.SendMethod.PUT;
+import static logic.Utils.sendRequest;
 
 public class Product {
     private Integer id;
@@ -32,8 +34,8 @@ public class Product {
         this.offerId = offerId;
         String json = Utils.objectToJson(this);
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
-        String url = Utils.RAYNET_API_URL + "/offer/" + this.offerId + "/item/";
-        this.id = Utils.getCreatedId(Methods.sendPut(url, entity));
+        String url = Utils.RAYNET_URL + "/offer/" + this.offerId + "/item/";
+        this.id = Utils.getCreatedId(sendRequest(url, PUT, entity));
         return this.id;
     }
 

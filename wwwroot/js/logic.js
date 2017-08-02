@@ -24,7 +24,7 @@ function initForm() {
 
 function toJSONString() {
     var obj = {};
-    var elements = $("#openForm").find("input, select, textarea");
+    var elements = $("#openForm").find("input, select, textarea, td");
     for (var i = 0; i < elements.length; ++i) {
         var element = elements[i];
         var name = element.name;
@@ -60,7 +60,7 @@ function getLicenseInfo() {  //need to be done via API
         $("#existingProduct").show();
 
         var response = XmlHTTP.responseText;
-        $("#response").html(response);
+        $("#response").val(response);
         var json = JSON.parse(response);
         var description = "";
         for (var i = 0; i < json.length; i++) {
@@ -191,25 +191,14 @@ function calculate() {
     var price = $("#price").val();
     var discount = $("#discountPercent").val();
     var totalPrice = (price * (100 - discount)) / 100;
-    -
-        $("#totalPrice").val(Math.round(100 * totalPrice) / 100);
+
+    $("#totalPrice").val(Math.round(100 * totalPrice) / 100);
 
     $("#offersSeparate").val("false");
     if ($("#offersSeparateSwitch").is(":checked")) {
         $("#offersSeparate").val("true");
     }
-
-    var str2 = toJSONString();
-    $("#request").text(str2);
-
-}
-
-function getLicTypeModifier() {
-    var result = 1;
-    var lic_type = $("#lic_type").val();
-    if (lic_type === " GOV") result = 0.9;
-    if (lic_type === " EDU") result = 0.6;
-    return result;
+    $("#request").val(toJSONString());
 }
 
 function getFullNameNewLicense() {
@@ -312,9 +301,10 @@ function addProduct() {
 
 function removeProduct(itemNumber) {
     if (itemNumber === undefined) return;
-    var num = itemNumber.charAt(itemNumber.length - 1);
-    var product = $("#product" + num);
-    product.hide();
+    $("#product" + itemNumber).hide();
+    $("#totalPrice" + itemNumber).val("");
+    $("#price" + itemNumber).val("");
+    $("#productFullName" + itemNumber).val("");
     calculate();
 }
 
@@ -448,23 +438,23 @@ function editCompany() {
 
 function setCompany() {
     var company = $("#company").val();
-    var persons = $("#persons");
-    var companyID = $("#companyID");
+    var person = $("#person");
+    var companyId = $("#companyId");
     var mainTable = $("#mainTable");
     mainTable.hide();
     $("#newOP").hide();
     $("#offerDiv").hide();
     $("#existingProducts").hide();
     $("#products").hide();
-    persons.html("");
+    person.html("");
     var XmlHTTP = new XMLHttpRequest();
     if (company !== "") {
-        XmlHTTP.open("GET", "companyId/?" + company, false);
+        XmlHTTP.open("GET", "/companyList/?" + company, false);
         XmlHTTP.send();
         if (XmlHTTP.status === 200) {
-            companyID.val(XmlHTTP.responseText);
-            var id = companyID.val();
-            sendGet("/person/?" + id, persons);
+            var id = XmlHTTP.responseText;
+            companyId.val(id);
+            sendGet("/person/?" + id, person);
             sendGet("/businessCase/?" + id, $("#businessCase"));
             mainTable.show();
         }

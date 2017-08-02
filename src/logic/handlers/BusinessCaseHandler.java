@@ -4,14 +4,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import logic.Methods;
 import logic.Utils;
-import logic.jsonObjects.JsonBusinessCase;
 import logic.objects.FormObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.List;
+
+import static logic.Utils.sendRequest;
 
 public class BusinessCaseHandler implements HttpHandler {
 
@@ -37,7 +39,7 @@ public class BusinessCaseHandler implements HttpHandler {
                         Integer productId = formObject.products.get(i).createProductInRaynet(offerId);
                     }
                 }
-                response = getBusinessCases(formObject.company);
+                response = getBusinessCases(formObject.companyId);
                 formObject.offers.get(0).sync();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -53,8 +55,31 @@ public class BusinessCaseHandler implements HttpHandler {
 
     private String getBusinessCases(Integer companyId) {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        String response = Methods.sendGet(Utils.RAYNET_API_URL + "/businessCase/?company[EQ]=" + companyId);
+        String response = sendRequest(Utils.RAYNET_URL + "/businessCase/?company[EQ]=" + companyId);
         JsonBusinessCase jsonBusinessCase = gson.fromJson(response, JsonBusinessCase.class);
         return jsonBusinessCase.asHTML();
+    }
+
+    public class JsonBusinessCase {
+        private List<BusinessCase> data;
+
+        String asHTML() {
+            StringBuilder result = new StringBuilder();
+            result.append("<option selected disabled>(total: ").append(this.data.size()).append(" OP)</option>");
+            result.append("<option value=\"0\">(new)</option>");
+            Collections.reverse(data);
+            for (BusinessCase aData : data) {
+                result.append("<option value=\"").append(aData.id).append("\">")
+                        .append(aData.code).append(":\t")
+                        .append(aData.name).append("</option>");
+            }
+            return result.toString();
+        }
+
+        private class BusinessCase {
+            public int id;
+            private String name;  //required
+            private String code;
+        }
     }
 }

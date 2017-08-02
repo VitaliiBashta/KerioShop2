@@ -3,8 +3,10 @@ package logic.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import logic.Methods;
 import logic.Utils;
+import org.apache.http.HttpEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static logic.SendMethod.POST;
+import static logic.Utils.sendRequest;
 
 public class LicenseInfoHandler implements HttpHandler {
 
@@ -35,7 +40,8 @@ public class LicenseInfoHandler implements HttpHandler {
 
     private static String getLicKeyInfo(String licenseNumber) {
         String params = "licence=" + licenseNumber + "&next=Continue";
-        String response = Methods.sendPost(Utils.KERIO_URL, params);
+        HttpEntity entity = new StringEntity(params, ContentType.APPLICATION_FORM_URLENCODED);
+        String response = sendRequest(Utils.KERIO_URL, POST, entity);
         Document doc = Jsoup.parse(response);
         Elements tables = doc.body().select(".tableVertical ");
         List<String> licInfo = new ArrayList<>();

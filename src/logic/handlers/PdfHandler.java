@@ -4,26 +4,43 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import logic.Methods;
 import logic.Utils;
-import logic.jsonObjects.JsonOfferPdfExport;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
+import static logic.Utils.sendRequest;
 
 public class PdfHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange he) {
-        Integer offerId = Integer.valueOf(he.getRequestURI().getQuery());
-        if (he.getRequestMethod().equals("GET")) {
-            String response = getPdfUrl(offerId);
-            Utils.writeResponse(he, response);
-        }
-    }
-
-    private String getPdfUrl(Integer offerId) {
-        String request = Utils.RAYNET_API_URL + "/offer/" + offerId + "/pdfExport";
-        String response = Methods.sendGet(request);
+        String request = Utils.RAYNET_URL + "/offer/" + he.getRequestURI().getQuery() + "/pdfExport";
+        String response = sendRequest(request);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonOfferPdfExport json = gson.fromJson(response, JsonOfferPdfExport.class);
-        return json.getRequest();
+        Utils.writeResponse(he, json.getDownloadUrl());
+    }
+
+    private class JsonOfferPdfExport {
+        private String uuid;
+        private String fileName;
+        private String contentType;
+        private String accessToken;
+        private String instanceName;
+
+        private String getDownloadUrl() {
+            try {
+                return Utils.RAYNET_URL + "/exportBody/" +
+                        uuid + '/' +
+                        accessToken + '/' +
+                        instanceName + '/' +
+                        "?fileName=\"" + URLDecoder.decode(fileName, "UTF-8") +
+                        "\"&contentType=" + URLDecoder.decode(contentType, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
     }
 }

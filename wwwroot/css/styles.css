@@ -5,7 +5,7 @@
 }
 
 body {
-    font: 15px/17px Arial, sans-serif;
+    font-size: 15px;
 }
 
 li {
@@ -23,7 +23,7 @@ tr {
 }
 
 td {
-    border: 1px solid black;
+    border: 0px solid black;
 }
 
 th {
@@ -103,8 +103,7 @@ textarea {
 
 #extensions li {
     float: left;
-    padding-top: 10px;
-    /*padding-left: 1em;*/
+    padding-top: 5px;
 }
 
 .autocomplete-suggestions {
@@ -154,10 +153,7 @@ textarea {
     width: 400px;
 }
 
-#mainTable, #existingProducts, #newOP, #products {
-    display: none;
-    /*text-align: center;*/
-}
+
 
 .buttonSubmit {
     font-family: Arial, Helvetica, sans-serif;
@@ -188,9 +184,12 @@ textarea {
             to(#ab0000));
     }
 
+#mainTable, #existingProducts, #newOP, #products {
+    display: none;
+    /*text-align: center;*/
+}
 #boxGroup, #hwUsersSection, #getLicenseInfo,
-    #request,
-#product1, #product2, #product3, #productFullName,
+#product1, #product2, #product3,
 #response, #companyID, #offerDiv,
 #licnum, #offersSeparateSwitchLabel,
 #antivirusLabel, #activeSyncLabel, #antispamLabel, #webFilterLabel, #warrantyLabel {

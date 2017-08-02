@@ -3,12 +3,24 @@ package logic;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.HttpClientBuilder;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 
+import static logic.SendMethod.GET;
+
 public class Utils {
-    public static final String RAYNET_API_URL = "https://app.raynet.cz/api/v2";
+    public static final String RAYNET_URL = "https://app.raynet.cz/api/v2";
     public static final String KERIO_URL = "https://secure.kerio.com/order/upgrWizIndex.php";
     public static final Double DISTRIBUTOR_MARGIN = 0.45;
 
@@ -42,6 +54,46 @@ public class Utils {
             public int id;
             private String code01;
         }
+    }
+
+    public static String sendRequest(String url) {
+        return sendRequest(url, GET, null);
+    }
+
+    public static String sendRequest(String url, SendMethod method, HttpEntity entity) {
+        HttpClient client = HttpClientBuilder.create().build();
+
+        HttpRequestBase request;
+        switch (method) {
+            case PUT:
+                request = new HttpPut(url);
+                if (entity != null) ((HttpPut) request).setEntity(entity);
+                break;
+            case POST:
+                request = new HttpPost(url);
+                if (entity != null) ((HttpPost) request).setEntity(entity);
+                break;
+            default:
+                request = new HttpGet(url);
+                break;
+        }
+        request.addHeader("X-Instance-Name", "zebra");
+        request.addHeader("Authorization", "Basic dml0YWxpaS5iYXNodGFAemVicmEuY3o6VjE1OTZpdGFsaWk=");
+
+        StringBuilder result = new StringBuilder();
+        try {
+            HttpResponse response = client.execute(request);
+
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(response.getEntity().getContent()))) {
+                String line;
+                while ((line = reader.readLine()) != null) result.append(line);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result.toString();
     }
 }
 

@@ -1,12 +1,14 @@
 package logic.objects;
 
-import logic.Methods;
 import logic.Utils;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 
 import java.util.Date;
+
+import static logic.SendMethod.PUT;
+import static logic.Utils.sendRequest;
 
 public class BusinessCase {
     private final String name;  //required
@@ -27,7 +29,7 @@ public class BusinessCase {
     BusinessCase(FormObject formObject) {
         this.name = formObject.productFullNames.get(0);
         this.owner = formObject.owner;
-        this.company = formObject.company;
+        this.company = formObject.companyId;
         this.person = formObject.person;
         this.probability = formObject.probability;
         this.currency = formObject.currency;
@@ -41,7 +43,7 @@ public class BusinessCase {
     public Integer createBusinessCaseInRaynet() {
         String json = Utils.objectToJson(this);
         HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
-        this.id = Utils.getCreatedId(Methods.sendPut(Utils.RAYNET_API_URL + "/businessCase/", entity));
+        this.id = Utils.getCreatedId(sendRequest(Utils.RAYNET_URL + "/businessCase/", PUT, entity));
         return this.id;
     }
 }

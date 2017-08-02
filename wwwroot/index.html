@@ -15,20 +15,20 @@
 <div class="mainframe">
 
     <form action="/" id="openForm">
-        <input type="hidden" id="companyID" name="company">
-        <table id="clientTable" class="clientField111">
+        <input type="hidden" id="companyId" name="companyId">
+        <table>
             <thead>
             <tr>
                 <td class="width200"><label for="company">Klient</label></td>
-                <td class="width200"><label for="persons">Kontaktní osoba</label></td>
+                <td class="width200"><label for="person">Kontaktní osoba</label></td>
                 <td class="width100"><label for="discountPercent">Marže partnera</label></td>
                 <td class="width100"><label for="currency">Měna:</label></td>
                 <td class="width200"><label for="owner">Vlastník</label></td>
             </tr>
             </thead>
             <tr>
-                <td><input id="company" name="companyName" value=""/></td>
-                <td><select id="persons" name="person"> </select></td>
+                <td><input id="company" value=""/></td>
+                <td><select id="person" name="person"> </select></td>
                 <td><select name="discountPercent" id="discountPercent" class="cs-select cs-skin-elastic">
                     <option value="15" selected data-class="bronze">15 %</option>
                     <option value="20" data-class="bronze">20 %</option>
@@ -54,21 +54,21 @@
             <tr>
                 <th><label for="businessCase">Obchodní případ:</label></th>
                 <td colspan="3">
-                    <select id="businessCase" name="name"> </select>
+                    <select id="businessCase"> </select>
                 </td>
                 <td>
                     <a href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít OP</a>
                 </td>
-                <td colspan="1">
+                <td>
                     <input type="checkbox" class="checkbox" id="offersSeparateSwitch">
-                    <label for="offersSeparateSwitch" id="offersSeparateSwitchLabel">NAB zvlašť</label>
+                    <label for="offersSeparateSwitch" id="offersSeparateSwitchLabel">NAB zvlášť</label>
                     <input type="hidden" id="offersSeparate" name="offersSeparate" value="">
                 </td>
             </tr>
             <tr id="offerDiv">
                 <th><label for="offer">Nabidka:</label></th>
                 <td colspan="3">
-                    <select id="offer" name="offerName" size="5"> </select>
+                    <select id="offer" size="5"></select>
                 </td>
                 <td colspan="2">
                     <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a>
@@ -113,7 +113,7 @@
             </tr>
             <tr>
                 <th>
-                    <input type="checkbox" class="checkbox" id="existingLicense" name="license">
+                    <input type="checkbox" class="checkbox" id="existingLicense">
                     <label for="existingLicense">Existující licence</label>
                 </th>
                 <td colspan="2">
@@ -127,7 +127,7 @@
         <table id="existingProducts">
             <thead>
             <tr>
-                <td class="width200">Licenční číslo</td>
+                <td class="width200"><label for="licnum">Licenční číslo</label></td>
                 <td class="width120">Stavajicí počet uživatelu</td>
                 <td class="width200"><label for="expirationDate">Expirace</label></td>
                 <td class="width300">Zakoupená rožšiření</td>
@@ -146,11 +146,10 @@
                 <td class="width300" colspan="2"><label for="prod_group_id">Produkt</label></td>
                 <td class="width120"><label for="hwUsers">Počet uživatelu</label></td>
                 <td class="width120"><label for="lic_type">Typ licence</label></td>
-                <td class="width80"><label for="swm">Počet let SWM</label></td>
+                <td class="width80"><label for="swm">SWM</label></td>
                 <td class="width400">Dostupná rožšiření</td>
                 <td class="width80"><label for="price">Cena</label></td>
                 <td class="width80"><label for="totalPrice">Cena pro partnera</label></td>
-                <!--<td class="width40"></td>-->
             </tr>
             </thead>
             <tr>
@@ -164,6 +163,7 @@
                     </select>
                 </td>
                 <td id="boxGroup">
+                    <label for="hardware"></label>
                     <select id="hardware" class="cs-select cs-skin-elastic">
                         <option value="NG100" data-class="NG100" selected>NG100</option>
                         <option value="NG100W" data-class="NG100W">NG100W</option>
@@ -183,6 +183,7 @@
                         </select>
                     </section>
                     <section id="swUsersSection">
+                        <label for="swUsers"></label>
                         <input type="number" id="swUsers" min="5" max="1000" step="5" value="5">
                     </section>
                 </td>
@@ -222,7 +223,7 @@
                 </td>
                 <td>
                     <input name="price" id="price">
-                    <input name="productFullName" id="productFullName">
+                    <input type="hidden" name="productFullName" id="productFullName">
                 </td>
                 <td>
                     <input name="totalPrice" id="totalPrice">
@@ -232,32 +233,42 @@
                 </td>
             </tr>
             <tr id="product1">
-                <td colspan="6"><input name="product1" id="productFullName1"></td>
-                <td><input name="price1" id="price1"></td>
-                <td><input name="totalPrice1" id="totalPrice1"></td>
-                <td><a href="#" class="removeProduct buttonSubmit" id="remove1" onclick="removeProduct(this.id)">-</a>
+                <td colspan="6"><input name="product1" id="productFullName1" disabled></td>
+                <td><input name="price1" id="price1" disabled></td>
+                <td><input id="totalPrice1" disabled></td>
+                <td><a href="#" class="removeProduct buttonSubmit" onclick="removeProduct(1)">-</a>
                 </td>
             </tr>
             <tr id="product2">
-                <td colspan="6"><input name="product2" id="productFullName2"></td>
-                <td><input name="price2" id="price2"></td>
-                <td><input name="totalPrice2" id="totalPrice2"></td>
-                <td><a href="#" class="removeProduct buttonSubmit" id="remove2" onclick="removeProduct(this.id)">-</a>
+                <td colspan="6"><input name="product2" id="productFullName2" disabled></td>
+                <td><input name="price2" id="price2" disabled></td>
+                <td><input id="totalPrice2" disabled></td>
+                <td><a href="#" class="removeProduct buttonSubmit" onclick="removeProduct(2)">-</a>
                 </td>
             </tr>
             <tr id="product3">
-                <td colspan="6"><input name="product3" id="productFullName3"></td>
-                <td><input name="price3" id="price3"></td>
-                <td><input name="totalPrice3" id="totalPrice3"></td>
-                <td><a href="#" class="removeProduct buttonSubmit " id="remove3" onclick="removeProduct(this.id)">-</a>
+                <td colspan="6"><input name="product3" id="productFullName3" disabled></td>
+                <td><input name="price3" id="price3" disabled></td>
+                <td><input id="totalPrice3" disabled></td>
+                <td><a href="#" class="removeProduct buttonSubmit" onclick="removeProduct(3)">-</a>
                 </td>
             </tr>
+
         </table>
     </form>
+    <label for="productFullName1"></label>
+    <label for="productFullName2"></label>
+    <label for="productFullName3"></label>
+    <label for="price1"></label>
+    <label for="price2"></label>
+    <label for="price3"></label>
+    <label for="totalPrice1"></label>
+    <label for="totalPrice2"></label>
+    <label for="totalPrice3"></label>
 </div>
 
-<textarea id="response"></textarea>
-<textarea id="request"></textarea>
+<input type="hidden" id="response">
+<input type="hidden" id="request">
 <script src="js/jquery.autocomplete.js"></script>
 <script>
     initForm();

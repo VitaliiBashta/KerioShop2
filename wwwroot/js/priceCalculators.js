@@ -135,3 +135,11 @@ function calculateExistingPrice(currency, newProduct, oldProduct) {
     } else
         return 0;
 }
+
+function getLicTypeModifier() {
+    var result = 1;
+    var lic_type = $("#lic_type").val();
+    if (lic_type === " GOV") result = 0.9;
+    if (lic_type === " EDU") result = 0.6;
+    return result;
+}

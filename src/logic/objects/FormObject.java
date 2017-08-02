@@ -6,23 +6,21 @@ import java.util.List;
 
 public class FormObject {
     Integer source = 42;
-    public final transient List<Offer> offers = new ArrayList<>();
-    final transient List<String> productFullNames = new ArrayList<>();
-    public Integer company; //required
-    public String companyName;
-    final transient List<Double> prices = new ArrayList<>();
-    public transient BusinessCase businessCase;
-    Integer businessCasePhase; //
-    //    public String code;
-    Integer owner;
-    Integer person;
-    Integer probability;
-    String description;
-    Integer currency;  //required
-    Integer category;
-    Date validFrom;
 
+    public final transient List<Offer> offers = new ArrayList<>();
+    Integer person;
+    final transient List<String> productFullNames = new ArrayList<>();
+    Integer currency;  //required
+    final transient List<Double> prices = new ArrayList<>();
     public boolean offersSeparate;
+    public Integer companyId; //required
+    public transient BusinessCase businessCase;
+    String discountPercent;
+    Integer owner;
+    Date validFrom;
+    Date scheduledEnd;
+    //    public String code;
+
     private String productFullName;
     private String price;
     private String product1;
@@ -31,13 +29,14 @@ public class FormObject {
     private String price2;
     private String product3;
     private String price3;
-    Date scheduledEnd;
-    String discountPercent;
-
-    String name; //required
-    Number taxRate;
+    Integer businessCasePhase;
     private Integer count = 1;
+
     public final transient List<Product> products = new ArrayList<>();
+    Integer category;
+    Integer probability;
+    String description;
+    Number taxRate = 0;
 
     public void init() {
         this.productFullNames.clear();
@@ -55,7 +54,7 @@ public class FormObject {
             productFullNames.add(product3);
             prices.add(Double.valueOf(price3));
         }
-        taxRate = 0;
+
         if (this.currency == 15) this.taxRate = 21;
 
         offers.clear();

@@ -4,25 +4,53 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import logic.Methods;
 import logic.Utils;
-import logic.jsonObjects.JsonPerson;
+import logic.components.ContactInfo;
+
+import java.util.List;
+
+import static logic.Utils.sendRequest;
 
 
 public class PersonHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange he) {
-        String query = he.getRequestURI().getQuery();
-        Integer companyId = Integer.valueOf(query);
+        String companyId = he.getRequestURI().getQuery();
         String response = getPersons(companyId);
         Utils.writeResponse(he, response);
     }
 
-    private String getPersons(Integer companyId) {
-        String response = Methods.sendGet(Utils.RAYNET_API_URL + "/person/?primaryRelationship-company-id=" + companyId);
+    private String getPersons(String companyId) {
+        String response = sendRequest(Utils.RAYNET_URL + "/person/?primaryRelationship-company-id=" + companyId);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         JsonPerson jsonPerson = gson.fromJson(response, JsonPerson.class);
         return jsonPerson.asHTML();
     }
+
+    private class JsonPerson {
+        private List<Person> data;
+
+        private String asHTML() {
+            StringBuilder result = new StringBuilder();
+            for (Person aData : data) {
+                result.append("<option value=\"").append(aData.id).append("\">")
+                        .append(aData.firstName).append(" ").append(aData.lastName)
+                        .append("</option>");
+            }
+            return result.toString();
+        }
+
+        private class Person {
+            private int id;
+            private String firstName;
+            private String lastName;
+            private ContactInfo contactInfo;
+
+            private String fullName() {
+                return firstName + " " + lastName;
+            }
+        }
+    }
+
 }
