@@ -1,8 +1,17 @@
 package logic.objects;
 
+import logic.Utils;
+import org.apache.http.HttpEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static logic.SendMethod.POST;
+import static logic.SendMethod.PUT;
+import static logic.Utils.sendRequest;
 
 public class FormObject {
     Integer source = 42;
@@ -14,7 +23,7 @@ public class FormObject {
     final transient List<Double> prices = new ArrayList<>();
     public boolean offersSeparate;
     public Integer companyId; //required
-    public transient BusinessCase businessCase;
+    private transient BusinessCase businessCase;
     String discountPercent;
     Integer owner;
     Date validFrom;
@@ -68,5 +77,35 @@ public class FormObject {
             products.add(new Product(this, i));
         }
         businessCase = new BusinessCase(this);
+    }
+
+    public Integer createBusinessCaseInRaynet() {
+        String json = Utils.objectToJson(businessCase);
+        HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+        businessCase.id = Utils.getCreatedId(sendRequest(Utils.RAYNET_URL + "/businessCase/", PUT, entity));
+        return businessCase.id;
+    }
+
+    public Integer createOfferInRaynet(int businessCase, Integer offerNum) {
+        Offer offer = offers.get(offerNum);
+        offer.businessCase = businessCase;
+        String json = Utils.objectToJson(offer);
+        HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+        offer.id = Utils.getCreatedId(sendRequest(Utils.RAYNET_URL + "/offer/", PUT, entity));
+        return offer.id;
+    }
+
+    public void syncOffer() {
+        sendRequest(Utils.RAYNET_URL + "/offer/" + offers.get(0).id + "/sync/", POST, null);
+    }
+
+    public Integer createProductInRaynet(Integer offerId, Integer productNum) {
+        Product product = products.get(productNum);
+        product.offerId = offerId;
+        String json = Utils.objectToJson(product);
+        HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+        String url = Utils.RAYNET_URL + "/offer/" + product.offerId + "/item/";
+        product.id = Utils.getCreatedId(sendRequest(url, PUT, entity));
+        return product.id;
     }
 }

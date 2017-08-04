@@ -53,13 +53,13 @@ public class CompanyHandler implements HttpHandler {
             writeResponse(he, objectToJson(companiesName));
     }
 
-    public class JsonCompany {
-        int totalCount;
+    private class JsonCompany {
+        private int totalCount;
         private List<Company> data;
     }
-    public class Company {
-        public int id;
-        public String name;
 
+    private class Company {
+        private int id;
+        private String name;
     }
 }

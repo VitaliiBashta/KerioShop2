@@ -1,16 +1,8 @@
 package logic.objects;
 
-import logic.Utils;
-import org.apache.http.HttpEntity;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-
 import java.util.Date;
 
-import static logic.SendMethod.PUT;
-import static logic.Utils.sendRequest;
-
-public class BusinessCase {
+class BusinessCase {
     private final String name;  //required
     private final long owner;
     private final long company; //required
@@ -22,7 +14,7 @@ public class BusinessCase {
     private final Date validFrom;
     private final Date scheduledEnd;
     private final int businessCasePhase;
-    private int id;
+    int id;
     public String code;
     private final String description;
 
@@ -40,10 +32,4 @@ public class BusinessCase {
         this.description = formObject.description;
     }
 
-    public Integer createBusinessCaseInRaynet() {
-        String json = Utils.objectToJson(this);
-        HttpEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
-        this.id = Utils.getCreatedId(sendRequest(Utils.RAYNET_URL + "/businessCase/", PUT, entity));
-        return this.id;
-    }
 }

@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-import static logic.SendMethod.GET;
-
 public class Utils {
     public static final String RAYNET_URL = "https://app.raynet.cz/api/v2";
     public static final String KERIO_URL = "https://secure.kerio.com/order/upgrWizIndex.php";
@@ -46,18 +44,17 @@ public class Utils {
         }
     }
 
-    private class JsonResponse {
-        public Dial data;
-        boolean success;
-
-        private class Dial {
-            public int id;
-            private String code01;
-        }
+    public static String sendRequest(String url) {
+        return sendRequest(url, SendMethod.GET, null);
     }
 
-    public static String sendRequest(String url) {
-        return sendRequest(url, GET, null);
+    private static class JsonResponse {
+        private Dial data;
+        private boolean success;
+
+        private class Dial {
+            private int id;
+        }
     }
 
     public static String sendRequest(String url, SendMethod method, HttpEntity entity) {

@@ -1,5 +1,67 @@
+/* Default custom select styles */
+.cs-select {
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+div.cs-select:focus {
+    outline: none; /* For better accessibility add a style for this in your skin */
+}
+
+.cs-select select {
+    display: none;
+}
+
+.cs-select span {
+    display: block;
+    padding: 5px;
+    position: relative;
+    cursor: pointer;
+    /*white-space: nowrap;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cs-select > span::after,
+.cs-select .cs-selected span::after {
+    speak: spell-out;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.cs-select > span::after {
+    content: '\25BE';
+    right: 0;
+}
+
+.cs-skin-elastic .cs-selected {
+    font-weight: 900;
+    text-decoration: underline;
+}
+
+/* Options */
+.cs-select .cs-options {
+    text-align: right;
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    border-radius: .3em;
+    margin: .2em 0 0;
+    /*background: white;*/
+    box-shadow: .1em .2em 1em rgba(0, 0, 0, .9);
+    text-shadow: none;
+    visibility: hidden;
+    z-index: 2;
+}
+
+.cs-select.cs-active .cs-options {
+    visibility: visible;
+}
+
 .cs-skin-elastic > span {
-    background-color: #fff;
+    background: rgb(250, 250, 250);
     border: 1px solid silver;
 }
 
@@ -10,165 +72,138 @@
     height: 100%;
     left: 0;
     top: 0;
-    transform: scale3d(1, 0, 1);
-    background: #fff;
-    transform-origin: 50% 0;
-    transition: transform 0.3s;
+    background: white;
 }
 
-.cs-skin-elastic.cs-active .cs-options > ul::before {
-    transform: scale3d(1, 1, 1);
-    transition: none;
-    animation: expand 0.6s ease-out;
+.cs-skin-elastic .cs-options ul {
+    transform: translate3d(0, -100%, 0);
 }
 
-.cs-skin-elastic .cs-options ul li {
-    opacity: 0;
-    transform: translate3d(0, -25px, 0);
-    transition: opacity 0.15s, transform 0.15s;
-}
-
-.cs-skin-elastic.cs-active .cs-options ul li {
+.cs-skin-elastic.cs-active .cs-options ul {
+    transition: .5s;
     transform: translate3d(0, 0, 0);
-    opacity: 1;
-    transition: none;
-    animation: bounce 0.6s ease-out;
 }
 
 .cs-skin-elastic .cs-options span {
-    background: no-repeat 0 50%;
-    background-size: 1.5em auto;
-    padding: 1em 0 0.5em 2em;
+    background: no-repeat 5px 80%;
+    background-size: 2.5em auto;
+    padding: 0.8em 0.5em 0.8em 0.5em;
 }
 
-.cs-skin-elastic .cs-options span:hover,
-.cs-skin-elastic .cs-options li.cs-focus span {
-    background-color: #6595BE;
+.cs-skin-elastic .cs-options span:hover {
+    background-color: hsl(200, 40%, 80%);
+    color: black;
+    border-radius: .1em;
 }
 
-/*.cs-skin-elastic .cs-options .cs-selected span:hover {*/
-/*background-color: #6595BE;*/
-/*}*/
-
-.cs-skin-elastic .cs-options .cs-selected span::after {
-    /*content: '';*/
+.cs-skin-elastic .cs-options li.connect span {
+    background-image: url(img/connect.png);
 }
 
-.cs-skin-elastic .cs-options li.kerio-connect span {
-    background-image: url(../img/connect.png);
+.cs-skin-elastic .cs-options li.control span {
+    background-image: url(img/control.png);
 }
 
-.cs-skin-elastic .cs-options li.kerioControl span {
-    background-image: url(../img/control.png);
+.cs-skin-elastic .cs-options li.operator span {
+    background-image: url(img/operator.png);
 }
 
-.cs-skin-elastic .cs-options li.kerio-operator span {
-    background-image: url(../img/operator.png);
-}
-
-.cs-skin-elastic .cs-options li.kerio-box span {
-    background-image: url(../img/boxes.png);
+.cs-skin-elastic .cs-options li.box span {
+    background-image: url(img/boxes.png);
 }
 
 .cs-skin-elastic .cs-options li.NG100 span {
-    background-image: url(../img/NG100.png);
+    background-image: url(img/NG100.png);
 }
 
 .cs-skin-elastic .cs-options li.NG100w span {
-    background-image: url(../img/NG100w.png);
+    background-image: url(img/NG100w.png);
 }
 
 .cs-skin-elastic .cs-options li.NG300 span {
-    background-image: url(../img/NG300.png);
+    background-image: url(img/NG300.png);
 }
 
 .cs-skin-elastic .cs-options li.NG300w span {
-    background-image: url(../img/NG300w.png);
+    background-image: url(img/NG300w.png);
 }
 
 .cs-skin-elastic .cs-options li.NG500 span {
-    background-image: url(../img/NG500.png);
+    background-image: url(img/NG500.png);
 }
 
 .cs-skin-elastic .cs-options li.V300 span {
-    background-image: url(../img/V300.png);
+    background-image: url(img/V300.png);
 }
 
 .cs-skin-elastic .cs-options li.unlimited span {
-    background-image: url(../img/Unlimited.png);
+    background-image: url(img/Unlimited.png);
 }
 
 .cs-skin-elastic .cs-options li.EDU span {
-    background-image: url(../img/edu.png);
+    background-image: url(img/edu.png);
 }
 
 .cs-skin-elastic .cs-options li.GOV span {
-    background-image: url(../img/Gov.png);
+    background-image: url(img/Gov.png);
 }
 
 .cs-skin-elastic .cs-options li.Commercial span {
-    background-image: url(../img/commercial.png);
+    background-image: url(img/commercial.png);
 }
 
 .cs-skin-elastic .cs-options li.users25 span {
-    background-image: url(../img/user.png);
+    background-image: url(img/user.png);
 }
 
 .cs-skin-elastic .cs-options li.users50 span {
-    background-image: url(../img/user.png);
+    background-image: url(img/user.png);
 }
 
 .cs-skin-elastic .cs-options li.users100 span {
-    background-image: url(../img/users.png);
+    background-image: url(img/users.png);
 }
 
 .cs-skin-elastic .cs-options li.unlimited span {
-    background-image: url(../img/unlimited.png);
+    background-image: url(img/unlimited.png);
 }
 
 .cs-skin-elastic .cs-options li.CZK span {
-    background-image: url(../img/czk.png);
+    background-image: url(img/czk.png);
 }
 
 .cs-skin-elastic .cs-options li.EUR span {
-    background-image: url(../img/eur.png);
+    background-image: url(img/eur.png);
 }
 
 .cs-skin-elastic .cs-options li.bashta span {
-    background-image: url(../img/bashta.png);
+    background-image: url(img/bashta.png);
 }
+
 .cs-skin-elastic .cs-options li.svandova span {
-    background-image: url(../img/svandova.png);
+    background-image: url(img/svandova.png);
 }
 
 .cs-skin-elastic .cs-options li.bronze span {
-    background-image: url(../img/bronze.png);
+    background-image: url(img/bronze.png);
 }
 
 .cs-skin-elastic .cs-options li.silver span {
-    background-image: url(../img/silver.png);
+    background-image: url(img/silver.png);
 }
 
 .cs-skin-elastic .cs-options li.gold span {
-    background-image: url(../img/gold.png);
+    background-image: url(img/gold.png);
 }
 
-@keyframes bounce {
-    0% {
-        transform: translate3d(0, -25px, 0);
-        opacity: 0;
-    }
-    25% {
-        transform: translate3d(0, 10px, 0);
-    }
-    50% {
-        transform: translate3d(0, -6px, 0);
-    }
-    75% {
-        transform: translate3d(0, 2px, 0);
-    }
-    100% {
-        transform: translate3d(0, 0, 0);
-        opacity: 1;
-    }
+.cs-skin-elastic .cs-options li.win span {
+    background-image: url(img/win.png);
+}
+
+.cs-skin-elastic .cs-options li.offer span {
+    background-image: url(img/offer.png);
+}
+
+.cs-skin-elastic .cs-options li.analysis span {
+    background-image: url(img/analysis.png);
 }

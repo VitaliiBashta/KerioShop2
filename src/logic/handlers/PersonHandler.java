@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import logic.Utils;
-import logic.components.ContactInfo;
 
 import java.util.List;
 
@@ -45,12 +44,6 @@ public class PersonHandler implements HttpHandler {
             private int id;
             private String firstName;
             private String lastName;
-            private ContactInfo contactInfo;
-
-            private String fullName() {
-                return firstName + " " + lastName;
-            }
         }
     }
-
 }

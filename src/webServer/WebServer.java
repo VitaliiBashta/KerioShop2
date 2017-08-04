@@ -25,6 +25,7 @@ class WebServer {
             server.createContext("/offer", new OffersHandler());
             server.createContext("/person", new PersonHandler());
             server.createContext("/Pdf", new PdfHandler());
+            server.createContext("/MailTo", new MailHandler());
             server.createContext("/licenseInfo", new LicenseInfoHandler());
             server.createContext("/", new StaticHandler());
             server.setExecutor(null);

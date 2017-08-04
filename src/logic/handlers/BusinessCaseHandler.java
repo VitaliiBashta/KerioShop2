@@ -26,21 +26,21 @@ public class BusinessCaseHandler implements HttpHandler {
                 Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
                 FormObject formObject = gson.fromJson(query, FormObject.class);
                 formObject.init();
-                Integer businessCaseId = formObject.businessCase.createBusinessCaseInRaynet();
+                Integer businessCaseId = formObject.createBusinessCaseInRaynet();
 
                 if (formObject.offersSeparate) {
                     for (int i = 0; i < formObject.products.size(); i++) {
-                        Integer offerId = formObject.offers.get(i).createOfferInRaynet(businessCaseId);
-                        Integer productId = formObject.products.get(i).createProductInRaynet(offerId);
+                        Integer offerId = formObject.createOfferInRaynet(businessCaseId, i);
+                        Integer productId = formObject.createProductInRaynet(offerId, i);
                     }
                 } else {
-                    Integer offerId = formObject.offers.get(0).createOfferInRaynet(businessCaseId);
+                    Integer offerId = formObject.createOfferInRaynet(businessCaseId, 0);
                     for (int i = 0; i < formObject.products.size(); i++) {
-                        Integer productId = formObject.products.get(i).createProductInRaynet(offerId);
+                        Integer productId = formObject.createProductInRaynet(offerId, i);
                     }
                 }
                 response = getBusinessCases(formObject.companyId);
-                formObject.offers.get(0).sync();
+                formObject.syncOffer();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -65,7 +65,6 @@ public class BusinessCaseHandler implements HttpHandler {
 
         String asHTML() {
             StringBuilder result = new StringBuilder();
-            result.append("<option selected disabled>(total: ").append(this.data.size()).append(" OP)</option>");
             result.append("<option value=\"0\">(new)</option>");
             Collections.reverse(data);
             for (BusinessCase aData : data) {
@@ -78,7 +77,7 @@ public class BusinessCaseHandler implements HttpHandler {
 
         private class BusinessCase {
             public int id;
-            private String name;  //required
+            private String name;
             private String code;
         }
     }

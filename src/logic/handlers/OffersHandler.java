@@ -21,11 +21,11 @@ public class OffersHandler implements HttpHandler {
     private String getOffers(String businessCaseId) {
         String response = sendRequest(Utils.RAYNET_URL + "/offer/?businessCase[EQ]=" + businessCaseId);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        JsonOffer jsonOffer = gson.fromJson(response, JsonOffer.class);
-        return jsonOffer.asHTML();
+        JsonOffers jsonOffers = gson.fromJson(response, JsonOffers.class);
+        return jsonOffers.asHTML();
     }
 
-    private class JsonOffer {
+    private class JsonOffers {
         public boolean success;
         public int totalCount;
         private List<OfferRead> data;
