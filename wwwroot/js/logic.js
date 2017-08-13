@@ -422,7 +422,6 @@ function setCompany() {
     var company = $("#company").val();
     var person = $("#person");
     var companyId = $("#companyId");
-    // businessCaseSelect("0");
     $("#newOP").hide();
     $("#offerDiv").hide();
     $("#existingProducts").hide();
@@ -433,10 +432,12 @@ function setCompany() {
         XmlHTTP.open("GET", "/company/?" + company, false);
         XmlHTTP.send();
         if (XmlHTTP.status === 200) {
-            var id = XmlHTTP.responseText;
+            var response = XmlHTTP.responseText.split(',');
+            var id = response[0];
             companyId.val(id);
             sendGet("/person/?" + id, person, person);
             sendGet("/businessCase/?" + id, $("#businessCase"), $("#mainTable"));
+            $("#owner").val(response[1]);
             businessCaseSelect("0");
             calculate();
         }
@@ -470,7 +471,7 @@ function getCompanyList() {
             var text = XmlHTTP.responseText;
             companiesList = JSON.parse(text);
             var input = document.getElementById("company");
-            var awesomplete = new Awesomplete(input, {autoFirst: true, minChars: 1});
+            var awesomplete = new Awesomplete(input, {autoFirst: true, minChars: 1, maxItems: 20});
             awesomplete.list = companiesList;
         }
     };

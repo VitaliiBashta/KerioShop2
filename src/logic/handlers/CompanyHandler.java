@@ -44,7 +44,7 @@ public class CompanyHandler implements HttpHandler {
             String id = "";
             for (Company comp : companies) {
                 if (comp.name.equals(companyName)) {
-                    id = String.valueOf(comp.id);
+                    id = comp.id + "," + comp.owner.id;
                     break;
                 }
             }
@@ -61,5 +61,11 @@ public class CompanyHandler implements HttpHandler {
     private class Company {
         private int id;
         private String name;
+        private Owner owner;
+    }
+
+    private class Owner {
+        Integer id;
+        String fullName;
     }
 }
