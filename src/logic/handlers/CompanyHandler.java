@@ -42,9 +42,13 @@ public class CompanyHandler implements HttpHandler {
         String companyName = he.getRequestURI().getQuery();
         if (companyName != null) {
             String id = "";
+            String margin = "0";
             for (Company comp : companies) {
                 if (comp.name.equals(companyName)) {
-                    id = comp.id + "," + comp.owner.id;
+                    if (comp.customFields != null && comp.customFields.Marze_Keri_5288b != null) {
+                        margin = comp.customFields.Marze_Keri_5288b.replace("%", "");
+                    }
+                    id = comp.id + "," + comp.owner.id + "," + margin;
                     break;
                 }
             }
@@ -62,10 +66,17 @@ public class CompanyHandler implements HttpHandler {
         private int id;
         private String name;
         private Owner owner;
+        private CustomFields customFields;
     }
 
     private class Owner {
         Integer id;
         String fullName;
+    }
+
+    private class CustomFields {
+        String Marze_GFI_0b8ec;
+        String Marze_Keri_5288b;
+        String Marze_Acro_77f17;
     }
 }

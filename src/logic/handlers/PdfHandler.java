@@ -19,7 +19,9 @@ public class PdfHandler implements HttpHandler {
         String response = sendRequest(request);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonOfferPdfExport json = gson.fromJson(response, JsonOfferPdfExport.class);
-        Utils.writeResponse(he, json.getDownloadUrl());
+        String res = json.getDownloadUrl();
+        System.out.println(res);
+        Utils.writeResponse(he, res);
     }
 
     private class JsonOfferPdfExport {
@@ -35,8 +37,8 @@ public class PdfHandler implements HttpHandler {
                         uuid + '/' +
                         accessToken + '/' +
                         instanceName + '/' +
-                        "?fileName=\"" + URLDecoder.decode(fileName, "UTF-8") +
-                        "\"&contentType=" + URLDecoder.decode(contentType, "UTF-8");
+                        "?fileName=" + URLDecoder.decode(fileName, "UTF-8") +
+                        "&contentType=" + URLDecoder.decode(contentType, "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }

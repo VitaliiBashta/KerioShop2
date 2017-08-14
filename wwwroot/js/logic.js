@@ -8,7 +8,7 @@ function initForm() {
     $("#scheduledEnd").val(date.format());
     $("input").live("change", calculate);
     $(".cs-options").live("click", calculate);
-    // $(".checkbox").live("change", calculate);
+    $("select").live("change", calculate);
 
     $("#getLicenseInfo").on("click", getLicenseInfo);
     $("#addProduct").on("click", addProduct);
@@ -83,7 +83,7 @@ function getLicenseInfo() {  //need to be done via API
             swm.attr("max", 1 - diffYears);
         }
         swUsers.val(json[3]);
-        swUsers.attr("min", json[3]);
+        // swUsers.attr("min", json[3]);
     }
     calculate();
 }
@@ -172,7 +172,7 @@ function calculate() {
         }
     }
     var price = $("#price").val();
-    var discount = $("#discountPercent").val();
+    var discount = $("#partnerMargin").val();
     var totalPrice = (price * (100 - discount)) / 100;
 
     $("#totalPrice").val(Math.round(100 * totalPrice) / 100);
@@ -353,7 +353,9 @@ function fitElements() {
         exWarranty: warrantyLabel.is(":visible") && $("#warranty").is(':checked')
     };
 
-    $("#price").val(calculateNewPrice(currency, newProduct));
+    var price = calculateNewPrice(currency, newProduct);
+    price = Math.round(price * (100 - $("#discount").val())) / 100;
+    $("#price").val(price);
     var fullName = getFullNameNewLicense();
     $("#productFullName").val(fullName);
     $("#businessCase").val(fullName);
@@ -407,6 +409,7 @@ function fitElementsExistingLicense() {
     };
 
     var price = calculateExistingPrice(currency, newProduct, oldProduct);
+    price = Math.round(price * (100 - $("#discount").val())) / 100;
     $("#price").val(price);
 }
 
@@ -438,6 +441,7 @@ function setCompany() {
             sendGet("/person/?" + id, person, person);
             sendGet("/businessCase/?" + id, $("#businessCase"), $("#mainTable"));
             $("#owner").val(response[1]);
+            $("#partnerMargin").val(response[2]);
             businessCaseSelect("0");
             calculate();
         }

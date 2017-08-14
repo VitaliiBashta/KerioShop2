@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="KerioShop:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/KerioShop_jar</output-path>
+    <root id="archive" name="KerioShop.jar">
+      <element id="module-output" name="KerioShop" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/log4j-1.2.17.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/gson-2.2.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jsoup-1.10.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/httpcore-4.4.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/httpclient-4.5.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/commons-logging-1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/httpclient-win-4.5.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/httpclient-cache-4.5.3.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

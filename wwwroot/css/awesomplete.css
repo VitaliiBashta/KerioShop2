@@ -12,26 +12,13 @@
     position: relative;
 }
 
-.awesomplete > input {
-}
-
 .awesomplete > ul {
     position: absolute;
-    z-index: 1;
+    z-index: 0;
     min-width: 100%;
-}
-
-.awesomplete > ul:empty {
-    display: none;
-}
-
-.awesomplete > ul {
     border-radius: .5em;
     margin: .2em 0 0;
     box-shadow: .1em .2em 1em rgba(0, 0, 0, .9);
-}
-
-.awesomplete > ul {
     transition: .4s cubic-bezier(.4, 1.2, .5, 1.4);
     transform-origin: 0 0;
 }

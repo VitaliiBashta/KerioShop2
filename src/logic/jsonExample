@@ -1,1 +1,165 @@
-{}
+{
+  "success": true,
+  "totalCount": 3006,
+  "data": [
+    {
+      "id": 134,
+      "name": "ELAT s.r.o.",
+      "role": "B_PARTNER",
+      "state": "B_ACTUAL",
+      "rating": "B",
+      "owner": {
+        "id": 196,
+        "fullName": "Marie Baranov\u00e1"
+      },
+      "regNumber": "25580825",
+      "taxNumber": "CZ25580825",
+      "primaryAddress": {
+        "id": 134,
+        "primary": true,
+        "address": {
+          "id": 134,
+          "city": "Brno-\u0158e\u010dkovice",
+          "country": "\u010cesk\u00e1 republika",
+          "countryCode": "CZ",
+          "name": "S\u00eddlo klienta",
+          "province": null,
+          "street": "Ku\u0159imsk\u00e1 1503\/42",
+          "zipCode": "621 00"
+        },
+        "contactInfo": {
+          "primary": true,
+          "email": "info@elat.cz",
+          "email2": null,
+          "tel1": "+420 296 587 321",
+          "tel1Type": "pevn\u00e1 linka",
+          "tel2": null,
+          "tel2Type": null,
+          "fax": null,
+          "www": "www.elat.cz",
+          "otherContact": null
+        },
+        "territory": {
+          "id": 274,
+          "value": "Morava"
+        }
+      },
+      "category": {
+        "id": 259,
+        "value": "prodejce"
+      },
+      "turnover": null,
+      "economyActivity": {
+        "id": 116,
+        "value": "IT"
+      },
+      "companyClassification1": null,
+      "companyClassification2": null,
+      "companyClassification3": null,
+      "contactSource": {
+        "id": 233,
+        "value": "GFI"
+      },
+      "birthday": null,
+      "notice": "<p>15% mar\u017ee, DD<\/p> \n<p>3.11. - zji\u0161t\u011bna zm\u011bna adresy, kop\u00edrov\u00e1no z Aresu<\/p> \n<p>12.12.2016 - posl\u00e1no PF - Schindler<\/p>",
+      "tags": [
+        "GFI",
+        "GFI Bronze Partner",
+        "Autorizovan\u00fd partner Acronis"
+      ],
+      "customFields": null,
+      "attachments": null,
+      "rowInfo.createdAt": "2015-07-08 10:50",
+      "rowInfo.createdBy": "zdenek.binek@zebra.cz",
+      "rowInfo.updatedAt": "2017-02-14 08:40",
+      "rowInfo.updatedBy": "lucie.sedlackova@zebra.cz",
+      "rowInfo.rowAccess": null,
+      "rowInfo.rowState": null,
+      "securityLevel": {
+        "id": 1,
+        "name": "Sd\u00edlen\u00e1"
+      },
+      "_version": 17
+    },
+    {
+      "id": 135,
+      "name": "ACE Design, s.r.o.",
+      "role": "B_PARTNER",
+      "state": "B_ACTUAL",
+      "rating": "B",
+      "owner": {
+        "id": 196,
+        "fullName": "Marie Baranov\u00e1"
+      },
+      "regNumber": "60711361",
+      "taxNumber": "CZ60711361",
+      "primaryAddress": {
+        "id": 135,
+        "primary": true,
+        "address": {
+          "id": 135,
+          "city": "Brno",
+          "country": "\u010cesk\u00e1 republika",
+          "countryCode": "CZ",
+          "name": "S\u00eddlo klienta",
+          "province": null,
+          "street": "Dr\u00e1\u017en\u00ed 253\/7",
+          "zipCode": "62700"
+        },
+        "contactInfo": {
+          "primary": true,
+          "email": "net@acedesign.cz",
+          "email2": null,
+          "tel1": "+420 531 022 260",
+          "tel1Type": null,
+          "tel2": null,
+          "tel2Type": null,
+          "fax": null,
+          "www": "www.acedesign.cz",
+          "otherContact": null
+        },
+        "territory": {
+          "id": 274,
+          "value": "Morava"
+        }
+      },
+      "category": {
+        "id": 259,
+        "value": "prodejce"
+      },
+      "turnover": null,
+      "economyActivity": {
+        "id": 116,
+        "value": "IT"
+      },
+      "companyClassification1": null,
+      "companyClassification2": null,
+      "companyClassification3": null,
+      "contactSource": {
+        "id": 233,
+        "value": "GFI"
+      },
+      "birthday": null,
+      "notice": "<p>25% mar\u017ee, Da\u0148ov\u00fd doklad<\/p> \n<p>dne 17.12.2015 zasl\u00e1no v\u00edno + PF - p. Pode\u0161\u0165<\/p> \n<p><\/p>",
+      "tags": [
+        "GFI",
+        "GFI Silver Partner"
+      ],
+      "customFields": {
+        "Marze_GFI_0b8ec": "25%"
+      },
+      "attachments": null,
+      "rowInfo.createdAt": "2015-07-08 10:54",
+      "rowInfo.createdBy": "zdenek.binek@zebra.cz",
+      "rowInfo.updatedAt": "2017-08-14 08:51",
+      "rowInfo.updatedBy": "vitalii.bashta@zebra.cz",
+      "rowInfo.rowAccess": null,
+      "rowInfo.rowState": null,
+      "securityLevel": {
+        "id": 1,
+        "name": "Sd\u00edlen\u00e1"
+      },
+      "_version": 12
+    }
+  ]
+}

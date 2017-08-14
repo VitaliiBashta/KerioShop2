@@ -2,9 +2,9 @@ package logic.objects;
 
 import java.util.Date;
 
-class BusinessCase {
-    private final String name;  //required
-    private final long owner;
+public class BusinessCase {
+    public final String name;  //required
+    public final long owner;
     private final long company; //required
     private final Integer person;
     private final int probability;
@@ -31,5 +31,4 @@ class BusinessCase {
         this.businessCasePhase = formObject.businessCasePhase;
         this.description = formObject.description;
     }
-
 }

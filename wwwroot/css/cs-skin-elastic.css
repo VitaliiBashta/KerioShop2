@@ -207,3 +207,7 @@ div.cs-select:focus {
 .cs-skin-elastic .cs-options li.analysis span {
     background-image: url(img/analysis.png);
 }
+
+.cs-skin-elastic .cs-options li.none span {
+    background-image: url(img/none.png);
+}

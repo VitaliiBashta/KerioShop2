@@ -1,0 +1,307 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>ZEBNET by V. Bashta</title>
+    <link href="../css/styles.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/cs-skin-elastic.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/awesomplete.css" rel="stylesheet"/>
+    <script src="../js/jquery-1.8.2.min.js"></script>
+    <script src="../js/priceCalculators.js"></script>
+    <script src="../js/logic.js"></script>
+    <script src="../js/prices.js"></script>
+    <script src="../js/awesomplete.js" async></script>
+</head>
+<body>
+<table>
+    <tr>
+        <td><a href="../kerio" class="buttonSubmit">Kerio</a>
+            <a href="../gfi" class="buttonSubmit">GFI</a>
+            <a href="../acronis" class="buttonSubmit">Acronis</a>
+        </td>
+    </tr>
+</table>
+<div class="mainframe">
+
+    <form action="/" id="openForm">
+
+        <input type="hidden" id="companyId" name="companyId">
+        <table>
+            <thead>
+            <tr>
+                <td class="width300"><label for="company">Klient</label></td>
+                <td class="width120"><label for="person">Kontaktní osoba</label></td>
+                <td class="width80"><label for="partnerMargin">Marže klienta</label></td>
+                <td class="width80"><label for="currency">Měna:</label></td>
+                <td class="width120"><label for="owner">Vlastník</label></td>
+            </tr>
+            </thead>
+            <tr>
+                <td><input id="company" value="" class="awesomplete"></td>
+                <td><select id="person" name="person"> </select></td>
+                <td><input type="number" name="partnerMargin" id="partnerMargin"></td>
+                <td>
+                    <select id="currency" name="currency" class="cs-select cs-skin-elastic">
+                        <option value="15" data-class="CZK" selected>CZK</option>
+                        <option value="16" data-class="EUR">EUR</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="owner" id="owner">
+                        <option value="462">Vitalii Bashta</option>
+                        <option value="196">Marie Baranová</option>
+                        <option value="5">Štepan Bínek</option>
+                        <option value="2">Zdeněk Bínek</option>
+                        <option value="34">Jana Bínková</option>
+                        <option value="4">Aleš Hok</option>
+                        <option value="456">Simona Kotalová</option>
+                        <option value="96">Martin Marek</option>
+                        <option value="3447">František Mráz</option>
+                        <option value="3279">Michael Nebeský</option>
+                        <option value="6">Jan Ptaček</option>
+                        <option value="2268">Lucie Sedláčková</option>
+                        <option value="897">Jana Švandová</option>
+                    </select>
+                </td>
+            </tr>
+
+        </table>
+        <table id="mainTable">
+            <tr>
+                <th><label for="businessCase">Obchodní případ:</label></th>
+                <td colspan="3">
+                    <select id="businessCase"> </select>
+                </td>
+                <td>
+                    <a href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít OP</a>
+                </td>
+                <td>
+                    <input type="checkbox" class="checkbox" id="offersSeparateSwitch">
+                    <label for="offersSeparateSwitch" id="offersSeparateSwitchLabel">NAB zvlášť</label>
+                    <input type="hidden" id="offersSeparate" name="offersSeparate" value="">
+                </td>
+            </tr>
+            <tr id="offerDiv">
+                <th><label for="offer">Nabidka:</label></th>
+                <td colspan="3">
+                    <select id="offer" size="3"></select>
+                </td>
+                <td colspan="2">
+                    <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a>
+                    <a href="#" class="buttonSubmit" id="mailTo">Email</a>
+                </td>
+            </tr>
+        </table>
+        <table id="newOP">
+            <tr>
+                <th>Časové rozmezí</th>
+                <td><label for="validFrom">Otevřeno od:</label></td>
+                <td colspan="2"><input type="date" class="date" id="validFrom" name="validFrom"></td>
+                <td><label for="scheduledEnd">Odhad uzav.</label></td>
+                <td colspan="2"><input type="date" class="date" id="scheduledEnd" name="scheduledEnd"></td>
+            </tr>
+            <tr>
+                <th></th>
+                <td><label for="businessCasePhase">Stav:</label></td>
+                <td colspan="2">
+                    <select id="businessCasePhase" name="businessCasePhase">
+                        <option value="41">Analýza potřeb</option>
+                        <option value="42" selected>Cenová nabídka</option>
+                        <option value="45">Výhra</option>
+                    </select>
+                </td>
+                <td><label for="businessCaseCategory">Kategorie:</label></td>
+                <td colspan="2"><select id="businessCaseCategory" name="category">
+                    <option value="486">Kerio Connect</option>
+                    <option value="487">Kerio Control</option>
+                    <option value="488">Kerio Operator</option>
+                    <option value="485">Kerio Cloud</option>
+                </select></td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="probability">Pravděpodobnost:</label><br>
+                    <input type="range" id="probability" name="probability" value="50">
+                </th>
+                <td colspan="6">
+                    <label for="description">Popis</label>
+                    <textarea id="description" name="description"> </textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" class="checkbox" id="existingLicense">
+                    <label for="existingLicense">Existující licence</label>
+                </td>
+                <td colspan="3">
+                    <input id="licnum" maxlength="25" value="">
+                </td>
+                <td>
+                    <a href="#" class="buttonSubmit" id="getLicenseInfo">Najít</a>
+                </td>
+            </tr>
+        </table>
+        <table id="existingProducts">
+            <thead>
+            <tr>
+                <td class="width200"><label for="licnum">Licenční číslo</label></td>
+                <td class="width120">Stavajicí počet uživatelu</td>
+                <td class="width200"><label for="expirationDate">Expirace</label></td>
+                <td class="width300">Zakoupená rožšiření</td>
+            </tr>
+            </thead>
+            <tr>
+                <td id="licenseNumber"></td>
+                <td id="existingUsers"></td>
+                <td id="expirationDate"></td>
+                <td id="existingExtensions"></td>
+            </tr>
+        </table>
+        <table id="products">
+            <thead>
+            <tr>
+                <td class="width300" colspan="2"><label for="prod_group_id">Produkt</label></td>
+                <td class="width120"><label for="hwUsers">Počet uživatelu</label></td>
+                <td class="width120"><label for="lic_type">Typ licence</label></td>
+                <td class="width80"><label for="swm">SWM</label></td>
+                <td class="width330">Dostupná rožšiření</td>
+                <td class="width80"><label for="discount">Sleva, %</label></td>
+                <td class="width80"><label for="price">Cena</label></td>
+                <td class="width80"><label for="totalPrice">Cena pro partnera</label></td>
+                <td class="width40">Přídat</td>
+            </tr>
+            </thead>
+            <tr>
+                <td id="productGroup" colspan="2">
+                    <select id="prod_group_id" class="cs-select cs-skin-elastic" disabled>
+                        <option value="-1" selected disabled>Produkt ...</option>
+                        <option value="Kerio Connect" data-class="connect">Kerio Connect</option>
+                        <option value="Kerio Control" data-class="control">Kerio Control</option>
+                        <option value="Kerio Operator" data-class="operator">Kerio Operator</option>
+                        <option value="" data-class="box">Boxes...</option>
+                    </select>
+                </td>
+                <td id="boxGroup">
+                    <label for="hardware"></label>
+                    <select id="hardware" class="cs-select cs-skin-elastic">
+                        <option value="NG100" data-class="NG100" selected>NG100</option>
+                        <option value="NG100W" data-class="NG100W">NG100W</option>
+                        <option value="NG300" data-class="NG300">NG300</option>
+                        <option value="NG300W" data-class="NG300W">NG300W</option>
+                        <option value="NG500" data-class="NG500">NG500</option>
+                        <option value="V300" data-class="V300">V300</option>
+                    </select>
+                </td>
+                <td>
+                    <section id="hwUsersSection">
+                        <select id="hwUsers" class="cs-select cs-skin-elastic">
+                            <option value="25 users" data-class="users25">25 Users</option>
+                            <option value="50 users" data-class="users50">50 Users</option>
+                            <option value="100 users" data-class="users100">100 Users</option>
+                            <option value="Unlimited" data-class="unlimited" selected>Unlimited</option>
+                        </select>
+                    </section>
+                    <section id="swUsersSection">
+                        <label for="swUsers"></label>
+                        <input type="number" id="swUsers" min="5" max="1000" step="5" value="5">
+                    </section>
+                </td>
+                <td id="lic_typeColumn">
+                    <select id="lic_type" class="cs-select cs-skin-elastic" disabled>
+                        <option value="" selected data-class="Commercial">Komerční</option>
+                        <option value=" GOV" data-class="GOV">GOV</option>
+                        <option value=" EDU" data-class="EDU">EDU</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" id="swm" min="1" value="1" max="2">
+                </td>
+                <td>
+                    <ul id="extensions">
+                        <li>
+                            <input type="checkbox" class="checkbox" id="antivirus">
+                            <label for="antivirus" id="antivirusLabel">Antivirus</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checkbox" id="activeSync">
+                            <label for="activeSync" id="activeSyncLabel">ActiveSync</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checkbox" id="antispam">
+                            <label for="antispam" id="antispamLabel">Anti-spam</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checkbox" id="webFilter">
+                            <label for="webFilter" id="webFilterLabel">Kerio WebFilter</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="checkbox" id="warranty">
+                            <label for="warranty" id="warrantyLabel">Extended Warranty (3 years)</label>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <input type="number" min="0" max="100" value="0" name="discount" id="discount">
+                </td>
+                <td>
+                    <input name="price" id="price">
+                    <input type="hidden" name="productFullName" id="productFullName">
+                </td>
+
+                <td>
+                    <input name="totalPrice" id="totalPrice">
+                </td>
+                <td>
+                    <a href="#" class="buttonSubmit" id="addProduct">+</a>
+                </td>
+            </tr>
+            <tr id="product1" class="addProducts">
+                <td colspan="7"><input name="product1" id="productFullName1" disabled></td>
+                <td><input name="price1" id="price1" disabled></td>
+                <td><input id="totalPrice1" disabled></td>
+                <td><a href="#" class="removeProduct buttonSubmit" onclick="removeProduct(1)">-</a>
+                </td>
+            </tr>
+            <tr id="product2" class="addProducts">
+                <td colspan="7"><input name="product2" id="productFullName2" disabled></td>
+                <td><input name="price2" id="price2" disabled></td>
+                <td><input id="totalPrice2" disabled></td>
+                <td><a href="#" class="removeProduct buttonSubmit" onclick="removeProduct(2)">-</a>
+                </td>
+            </tr>
+            <tr id="product3" class="addProducts">
+                <td colspan="7"><input name="product3" id="productFullName3" disabled></td>
+                <td><input name="price3" id="price3" disabled></td>
+                <td><input id="totalPrice3" disabled></td>
+                <td><a href="#" class="removeProduct buttonSubmit" onclick="removeProduct(3)">-</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <label for="productFullName1"></label>
+    <label for="productFullName2"></label>
+    <label for="productFullName3"></label>
+    <label for="price1"></label>
+    <label for="price2"></label>
+    <label for="price3"></label>
+    <label for="totalPrice1"></label>
+    <label for="totalPrice2"></label>
+    <label for="totalPrice3"></label>
+</div>
+
+<input type="hidden" id="response">
+<input type="hidden" id="request">
+
+<script>
+    initForm();
+</script>
+<script src="../js/classie.js"></script>
+<script src="../js/selectFx.js"></script>
+<script>
+    (function CsSelect() {
+        [].slice.call(document.querySelectorAll('select.cs-select')).forEach(function (el) {
+            new SelectFx(el);
+        });
+    })();
+</script>
+</body>
+</html>

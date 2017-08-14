@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import logic.Utils;
 import logic.objects.FormObject;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.util.List;
 import static logic.Utils.sendRequest;
 
 public class BusinessCaseHandler implements HttpHandler {
+    private static Logger log = Logger.getLogger(BusinessCaseHandler.class.getName());
 
     @Override
     public void handle(HttpExchange he) {
@@ -39,6 +41,8 @@ public class BusinessCaseHandler implements HttpHandler {
                         Integer productId = formObject.createProductInRaynet(offerId, i);
                     }
                 }
+                log.info("Created OP by=" + formObject.businessCase.owner + ";companyID=" + formObject.companyId +
+                        ";BusinessCaseId=" + businessCaseId + ";name=" + formObject.businessCase.name);
                 response = getBusinessCases(formObject.companyId);
                 formObject.syncOffer();
             } catch (IOException e) {

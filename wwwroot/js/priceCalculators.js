@@ -125,7 +125,7 @@ function calculateExistingPrice(currency, newProduct, oldProduct) {
         var renewExisting = newProduct.swm *
             (renPrice - prices.RenAdd5users + oldUsers5x * (prices.RenAdd5users + existingExtPrice));
 
-        var addedUsersPrice = addedUsers5x * (
+        var addedUsersPrice = (newProduct.users - oldProduct.users) / 5 * (
             prices.add5users - prices.RenAdd5users +
             (prices.RenAdd5users + existingExtPrice) * (newProduct.swm + prorate)
         );

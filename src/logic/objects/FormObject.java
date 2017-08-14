@@ -16,15 +16,15 @@ import static logic.Utils.sendRequest;
 public class FormObject {
     Integer source = 42;
 
-    public final transient List<Offer> offers = new ArrayList<>();
+    private final transient List<Offer> offers = new ArrayList<>();
     Integer person;
     final transient List<String> productFullNames = new ArrayList<>();
     Integer currency;  //required
     final transient List<Double> prices = new ArrayList<>();
     public boolean offersSeparate;
     public Integer companyId; //required
-    private transient BusinessCase businessCase;
-    String discountPercent;
+    public transient BusinessCase businessCase;
+    String partnerMargin;
     Integer owner;
     Date validFrom;
     Date scheduledEnd;

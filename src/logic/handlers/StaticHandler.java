@@ -9,13 +9,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class StaticHandler implements HttpHandler {
-    @Override
-    public void handle(HttpExchange he) {
-        String path = he.getRequestURI().getPath();
-        if (path.equals("/")) path = "index.html";
-        File file = new File("wwwRoot", path);
-        if (path.endsWith(".css"))
-            he.getResponseHeaders().set("Content-Type", "text/css");
+    static void sendFile(HttpExchange he, File file) {
+        if (file.isDirectory()) {
+            file = new File(file.getPath(), "index.html");
+        }
         try (OutputStream output = he.getResponseBody(); FileInputStream fs = new FileInputStream(file)) {
             he.sendResponseHeaders(200, file.length());
             final byte[] buffer = new byte[1024];
@@ -25,5 +22,14 @@ public class StaticHandler implements HttpHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void handle(HttpExchange he) {
+        String path = he.getRequestURI().getPath();
+        File file = new File("wwwRoot", path);
+        if (path.endsWith(".css"))
+            he.getResponseHeaders().set("Content-Type", "text/css");
+        sendFile(he, file);
     }
 }
