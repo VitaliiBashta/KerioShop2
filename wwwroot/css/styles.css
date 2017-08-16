@@ -160,7 +160,7 @@ textarea {
 
 .addProducts,
 #mainTable, #newOP, #existingProducts, #products,
-#licnum, #getLicenseInfo {
+#licnum, #getLicenseInfo, #businessCase, #existingOP {
     display: none;
 }
 

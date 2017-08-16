@@ -37,6 +37,12 @@ public class CompanyHandler implements HttpHandler {
         System.out.println("\tloaded:" + companies.size());
     }
 
+    static Company getCompany(Integer id) {
+        for (Company company : companies) {
+            if (company.id == id) return company;
+        }
+        return companies.get(0);
+    }
     @Override
     public void handle(HttpExchange he) {
         String companyName = he.getRequestURI().getQuery();
@@ -48,7 +54,7 @@ public class CompanyHandler implements HttpHandler {
                     if (comp.customFields != null && comp.customFields.Marze_Keri_5288b != null) {
                         margin = comp.customFields.Marze_Keri_5288b.replace("%", "");
                     }
-                    id = comp.id + "," + comp.owner.id + "," + margin;
+                    id = comp.id + "," + comp.owner.id + "," + margin + "," + comp.regNumber;
                     break;
                 }
             }
@@ -62,11 +68,12 @@ public class CompanyHandler implements HttpHandler {
         private List<Company> data;
     }
 
-    private class Company {
+    public class Company {
         private int id;
-        private String name;
-        private Owner owner;
-        private CustomFields customFields;
+        public String name;
+        String regNumber;
+        Owner owner;
+        CustomFields customFields;
     }
 
     private class Owner {

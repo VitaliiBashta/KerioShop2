@@ -69,7 +69,7 @@ public class BusinessCaseHandler implements HttpHandler {
 
         String asHTML() {
             StringBuilder result = new StringBuilder();
-            result.append("<option value=\"0\">(new)</option>");
+            result.append("<option selected></option>");
             Collections.reverse(data);
             for (BusinessCase aData : data) {
                 result.append("<option value=\"").append(aData.id).append("\">")

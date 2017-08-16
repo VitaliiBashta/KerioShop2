@@ -3,6 +3,7 @@ var companiesList;
 function initForm() {
     getCompanyList();
     var date = new Date();
+    var company = $("#company");
     $("#validFrom").val(date.format());
     date.setDate(date.getDate() + 15);
     $("#scheduledEnd").val(date.format());
@@ -12,12 +13,13 @@ function initForm() {
 
     $("#getLicenseInfo").on("click", getLicenseInfo);
     $("#addProduct").on("click", addProduct);
-    $("#company").live("awesomplete-open", editCompany);
-    $("#company").live("awesomplete-selectcomplete", setCompany);
+    company.live("awesomplete-open", editCompany);
+    company.live("awesomplete-selectcomplete", setCompany);
     $("#existingLicense").on("change", newOrExistingToggle);
 
     $("#createEntityInRaynet").on("click", createEntityInRaynet);
-    $("#businessCase").live("change", businessCaseSelect);
+    $("#businessCase").on("change", businessCaseSelect);
+    $("#opSwitch").on("change", opSwitch);
     $("#offer").on("change", offerSelect);
 }
 
@@ -88,45 +90,53 @@ function getLicenseInfo() {  //need to be done via API
     calculate();
 }
 
-function businessCaseSelect(businessCaseId) {
-    if (businessCaseId !== "0")
-        businessCaseId = $("#businessCase").val();
+function opSwitch() {
+    var opSwitch = $("#opSwitch").prop("checked");
+    var businessCase = $("#businessCase");
     var newOP = $("#newOP");
+    var existingOP = $("#existingOP");
     var offersSeparateSwitchLabel = $("#offersSeparateSwitchLabel");
     var products = $("#products");
     var createEntityInRaynet = $("#createEntityInRaynet");
     var offerDiv = $("#offerDiv");
-    var downloadPDF = $("#downloadPDF");
-    var mailTo = $("#mailTo");
-    var offer = $("#offer");
-    $("#existingProducts").hide();
-    downloadPDF.hide();
-    mailTo.hide();
-    newOP.hide();
-    offersSeparateSwitchLabel.hide();
-    products.hide();
-    offersSeparateSwitchLabel.hide();
-    offerDiv.hide();
-    createEntityInRaynet.hide();
-
-    if (businessCaseId === "0") {
+    if (opSwitch) {
+        createEntityInRaynet.hide();
+        newOP.hide();
+        products.hide();
+        offersSeparateSwitchLabel.hide();
+        sendGet("/businessCase/?" + $("#companyId").val(), businessCase, businessCase);
+    }
+    else {
+        businessCase.hide();
+        offerDiv.hide();
         createEntityInRaynet.show();
         newOP.show();
+        existingOP.hide();
         offersSeparateSwitchLabel.show();
         products.show();
     }
-    else {
-        sendGet("/offer/?" + businessCaseId, offer, offerDiv);
-    }
+}
+
+function businessCaseSelect() {
+    var businessCaseId = $("#businessCase").val();
+
+    $("#mailTo").hide();
+    $("#downloadPDF").hide();
+    $("#sendInvoiceInfo").hide();
+
+    $("#existingOP").show();
+    sendGet("/offer/?" + businessCaseId, $("#offer"), $("#offerDiv"));
 }
 
 function offerSelect() {
     var offerID = $("#offer").val();
     var downloadPDF = $("#downloadPDF");
     var mailTo = $("#mailTo");
+    var sendInvoiceInfo = $("#sendInvoiceInfo");
 
     sendGet2Href("/Pdf/?" + offerID, downloadPDF, downloadPDF);
     sendGet2Href("/MailTo/?" + offerID, mailTo, mailTo);
+    sendGet2Href("/invoiceInfo/?" + offerID, sendInvoiceInfo, sendInvoiceInfo);
 }
 
 function newOrExistingToggle() {
@@ -159,6 +169,7 @@ function newOrExistingToggle() {
 function calculate() {
     var productGroup = $("#prod_group_id").val();
     var boxProduct = $("#hardware").val();
+    var offersSeparateSwitch = $("#offersSeparateSwitch");
     var productCode = "487";  //Kerio Control
     if (productGroup === "Kerio Connect") productCode = "486";
     if (productGroup === "Kerio Operator") productCode = "488";
@@ -177,9 +188,9 @@ function calculate() {
 
     $("#totalPrice").val(Math.round(100 * totalPrice) / 100);
 
-    $("#offersSeparate").val("false");
-    if ($("#offersSeparateSwitch").is(":checked")) {
-        $("#offersSeparate").val("true");
+    offersSeparateSwitch.val("false");
+    if (offersSeparateSwitch.is(":checked")) {
+        offersSeparateSwitch.val("true");
     }
     $("#request").val(toJSONString());
 }
@@ -299,13 +310,12 @@ function fitElements() {
     var antispamLabel = $("#antispamLabel");
     var webFilterLabel = $("#webFilterLabel");
     var warrantyLabel = $("#warrantyLabel");
-    var users;
     var swm = $("#swm").val();
 
     hideAll();
 
     if (productGroup === "0") return;
-    users = $("#swUsers").val();
+    var users = $("#swUsers").val();
     if (productGroup === "Kerio Connect") {
         antivirusLabel.show();
         activeSyncLabel.show();
@@ -425,10 +435,6 @@ function setCompany() {
     var company = $("#company").val();
     var person = $("#person");
     var companyId = $("#companyId");
-    $("#newOP").hide();
-    $("#offerDiv").hide();
-    $("#existingProducts").hide();
-    $("#products").hide();
     person.html("");
     var XmlHTTP = new XMLHttpRequest();
     if (company !== "") {
@@ -439,10 +445,12 @@ function setCompany() {
             var id = response[0];
             companyId.val(id);
             sendGet("/person/?" + id, person, person);
-            sendGet("/businessCase/?" + id, $("#businessCase"), $("#mainTable"));
+            $("#mainTable").show();
+            $("#newOP").show();
+            $("#products").show();
             $("#owner").val(response[1]);
             $("#partnerMargin").val(response[2]);
-            businessCaseSelect("0");
+            // $("#companyIC").val(response[3]);
             calculate();
         }
     }

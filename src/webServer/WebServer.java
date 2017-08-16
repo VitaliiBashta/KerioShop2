@@ -31,6 +31,7 @@ class WebServer {
             server.createContext("/Pdf", new PdfHandler());
             server.createContext("/MailTo", new MailHandler());
             server.createContext("/licenseInfo", new LicenseInfoHandler());
+            server.createContext("/invoiceInfo", new InvoiceInfoHandler());
             server.createContext("/kerio", new KerioHandler());
             server.createContext("/gfi", new StaticHandler());
             server.createContext("/acronis", new StaticHandler());

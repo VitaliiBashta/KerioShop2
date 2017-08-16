@@ -23,7 +23,6 @@
 <div class="mainframe">
 
     <form action="/" id="openForm">
-
         <input type="hidden" id="companyId" name="companyId">
         <table>
             <thead>
@@ -68,26 +67,31 @@
         <table id="mainTable">
             <tr>
                 <th><label for="businessCase">Obchodní případ:</label></th>
-                <td colspan="3">
+                <td>
+                    <input type="checkbox" class="checkbox" id="opSwitch">
+                    <label for="opSwitch">Stavajicí</label>
+                </td>
+
+                <td colspan="5">
                     <select id="businessCase"> </select>
-                </td>
-                <td>
                     <a href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít OP</a>
-                </td>
-                <td>
-                    <input type="checkbox" class="checkbox" id="offersSeparateSwitch">
+                    <input type="checkbox" class="checkbox" id="offersSeparateSwitch" name="offersSeparate" value="">
                     <label for="offersSeparateSwitch" id="offersSeparateSwitchLabel">NAB zvlášť</label>
-                    <input type="hidden" id="offersSeparate" name="offersSeparate" value="">
                 </td>
             </tr>
+        </table>
+        <table id="existingOP">
             <tr id="offerDiv">
                 <th><label for="offer">Nabidka:</label></th>
-                <td colspan="3">
+                <td colspan="6">
                     <select id="offer" size="3"></select>
                 </td>
-                <td colspan="2">
+            </tr>
+            <tr>
+                <td colspan="6">
                     <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a>
                     <a href="#" class="buttonSubmit" id="mailTo">Email</a>
+                    <a href="#" class="buttonSubmit" id="sendInvoiceInfo">Vyhráno a poslat Simoně</a>
                 </td>
             </tr>
         </table>
@@ -253,6 +257,7 @@
                 <td>
                     <a href="#" class="buttonSubmit" id="addProduct">+</a>
                 </td>
+
             </tr>
             <tr id="product1" class="addProducts">
                 <td colspan="7"><input name="product1" id="productFullName1" disabled></td>
@@ -275,6 +280,7 @@
                 <td><a href="#" class="removeProduct buttonSubmit" onclick="removeProduct(3)">-</a>
                 </td>
             </tr>
+
         </table>
     </form>
     <label for="productFullName1"></label>
