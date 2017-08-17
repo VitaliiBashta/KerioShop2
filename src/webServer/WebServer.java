@@ -7,13 +7,13 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-
-class WebServer {
+public class WebServer {
+    private static int port = 80;
     private static final Logger logger = Logger.getLogger(WebServer.class);
     public static void main(String[] args) {
 
         WebServer webServer = new WebServer();
-        int port = 81;
+
         if (args.length > 0)
             port = Integer.parseInt(args[0]);
         webServer.start(port);

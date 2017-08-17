@@ -85,7 +85,7 @@ function calculateNewPrice(currency, newProduct) {
     var result = (purchasePrice + (newProduct.swm - 1) * nextYearPrice) * getLicTypeModifier();   // norm, gov, edu
 
     if (newProduct.exWarranty) result += exWarPrice;
-
+    if (product === "RMK300") result = prices.RMK300;
     return Math.round(100 * result) / 100;
 }
 
@@ -119,7 +119,7 @@ function calculateExistingPrice(currency, newProduct, oldProduct) {
         if (newProduct.antiSpam) addedExtPrice += prices.antiSpam;
         if (newProduct.webFilter) addedExtPrice += prices.webFilter;
 
-        var addedUsers5x = (newProduct.users - oldProduct.users) / 5;
+        // var addedUsers5x = (newProduct.users - oldProduct.users) / 5;
         var oldUsers5x = oldProduct.users / 5;
         var prorate = diffQuarters / 4;
         var renewExisting = newProduct.swm *

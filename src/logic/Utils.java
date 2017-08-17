@@ -36,8 +36,8 @@ public class Utils {
 
     public static void writeResponse(HttpExchange he, String response) {
         try (OutputStream os = he.getResponseBody()) {
-            he.sendResponseHeaders(200, response.getBytes().length);
-            os.write(response.getBytes());
+            he.sendResponseHeaders(200, response.getBytes("UTF-8").length);
+            os.write(response.getBytes("UTF-8"));
             os.flush();
         } catch (IOException e) {
             e.printStackTrace();

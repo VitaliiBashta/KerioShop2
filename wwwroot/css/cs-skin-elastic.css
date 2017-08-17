@@ -176,36 +176,8 @@ div.cs-select:focus {
     background-image: url(img/eur.png);
 }
 
-.cs-skin-elastic .cs-options li.bashta span {
-    background-image: url(img/bashta.png);
-}
-
-.cs-skin-elastic .cs-options li.svandova span {
-    background-image: url(img/svandova.png);
-}
-
-.cs-skin-elastic .cs-options li.bronze span {
-    background-image: url(img/bronze.png);
-}
-
-.cs-skin-elastic .cs-options li.silver span {
-    background-image: url(img/silver.png);
-}
-
-.cs-skin-elastic .cs-options li.gold span {
-    background-image: url(img/gold.png);
-}
-
-.cs-skin-elastic .cs-options li.win span {
-    background-image: url(img/win.png);
-}
-
-.cs-skin-elastic .cs-options li.offer span {
-    background-image: url(img/offer.png);
-}
-
-.cs-skin-elastic .cs-options li.analysis span {
-    background-image: url(img/analysis.png);
+.cs-skin-elastic .cs-options li.RMK300 span {
+    background-image: url(img/RMK300.png);
 }
 
 .cs-skin-elastic .cs-options li.none span {

@@ -33,9 +33,13 @@ public class OffersHandler implements HttpHandler {
         private String asHTML() {
             StringBuilder result = new StringBuilder();
             for (OfferRead aData : this.data) {
+                String status = "příprava";
+                if (aData.offerStatus.id == 50) status = "akceptována";
+                if (aData.offerStatus.id == 49) status = "nabídnuta";
                 result.append("<option value=\"")
                         .append(aData.id).append("\">")
-                        .append(aData.code).append(":\t")
+                        .append(aData.code)
+                        .append(" (").append(status).append("):\t")
                         .append(aData.name)
                         .append("</option>");
             }
@@ -46,6 +50,11 @@ public class OffersHandler implements HttpHandler {
             private int id;
             private String name;
             private String code;
+            private OfferStatus offerStatus;
+        }
+
+        private class OfferStatus {
+            private Integer id;
         }
     }
 

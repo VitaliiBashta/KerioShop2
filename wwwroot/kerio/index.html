@@ -24,12 +24,14 @@
 
     <form action="/" id="openForm">
         <input type="hidden" id="companyId" name="companyId">
+        <input type="hidden" id="participantId" name="participantId">
         <table>
             <thead>
             <tr>
                 <td class="width300"><label for="company">Klient</label></td>
                 <td class="width120"><label for="person">Kontaktní osoba</label></td>
                 <td class="width80"><label for="partnerMargin">Marže klienta</label></td>
+                <td class="width200"><label for="participant">Participant</label></td>
                 <td class="width80"><label for="currency">Měna:</label></td>
                 <td class="width120"><label for="owner">Vlastník</label></td>
             </tr>
@@ -38,6 +40,7 @@
                 <td><input id="company" value="" class="awesomplete"></td>
                 <td><select id="person" name="person"> </select></td>
                 <td><input type="number" name="partnerMargin" id="partnerMargin"></td>
+                <td><input id="participant" value="" class="awesomplete"></td>
                 <td>
                     <select id="currency" name="currency" class="cs-select cs-skin-elastic">
                         <option value="15" data-class="CZK" selected>CZK</option>
@@ -71,12 +74,9 @@
                     <input type="checkbox" class="checkbox" id="opSwitch">
                     <label for="opSwitch">Stavajicí</label>
                 </td>
-
                 <td colspan="5">
                     <select id="businessCase"> </select>
                     <a href="#" class="buttonSubmit" id="createEntityInRaynet">Vytvořít OP</a>
-                    <input type="checkbox" class="checkbox" id="offersSeparateSwitch" name="offersSeparate" value="">
-                    <label for="offersSeparateSwitch" id="offersSeparateSwitchLabel">NAB zvlášť</label>
                 </td>
             </tr>
         </table>
@@ -89,9 +89,9 @@
             </tr>
             <tr>
                 <td colspan="6">
-                    <a href="#" class="buttonSubmit" id="downloadPDF">Stahnout PDF</a>
-                    <a href="#" class="buttonSubmit" id="mailTo">Email</a>
-                    <a href="#" class="buttonSubmit" id="sendInvoiceInfo">Vyhráno a poslat Simoně</a>
+                    <a href="#" class="buttonSubmit" id="downloadPDF">Stáhnout PDF nabídku</a>
+                    <a href="#" class="buttonSubmit" id="mailTo">Email klientovi</a>
+                    <a href="#" class="buttonSubmit" id="sendInvoiceInfo">Akceptovát a poslat email Simoně</a>
                 </td>
             </tr>
         </table>
@@ -163,7 +163,11 @@
         <table id="products">
             <thead>
             <tr>
-                <td class="width300" colspan="2"><label for="prod_group_id">Produkt</label></td>
+                <td class="width200"><label for="prod_group_id">Produkt</label></td>
+                <td class="width120">
+                    <input type="checkbox" class="" id="offersSeparateSwitch" name="offersSeparate" value="">
+                    <label for="offersSeparateSwitch" id="offersSeparateSwitchLabel">Zvlášť</label>
+                </td>
                 <td class="width120"><label for="hwUsers">Počet uživatelu</label></td>
                 <td class="width120"><label for="lic_type">Typ licence</label></td>
                 <td class="width80"><label for="swm">SWM</label></td>
@@ -182,6 +186,7 @@
                         <option value="Kerio Control" data-class="control">Kerio Control</option>
                         <option value="Kerio Operator" data-class="operator">Kerio Operator</option>
                         <option value="" data-class="box">Boxes...</option>
+                        <option value="RMK300" data-class="RMK300">RMK300</option>
                     </select>
                 </td>
                 <td id="boxGroup">

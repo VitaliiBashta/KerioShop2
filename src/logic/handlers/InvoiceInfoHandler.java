@@ -19,9 +19,11 @@ public class InvoiceInfoHandler implements HttpHandler {
     private Integer personId;
     private String personEmail;
     private String offerName;
+    private Number totalAmount;
     private String code;
     private Integer companyId;
     private String description;
+    private Integer currency;
 
     @Override
     public void handle(HttpExchange he) {
@@ -50,6 +52,8 @@ public class InvoiceInfoHandler implements HttpHandler {
         offerName = jsonOffer.data.name;
         code = jsonOffer.data.code;
         companyId = Integer.valueOf(jsonOffer.data.company.id);
+        totalAmount = jsonOffer.data.totalAmount;
+        currency = jsonOffer.data.currency.id;
         description = "";
         if (jsonOffer.data.description != null)
             description = jsonOffer.data.description
@@ -69,9 +73,12 @@ public class InvoiceInfoHandler implements HttpHandler {
         String result = "mailto:simona.kotalova@zebra.cz" +
                 "?" + "cc=lucie.sedlackova@zebra.cz" +
                 "&subject=fakturace pro " + company.name;
+        String currency = " czk";
+        if (this.currency == 16) currency = " eur";
         String body = "prosím o vystavení DD na \nprodejce "
                 + company.name + "\nIČ:" + company.regNumber +
-                "\nprodukt: " + offerName + "\nkontaktní email: " + personEmail + "\n\n" + code +
+                "\nprodukt: " + offerName + "\ncena: " + totalAmount + currency +
+                "\nkontaktní email: " + personEmail + "\n\n" + code +
                 "\n\npoznamka: \n" + description;
         String htmlBody = "";
         try {
@@ -114,6 +121,8 @@ public class InvoiceInfoHandler implements HttpHandler {
             private String code;
             private String description;
             private Company company;
+            private Number totalAmount;
+            private Currency currency;
         }
 
         private class Person {
@@ -124,5 +133,9 @@ public class InvoiceInfoHandler implements HttpHandler {
     private class Company {
         String id;
         String name;
+    }
+
+    private class Currency {
+        Integer id;
     }
 }

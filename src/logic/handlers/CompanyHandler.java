@@ -43,6 +43,7 @@ public class CompanyHandler implements HttpHandler {
         }
         return companies.get(0);
     }
+
     @Override
     public void handle(HttpExchange he) {
         String companyName = he.getRequestURI().getQuery();
@@ -59,8 +60,10 @@ public class CompanyHandler implements HttpHandler {
                 }
             }
             writeResponse(he, id);
-        } else
-            writeResponse(he, objectToJson(companiesName));
+        } else {
+            String jsonCompanies = objectToJson(companiesName);
+            writeResponse(he, jsonCompanies);
+        }
     }
 
     private class JsonCompany {
@@ -86,4 +89,5 @@ public class CompanyHandler implements HttpHandler {
         String Marze_Keri_5288b;
         String Marze_Acro_77f17;
     }
+
 }

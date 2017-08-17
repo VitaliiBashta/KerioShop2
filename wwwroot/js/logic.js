@@ -15,6 +15,7 @@ function initForm() {
     $("#addProduct").on("click", addProduct);
     company.live("awesomplete-open", editCompany);
     company.live("awesomplete-selectcomplete", setCompany);
+    $("#participant").live("awesomplete-selectcomplete", setParticipant);
     $("#existingLicense").on("change", newOrExistingToggle);
 
     $("#createEntityInRaynet").on("click", createEntityInRaynet);
@@ -223,6 +224,8 @@ function getFullNameNewLicense() {
     if ($("#swUsersSection").is(":visible")) result += ", " + $("#swUsers").val() + " users";
     var swm = $("#swm").val();
     if (swm > "0") result += ", +" + swm + " year" + (swm > 1 ? "s" : "") + " SWM";
+    if (product === "RMK300")
+        result = "Kerio Rack Mount Kit for 300 Series HW";
     return result;
 }
 
@@ -245,6 +248,7 @@ function getFullNameExistingLicense() {
     if ($("#swUsersSection").is(":visible")) result += ", " + $("#swUsers").val() + " users";
     var swm = $("#swm").val();
     if (swm > "0") result += ", +" + swm + " year" + (swm > 1 ? "s" : "") + " SWM";
+
     return result;
 }
 
@@ -434,7 +438,6 @@ function editCompany() {
 function setCompany() {
     var company = $("#company").val();
     var person = $("#person");
-    var companyId = $("#companyId");
     person.html("");
     var XmlHTTP = new XMLHttpRequest();
     if (company !== "") {
@@ -443,15 +446,28 @@ function setCompany() {
         if (XmlHTTP.status === 200) {
             var response = XmlHTTP.responseText.split(',');
             var id = response[0];
-            companyId.val(id);
+            $("#companyId").val(id);
             sendGet("/person/?" + id, person, person);
             $("#mainTable").show();
             $("#newOP").show();
             $("#products").show();
             $("#owner").val(response[1]);
             $("#partnerMargin").val(response[2]);
-            // $("#companyIC").val(response[3]);
             calculate();
+        }
+    }
+}
+
+function setParticipant() {
+    var participant = $("#participant").val();
+    var XmlHTTP = new XMLHttpRequest();
+    if (participant !== "") {
+        XmlHTTP.open("GET", "/company/?" + participant, false);
+        XmlHTTP.send();
+        if (XmlHTTP.status === 200) {
+            var response = XmlHTTP.responseText.split(',');
+            var id = response[0];
+            $("#participantId").val(id);
         }
     }
 }
@@ -482,9 +498,12 @@ function getCompanyList() {
         if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
             var text = XmlHTTP.responseText;
             companiesList = JSON.parse(text);
-            var input = document.getElementById("company");
-            var awesomplete = new Awesomplete(input, {autoFirst: true, minChars: 1, maxItems: 20});
-            awesomplete.list = companiesList;
+            var client = document.getElementById("company");
+            var awesompleteClient = new Awesomplete(client, {autoFirst: true, minChars: 1, maxItems: 20});
+            awesompleteClient.list = companiesList;
+            var participant = document.getElementById("participant");
+            var awesompleteParticipant = new Awesomplete(participant, {autoFirst: true, minChars: 1, maxItems: 20});
+            awesompleteParticipant.list = companiesList;
         }
     };
     XmlHTTP.open("GET", "/company/", true);

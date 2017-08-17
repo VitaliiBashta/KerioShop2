@@ -17,7 +17,7 @@ import java.util.List;
 import static logic.Utils.sendRequest;
 
 public class BusinessCaseHandler implements HttpHandler {
-    private static Logger log = Logger.getLogger(BusinessCaseHandler.class.getName());
+    private static final Logger log = Logger.getLogger(BusinessCaseHandler.class.getName());
 
     @Override
     public void handle(HttpExchange he) {
@@ -64,7 +64,7 @@ public class BusinessCaseHandler implements HttpHandler {
         return jsonBusinessCase.asHTML();
     }
 
-    public class JsonBusinessCase {
+    private class JsonBusinessCase {
         private List<BusinessCase> data;
 
         String asHTML() {
@@ -80,7 +80,7 @@ public class BusinessCaseHandler implements HttpHandler {
         }
 
         private class BusinessCase {
-            public int id;
+            int id;
             private String name;
             private String code;
         }
