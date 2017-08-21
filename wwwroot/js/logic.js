@@ -11,17 +11,11 @@ function initForm() {
     $(".cs-options").live("click", calculate);
     $("select").live("change", calculate);
 
-    $("#getLicenseInfo").on("click", getLicenseInfo);
-    $("#addProduct").on("click", addProduct);
     company.live("awesomplete-open", editCompany);
     company.live("awesomplete-selectcomplete", setCompany);
     $("#participant").live("awesomplete-selectcomplete", setParticipant);
-    $("#existingLicense").on("change", newOrExistingToggle);
-
-    $("#createEntityInRaynet").on("click", createEntityInRaynet);
-    $("#businessCase").on("change", businessCaseSelect);
     $("#opSwitch").on("change", opSwitch);
-    $("#offer").on("change", offerSelect);
+    // $("#offer").on("change", offerSelect);
 }
 
 function toJSONString() {
@@ -92,27 +86,24 @@ function getLicenseInfo() {  //need to be done via API
 }
 
 function opSwitch() {
-    var opSwitch = $("#opSwitch").prop("checked");
     var businessCase = $("#businessCase");
     var newOP = $("#newOP");
-    var existingOP = $("#existingOP");
     var offersSeparateSwitchLabel = $("#offersSeparateSwitchLabel");
     var products = $("#products");
     var createEntityInRaynet = $("#createEntityInRaynet");
-    var offerDiv = $("#offerDiv");
-    if (opSwitch) {
+    if ($("#opSwitch").prop("checked")) {
         createEntityInRaynet.hide();
         newOP.hide();
         products.hide();
         offersSeparateSwitchLabel.hide();
-        sendGet("/businessCase/?" + $("#companyId").val(), businessCase, businessCase);
+        sendGet("/businessCase/?" + $("#companyId").val(), businessCase, false, businessCase);
     }
     else {
         businessCase.hide();
-        offerDiv.hide();
+        $("#offerDiv").hide();
         createEntityInRaynet.show();
         newOP.show();
-        existingOP.hide();
+        $("#existingOP").hide();
         offersSeparateSwitchLabel.show();
         products.show();
     }
@@ -126,7 +117,7 @@ function businessCaseSelect() {
     $("#sendInvoiceInfo").hide();
 
     $("#existingOP").show();
-    sendGet("/offer/?" + businessCaseId, $("#offer"), $("#offerDiv"));
+    sendGet("/offer/?" + businessCaseId, $("#offer"), false, $("#offerDiv"));
 }
 
 function offerSelect() {
@@ -135,12 +126,12 @@ function offerSelect() {
     var mailTo = $("#mailTo");
     var sendInvoiceInfo = $("#sendInvoiceInfo");
 
-    sendGet2Href("/Pdf/?" + offerID, downloadPDF, downloadPDF);
-    sendGet2Href("/MailTo/?" + offerID, mailTo, mailTo);
-    sendGet2Href("/invoiceInfo/?" + offerID, sendInvoiceInfo, sendInvoiceInfo);
+    sendGet("/Pdf/?" + offerID, downloadPDF, true, downloadPDF);
+    sendGet("/MailTo/?" + offerID, mailTo, true, mailTo);
+    sendGet("/invoiceInfo/?" + offerID, sendInvoiceInfo, true, sendInvoiceInfo);
 }
 
-function newOrExistingToggle() {
+function newOrExistingLicenseToggle() {
     var swUsers = $("#swUsers");
     var licnum = $("#licnum");
     var getLicenseInfo = $("#getLicenseInfo");
@@ -163,7 +154,6 @@ function newOrExistingToggle() {
         $("#prod_group_id").hide();
         $("#productGroup").find(".cs-placeholder").show();
         $("#lic_typeColumn").find(".cs-placeholder").show();
-
     }
 }
 
@@ -183,11 +173,9 @@ function calculate() {
             fitElements();
         }
     }
-    var price = $("#price").val();
-    var discount = $("#partnerMargin").val();
-    var totalPrice = (price * (100 - discount)) / 100;
+    var partnerPrice = ($("#price").val() * (100 - $("#partnerMargin").val())) / 100;
 
-    $("#totalPrice").val(Math.round(100 * totalPrice) / 100);
+    $("#partnerPrice").val(Math.round(100 * partnerPrice) / 100);
 
     offersSeparateSwitch.val("false");
     if (offersSeparateSwitch.is(":checked")) {
@@ -199,9 +187,7 @@ function calculate() {
 function getFullNameNewLicense() {
     var result = "";
     var product = $("#prod_group_id").val();
-
     if (product === "0") return;
-
     if (product === "") {
         var boxProduct = $("#hardware").val();
         if (boxProduct === "V300") result += "New license for Kerio Operator Box V300";
@@ -212,9 +198,8 @@ function getFullNameNewLicense() {
 
     result += $("#lic_type").val();
 
-    if (product === "" && boxProduct !== "V300") {
-        result += ", Kerio Antivirus, Kerio Web Filter";
-    }
+    if (product === "" && boxProduct !== "V300") result += ", Kerio Antivirus, Kerio Web Filter";
+
     if ($("#warrantyLabel").is(":visible") && $("#warranty").is(':checked')) result += " incl. Ext. Warranty";
     if ($("#antispamLabel").is(":visible") && $("#antispam").is(':checked')) result += ", AntiSpam";
     if ($("#antivirusLabel").is(":visible") && $("#antivirus").is(':checked')) result += ", Kerio Antivirus";
@@ -278,18 +263,12 @@ function hideAll() {
 }
 
 function addProduct() {
-    var price = $("#price");
-    var totalPrice = $("#totalPrice");
-
     for (var i = 1; i <= 3; i++) {
         var product = $("#product" + i);
-        var totalPrice1 = $("#totalPrice" + i);
-        var price1 = $("#price" + i);
-        var productFullName1 = $("#productFullName" + i);
         if (!product.is(":visible")) {
-            productFullName1.val(getFullName());
-            price1.val(price.val());
-            totalPrice1.val(totalPrice.val());
+            $("#productFullName" + i).val(getFullName());
+            $("#price" + i).val($("#price").val());
+            $("#partnerPrice" + i).val($("#partnerPrice").val());
             product.show();
             calculate();
             return;
@@ -300,7 +279,7 @@ function addProduct() {
 function removeProduct(itemNumber) {
     if (itemNumber === undefined) return;
     $("#product" + itemNumber).hide();
-    $("#totalPrice" + itemNumber).val("");
+    $("#partnerPrice" + itemNumber).val("");
     $("#price" + itemNumber).val("");
     $("#productFullName" + itemNumber).val("");
     calculate();
@@ -447,12 +426,17 @@ function setCompany() {
             var response = XmlHTTP.responseText.split(',');
             var id = response[0];
             $("#companyId").val(id);
-            sendGet("/person/?" + id, person, person);
             $("#mainTable").show();
             $("#newOP").show();
             $("#products").show();
             $("#owner").val(response[1]);
             $("#partnerMargin").val(response[2]);
+            var personList = response[3];
+            if (personList === "") alert("Není kontaktní osoba! Vyplňte v Raynetu");
+            else {
+                person.html(personList);
+                person.show();
+            }
             calculate();
         }
     }
@@ -473,12 +457,7 @@ function setParticipant() {
 }
 
 function createEntityInRaynet() {
-    var request = $("#request").val();
     $("#createEntityInRaynet").hide();
-    sendPut("/businessCase", request);
-}
-
-function sendPut(url, params) {
     var XmlHTTP;
     if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
     XmlHTTP.onreadystatechange = function () {
@@ -487,8 +466,8 @@ function sendPut(url, params) {
             alert("Obchodní případ vytvořen");
         }
     };
-    XmlHTTP.open("PUT", url, true);
-    XmlHTTP.send(params);
+    XmlHTTP.open("PUT", "/businessCase", true);
+    XmlHTTP.send($("#request").val());
 }
 
 function getCompanyList() {
@@ -510,27 +489,14 @@ function getCompanyList() {
     XmlHTTP.send();
 }
 
-function sendGet(request, container, showElement) {
+function sendGet(request, container, isHref, showElement) {
     var XmlHTTP;
     if (showElement) showElement.hide();
     if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
     XmlHTTP.onreadystatechange = function () {
         if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
-            container.html(XmlHTTP.responseText);
-            if (showElement) showElement.show();
-        }
-    };
-    XmlHTTP.open("GET", request, true);
-    XmlHTTP.send();
-}
-
-function sendGet2Href(request, container, showElement) {
-    var XmlHTTP;
-    if (showElement) showElement.hide();
-    if (window.XMLHttpRequest) XmlHTTP = new XMLHttpRequest();
-    XmlHTTP.onreadystatechange = function () {
-        if (XmlHTTP.readyState === 4 && XmlHTTP.status === 200) {
-            container.attr("href", XmlHTTP.responseText);
+            if (isHref) container.attr("href", XmlHTTP.responseText);
+            else container.html(XmlHTTP.responseText);
             if (showElement) showElement.show();
         }
     };

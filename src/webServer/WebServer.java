@@ -17,7 +17,8 @@ public class WebServer {
         if (args.length > 0)
             port = Integer.parseInt(args[0]);
         webServer.start(port);
-        logger.info(" ------------- server started -----------");
+        logger.info("------------- server started, port:" + port);
+        System.out.println("------------- server started, port:" + port);
     }
 
     private void start(int port) {
@@ -38,7 +39,6 @@ public class WebServer {
             server.createContext("/", new StaticHandler());
             server.setExecutor(null);
             server.start();
-            System.out.println("server started at " + port);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -7,6 +7,7 @@ import logic.Utils;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,19 +25,7 @@ import static logic.SendMethod.POST;
 import static logic.Utils.sendRequest;
 
 public class LicenseInfoHandler implements HttpHandler {
-
-    @Override
-    public void handle(HttpExchange he) {
-        if (he.getRequestMethod().equals("GET")) {
-            String query = he.getRequestURI().getQuery();
-            if (query != null) {
-                System.out.println(">>> GETTING info about: " + query);
-                String response = getLicKeyInfo(query);
-                System.out.println("<<<: \t" + response);
-                Utils.writeResponse(he, response);
-            }
-        }
-    }
+    private static final Logger logger = Logger.getLogger(LicenseInfoHandler.class);
 
     private static String getLicKeyInfo(String licenseNumber) {
         String params = "licence=" + licenseNumber + "&next=Continue";
@@ -68,8 +57,19 @@ public class LicenseInfoHandler implements HttpHandler {
             licInfo.add("License key error!");
         }
         Gson gson = new Gson();
-        String json = gson.toJson(licInfo);
-        System.out.println(json);
-        return json;
+        return gson.toJson(licInfo);
+    }
+
+    @Override
+    public void handle(HttpExchange he) {
+        if (he.getRequestMethod().equals("GET")) {
+            String query = he.getRequestURI().getQuery();
+            if (query != null) {
+                logger.info(">>> GETTING info about: " + query);
+                String response = getLicKeyInfo(query);
+                logger.info("<<<: \t" + response);
+                Utils.writeResponse(he, response);
+            }
+        }
     }
 }

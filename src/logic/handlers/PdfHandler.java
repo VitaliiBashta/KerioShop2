@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import logic.Utils;
+import org.apache.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -12,7 +13,7 @@ import java.net.URLDecoder;
 import static logic.Utils.sendRequest;
 
 public class PdfHandler implements HttpHandler {
-
+    private static final Logger logger = Logger.getLogger(PdfHandler.class);
     @Override
     public void handle(HttpExchange he) {
         String request = Utils.RAYNET_URL + "/offer/" + he.getRequestURI().getQuery() + "/pdfExport";
@@ -20,7 +21,7 @@ public class PdfHandler implements HttpHandler {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonOfferPdfExport json = gson.fromJson(response, JsonOfferPdfExport.class);
         String res = json.getDownloadUrl();
-        System.out.println(res);
+        logger.info("Requested PDF:" + res);
         Utils.writeResponse(he, res);
     }
 

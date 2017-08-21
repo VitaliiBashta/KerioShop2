@@ -13,18 +13,18 @@ import static logic.Utils.sendRequest;
 
 public class PersonHandler implements HttpHandler {
 
-    @Override
-    public void handle(HttpExchange he) {
-        String companyId = he.getRequestURI().getQuery();
-        String response = getPersons(companyId);
-        Utils.writeResponse(he, response);
-    }
-
-    private String getPersons(String companyId) {
+    public static String getPersons(Integer companyId) {
         String response = sendRequest(Utils.RAYNET_URL + "/person/?primaryRelationship-company-id=" + companyId);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         JsonPerson jsonPerson = gson.fromJson(response, JsonPerson.class);
         return jsonPerson.asHTML();
+    }
+
+    @Override
+    public void handle(HttpExchange he) {
+        Integer companyId = Integer.valueOf(he.getRequestURI().getQuery());
+        String response = getPersons(companyId);
+        Utils.writeResponse(he, response);
     }
 
     private class JsonPerson {
